@@ -54,9 +54,9 @@ function template($file, ...$extrafiles) {
 
 // redirect the user to another URL
 // **** this function WILL TERMINATE the PHP EXECUTION ****
-function redirect($url) {
+function redirect($sec, $url) {
   global $redirect;
-  $redirect = "<meta http-equiv='refresh' content='10; URL=".$url."'>";
+  $redirect = "<meta http-equiv='refresh' content='".$sec."; URL=".$url."'>";
   template("alert");
 }
 

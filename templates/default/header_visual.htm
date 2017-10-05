@@ -56,3 +56,6 @@
 </nav>
 
 <div class="container" id="canvas" title="#canvas">
+  <?php if (isset($output['alert']) and ($output['alert']!="")) : ?>
+    <div class="alert <?=$output['alerttype']?>"><?=$output['alert']?></div>
+  <?php endif ?>

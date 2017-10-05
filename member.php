@@ -4,6 +4,9 @@ define("ROOT", $_SERVER['DOCUMENT_ROOT']."/");
 require(ROOT."core/core.php");
 
 
+
+$output['title'] = "Authentication";
+
 switch ($_GET['act']) {
 
 
@@ -85,15 +88,13 @@ switch ($_GET['act']) {
           $output['alert'] = $settings['registered-welcome'];
 
           // redirect user to fill their profile
-          redirect("member.php?act=modprofile");
+          redirect(5, "member.php?act=modprofile");
 
         } else {
           // Already logged in, do not allow re-register
           $output['alerttype'] = "alert-success";
           $output['alert'] = $lang['logged-in'];
-          $output['redirect'] = $lang['hist-back'];
-          $redirect = "member.php";
-          template("common_bang");
+          redirect(3, "index.php");
           break;
         }
       } else {
@@ -157,9 +158,9 @@ switch ($_GET['act']) {
           $encryptedPassword = md5($_POST['password'].$r[0]['salt']);
           if ($encryptedPassword == $r[0]['password']) {
             // credentials correct
-            // log this new user in
+            // log this user in
             $_SESSION['uid'] = $r[0]['uid'];
-            // refresh userinfo
+            // fetch userinfo
             $member = getUserInfo();
 
             // insert login history
@@ -173,7 +174,7 @@ switch ($_GET['act']) {
             }
             $output['alerttype'] = "alert-success";
             $output['alert'] = $lang['logged-in'];
-            break;
+            redirect(3, "index.php");
           } else {
             // Incorrect credentials
             // insert login history
@@ -254,5 +255,4 @@ switch ($_GET['act']) {
     }
 }
 
-$output['title'] = "Users";
 template("member");
