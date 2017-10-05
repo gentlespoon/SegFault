@@ -1,0 +1,93 @@
+
+<nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" href="#" title="<?=$settings['sitename']?>">
+      <img src="static/images/brand.png" width="30" height="30"  class="d-inline-block align-top"  alt="">
+      <?=$settings['sitename']?>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!-- <div id="sf_navigation"> -->
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="">Questions <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="jobs.php">Jobs</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#">Tags</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="members.php">Users</a>
+        </li>
+      </ul>
+      <!-- </div> -->
+
+
+      <form class="form-inline my-2 my-lg-0 ml-auto">
+        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+
+      <a class="nav-link btn btn-light ml-sm-2" href="">Sign In</a>
+      <button type="button" class="btn btn-primary ml-sm-2">Sign Up</button>
+
+
+    </div>
+  </div>
+</nav>
+
+<div class="container" id="canvas" title="#canvas">
+
+
+<!--
+
+<div title="#common_header_visual">
+  <div class="wrapper" id="bannerbar">
+    <div class="banner">
+
+    </div>
+    <div class="userpanel">
+      <?php if ( $_SESSION['uid'] == 0 ) : ?>
+        <form method="post" autocomplete="off" id="loginform" action="member.php?act=login">
+          <table id="loginformtable" celloginformpacing="0" cellpadding="0">
+            <tbody>
+              <tr>
+                <td align="left"><label for="loginform_username"><?=$lang['account']?></label></td>
+                <td align="center"><input type="text" name="username" id="loginform_username" autocomplete="off" tabindex="901"></td>
+                <td align="center"><a href="member.php?act=register"><?=$lang['register']?></a></td>
+              </tr>
+              <tr>
+                <td align="left"><label for="loginform_password"><?=$lang['password']?></label></td>
+                <td align="center"><input type="password" name="password" id="loginform_password" autocomplete="off" tabindex="902"></td>
+                <td align="center"><button type="submit" tabindex="903"><?=$lang['login']?></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      <?php endif ?>
+      <?php if ( $_SESSION['uid'] > 0 ) : ?>
+        <a href="member.php"><img id="nav_avatar" class="avatar" src="<?=$member['avatar']?>" qq="<?=$member['qq']?>" ><?=$member['username']?></a>
+        <a href="#">(<?=$member['groupname']?>)</a>
+        <a href="member.php?act=modprofile"><?=$lang['modprofile']?></a>
+        <a href="member.php?act=modpwd"><?=$lang['modpwd']?></a>
+        <a href="member.php?act=logout"><?=$lang['logout']?></a>
+      <?php endif ?>
+    </div>
+  </div>
+
+
+  <div id="nav_main" class="wrapper">
+    <?php foreach ($body['nav']['main'] as $k => $item) : ?>
+    <div class="nav_item nav_main_item <?=$item['active']?>"><a href="<?=$item['link']?>" target="<?=$item['target']?>"><?=$item['name']?></a></div>
+    <?php endforeach ?>
+  </div>
+
+</div>
+
+-->
