@@ -7,8 +7,8 @@ function printv($arr, $ret=false) {
   if (is_array($arr)) {
     $buf .= "<pre>";
     ob_start();
-    // print_r($arr);
-    var_export($arr);
+    print_r($arr);
+    // var_export($arr);
     $buf .= ob_get_clean();
     $buf .= "</pre>";
     if ($ret) {
@@ -34,22 +34,31 @@ function template($file, ...$extrafiles) {
   global $lang;
   global $settings;
   global $member;
+  global $redirect;
 
   $_endtime = microtime(true);
   $_runtime = $_endtime - $_starttime;
   $_runtime = sprintf('%0.5f', $_runtime);
 
-  include_once(ROOT."templates/".$settings['template']."/common_header_html.htm");
-  include_once(ROOT."templates/".$settings['template']."/common_header_visual.htm");
+  include_once(ROOT."templates/".$settings['template']."/header_html.htm");
+  include_once(ROOT."templates/".$settings['template']."/header_visual.htm");
   include_once(ROOT."templates/".$settings['template']."/".$file.".htm");
   foreach ($extrafiles as $k => $v) {
     include_once(ROOT."templates/".$settings['template']."/".$v.".htm");
   }
-  include_once(ROOT."templates/".$settings['template']."/common_footer_visual.htm");
-  include_once(ROOT."templates/".$settings['template']."/common_footer_html.htm");
+  include_once(ROOT."templates/".$settings['template']."/footer_visual.htm");
+  include_once(ROOT."templates/".$settings['template']."/footer_html.htm");
   exit();
 }
 
+
+// redirect the user to another URL
+// **** this function WILL TERMINATE the PHP EXECUTION ****
+function redirect($url) {
+  global $redirect;
+  $redirect = "<meta http-equiv='refresh' content='10; URL=".$url."'>";
+  template("alert");
+}
 
 
 
@@ -86,6 +95,7 @@ function usernameCensor($string, $sensorlist) {
 function getUserInfo() {
   global $lang;
   if ($_SESSION['uid'] > 0) {
+    // printv(DB::query("SELECT * FROM member WHERE uid=%i", $_SESSION['uid']));
     $member = DB::query("SELECT * FROM member WHERE uid=%i", $_SESSION['uid'])[0];
     return $member;
   } else {

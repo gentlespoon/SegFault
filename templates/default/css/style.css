@@ -1,17 +1,25 @@
 html {
   /*font-family: monospace !important;*/
+  position: relative;
+  min-height: 100%;
 }
 
 .btn {
   cursor: pointer;
 }
 
+#canvas {
+  margin: 2em auto;
+}
+
 .footer {
-  margin-top: 3em;
+  position: absolute;
+  bottom: 0;
   padding-top: 2em;
   height: 100px;
-  background-color: #f5f5f5;
+  background-color: #F8F9FA;
   font-size: 0.7em;
+  width: 100%;
 }
 
 .left {
@@ -22,4 +30,8 @@ html {
 .right {
   float: right;
   text-align: right;
+}
+
+.hidden {
+  display: none;
 }

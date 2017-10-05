@@ -5,4 +5,5 @@ require(ROOT."core/core.php");
 
 
 
+$output['title'] = "Questions";
 template("questions");
