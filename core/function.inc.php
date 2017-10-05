@@ -30,14 +30,11 @@ function template($file, ...$extrafiles) {
   global $querycount;
   global $_GET;
   global $_starttime;
-  global $body;
+  global $output;
   global $lang;
-  global $redirect;
   global $settings;
-  global $title;
   global $member;
 
-  $body['nav'] = getNavitem();
   $_endtime = microtime(true);
   $_runtime = $_endtime - $_starttime;
   $_runtime = sprintf('%0.5f', $_runtime);
