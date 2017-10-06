@@ -1,0 +1,6 @@
+<?php foreach ($output['tags'] as $tagid => $taginfo) : ?>
+  <button class="btn mr-4 my-4 tagBtn" tagid="<?=$tagid?>">
+    <?=$taginfo['tagname']?> <span class="badge badge-secondary"><?=$taginfo['count']?></span>
+    <span class="sr-only">unread messages</span>
+  </button>
+<?php endforeach ?>

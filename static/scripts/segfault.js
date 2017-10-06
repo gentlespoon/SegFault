@@ -81,4 +81,21 @@ $(document).ready(function() {
     window.location.replace("member.php?act=login");
   });
 
+
+
+  $(".tagBtn").click(function(){
+    window.location.replace("index.php?act=search&tag="+$(this).attr("tagid"));
+  });
+
+
+
+
+
+
+
+
+
+
+
+
 });

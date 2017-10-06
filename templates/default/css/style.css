@@ -2,6 +2,7 @@ html {
   /*font-family: monospace !important;*/
   position: relative;
   min-height: 100%;
+  font-size: 0.88em;
 }
 
 .btn {
