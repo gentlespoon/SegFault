@@ -219,6 +219,36 @@ switch ($_GET['act']) {
 
 
 
+    case "modprofile":
+      $title = $lang['modprofile'];
+      if (array_key_exists("username", $_POST)) {
+        // fetch table keys
+        $tablekeys = DB::query("SELECT * FROM member WHERE uid=%i", $_SESSION['uid']);
+        foreach ($_POST as $k => $v) {
+          // verify if key exists
+          if(array_key_exists($k, $tablekeys[0])) {
+            // if the key exists, then it is safe to update
+            DB::query("UPDATE member SET ".$k."=%s WHERE uid=%i", $v, $_SESSION['uid']);
+          } else {
+            // $_POST contains illegal keys
+            die("??????");
+          }
+        }
+        $output['alerttype'] = "alert-success";
+        $output['alert'] = $lang['modprofile'].$lang['success'];
+
+        // refresh userinfo
+        $member = getUserInfo();
+      }
+      // select columns that are allowed to modify
+      $member_fields = DB::query("SELECT * FROM member WHERE uid=%i",$_SESSION['uid']);
+      $member['fields'] = $member_fields[0];
+      break;
+
+
+
+
+
 
 
 
@@ -233,25 +263,29 @@ switch ($_GET['act']) {
 
 
 
+
+
   default:
-    if ($_SESSION['uid'] > 0) {
-      // Fetch user info
-      if (!isset($_GET['uid'])) {
-        $_GET['uid'] = $_SESSION['uid'];
-      }
+    // display member list
 
-      $userinfo = DB::query("SELECT *FROM member WHERE uid=%i", $_GET['uid'])[0];
-      $userinfo['regdate'] = toUserTime($userinfo['regdate']);
-      $userinfo['lastlogin'] = toUserTime($userinfo['lastlogin']);
-      $output['userinfo'] = $userinfo;
+    // fetch usergroup information
+    $uGroupInfo = [];
+    $uGroupInfoTmp = DB::query("SELECT * FROM member_groups");
+    foreach ($uGroupInfoTmp as $k => $v) {
+      $uGroupInfo[$v['groupid']] = $v['groupname'];
+    }
 
-
-      $userperm = DB::query("SELECT * FROM member_groups WHERE groupid=%i",  $output['userinfo']['groupid'])[0];
-      $output['userperm'] = $userperm;
-
-
-
-
+    // fetch member list
+    $output['memberlist'] = DB::query("SELECT * FROM member");
+    foreach ($output['memberlist'] as $k => $v) {
+      unset($output['memberlist'][$k]['password']);
+      unset($output['memberlist'][$k]['salt']);
+      unset($output['memberlist'][$k]['salt']);
+      $output['memberlist'][$k]['regdate'] = toUserTime($output['memberlist'][$k]['regdate']);
+      $output['memberlist'][$k]['lastlogin'] = toUserTime($output['memberlist'][$k]['lastlogin']);
+      $output['memberlist'][$k]['usergroup'] = $uGroupInfo[$output['memberlist'][$k]['groupid']];
+      unset($output['memberlist'][$k]['groupid']);
+      unset($output['memberlist'][$k]['failcount']);
     }
 }
 

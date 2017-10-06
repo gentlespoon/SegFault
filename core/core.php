@@ -1,5 +1,9 @@
 <?php
 
+date_default_timezone_set("UTC");
+
+$now = time();
+
 $querycount = 0;
 
 // mute all error before we initialize debug level
@@ -48,7 +52,6 @@ DB::$encoding = $config['db']['charset'];
 
 
 // import functions
-require_once(ROOT."core/time.inc.php");
 require_once(ROOT."core/function.inc.php");
 
 

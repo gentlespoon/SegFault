@@ -65,3 +65,30 @@
     </form>
   </div>
 <?php endif ?>
+
+
+
+
+
+
+
+
+
+<?php if ($_GET['act']=="") : ?>
+  <div>
+    <table class="table">
+      <thead>
+<?php foreach ($output['memberlist'][0] as $k=>$v) :?>
+        <td><?=$lang[$k]?></td>
+<?php endforeach ?>
+      </thead>
+      <tbody>
+<?php foreach ($output['memberlist'] as $k => $v) : ?>
+<?php foreach ($v as $k=>$c) :?>
+          <td><?=$c?></td>
+<?php endforeach ?>
+<?php endforeach ?>
+      </tbody>
+    </table>
+  </div>
+<?php endif ?>

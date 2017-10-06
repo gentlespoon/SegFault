@@ -102,3 +102,20 @@ function getUserInfo() {
     return ["username" => $lang['not-logged-in']];
   }
 }
+
+
+
+// convert timestamp to human readable time
+// default time format is ISO
+function toUserTime($time, $format=false) {
+  global $config;
+  if (!$format) {
+    // $format = $config['datetime']['iso'];
+    $format = $config['datetime']['format'];
+  }
+  $dt = new DateTime();
+  $dt->setTimestamp($time);
+  $dt->setTimezone(new DateTimeZone($config['datetime']['timezone']));
+  $is = $dt->format($format);
+  return $is;
+}
