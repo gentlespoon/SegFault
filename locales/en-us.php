@@ -39,11 +39,11 @@ $lang = [
   "ip-ban-temp2" => " hours",
   "lastlogin" => "Last login: ",
   "link" => "Link",
-  "logged-out" => "Logged Out",
-  "logged-in" => "Logged In",
-  "login" => "Log In",
+  "logged-out" => "Signed Out",
+  "logged-in" => "Signed In",
+  "login" => "Sign In",
   "login-welcome" => "Login-Welcome",
-  "logout" => "Log Out",
+  "logout" => "Sign Out",
   "manage" => "Manage",
   "member-stat" => "Member Stats",
   "modprofile" => "Edit Profile",
@@ -104,5 +104,6 @@ $lang = [
   "user-manage" => "User-Manage",
   "viewforum" => "Viewforum",
   "viewthread" => "Viewthread",
+  "visible" => "Visible",
 
 ];

@@ -243,6 +243,7 @@ switch ($_GET['act']) {
       // select columns that are allowed to modify
       $member_fields = DB::query("SELECT * FROM member WHERE uid=%i",$_SESSION['uid']);
       $member['fields'] = $member_fields[0];
+      unset($member['fields']['salt']);
       break;
 
 

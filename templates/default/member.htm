@@ -3,23 +3,23 @@
     <form method="post" id="regForm" action="member.php?act=register">
       <div class="form-row">
         <div class="form-group col-md-6">
-          <label for="regUsername" class="col-form-label">Username</label>
-          <input type="text" class="form-control" id="regUsername" name="username" placeholder="Username">
+          <label for="regUsername" class="col-form-label"><?=$lang['username']?></label>
+          <input type="text" class="form-control" id="regUsername" name="username" placeholder="<?=$lang['username']?>">
         </div>
         <div class="form-group col-md-6">
-          <label for="regEmail" class="col-form-label">Email</label>
-          <input type="email" class="form-control" id="regEmail" name="email" placeholder="Email">
+          <label for="regEmail" class="col-form-label"><?=$lang['email']?></label>
+          <input type="email" class="form-control" id="regEmail" name="email" placeholder="<?=$lang['email']?>">
         </div>
         <div class="form-group col-md-11" id="passwordDiv">
-          <label for="regPassword" class="col-form-label">Password</label>
-          <input type="text" class="form-control" id="regPassword" name="password" placeholder="Password">
+          <label for="regPassword" class="col-form-label"><?=$lang['password']?></label>
+          <input type="text" class="form-control" id="regPassword" name="password" placeholder="<?=$lang['password']?>">
         </div>
         <div class="form-group col-md-5 hidden" id="passwordDiv2">
-          <label for="regPassword2" class="col-form-label">Repeat Password</label>
-          <input type="password" class="form-control" id="regPassword2" placeholder="Repeat Password">
+          <label for="regPassword2" class="col-form-label"><?=$lang['password2']?></label>
+          <input type="password" class="form-control" id="regPassword2" placeholder="<?=$lang['password2']?>">
         </div>
         <div class="form-group col-md-1" id="passwordDiv">
-          <label for="toggleShowRegPasswordBtn" class="col-form-label">Visible</label>
+          <label for="toggleShowRegPasswordBtn" class="col-form-label"><?=$lang['visible']?></label>
           <button type="button" class="btn btn-primary active" data-toggle="button" aria-pressed="true" autocomplete="off" id="toggleShowRegPasswordBtn" style="width: 100%;">
             😲
           </button>
@@ -32,7 +32,7 @@
           </label>
         </div>
       </div>
-      <button type="submit" class="btn btn-primary" id="regFormSubmit">Sign in</button>
+      <button type="submit" class="btn btn-primary" id="regFormSubmit"><?=$lang['register']?></button>
     </form>
   </div>
 <?php endif ?>
@@ -47,24 +47,54 @@
     <form method="post" id="loginForm" action="member.php?act=login">
       <div class="form-row">
         <div class="form-group col-md-12">
-          <label for="loginUsername" class="col-form-label">Username</label>
-          <input type="text" class="form-control" id="loginUsername" name="username" placeholder="Username">
+          <label for="loginUsername" class="col-form-label"><?=$lang['username']?></label>
+          <input type="text" class="form-control" id="loginUsername" name="username" placeholder="<?=$lang['username']?>">
         </div>
         <div class="form-group col-md-11" id="passwordDiv">
-          <label for="loginPassword" class="col-form-label">Password</label>
-          <input type="text" class="form-control" id="loginPassword" name="password" placeholder="Password">
+          <label for="loginPassword" class="col-form-label"><?=$lang['password']?></label>
+          <input type="text" class="form-control" id="loginPassword" name="password" placeholder="<?=$lang['password']?>">
         </div>
         <div class="form-group col-md-1" id="passwordDiv">
-          <label for="toggleShowLoginPasswordBtn" class="col-form-label">Visible</label>
+          <label for="toggleShowLoginPasswordBtn" class="col-form-label"><?=$lang['visible']?></label>
           <button type="button" class="btn btn-primary active" data-toggle="button" aria-pressed="true" autocomplete="off" id="toggleShowLoginPasswordBtn" style="width: 100%;">
             😲
           </button>
         </div>
       </div>
-      <button type="submit" class="btn btn-primary" id="loginFormSubmit">Sign in</button>
+      <button type="submit" class="btn btn-primary" id="loginFormSubmit"><?=$lang['login']?></button>
     </form>
   </div>
 <?php endif ?>
+
+
+
+
+
+
+
+
+<?php if ($_GET['act']=="modprofile") : ?>
+  <div>
+    <form method="POST" action="member.php?act=modprofile" id="modprofileForm">
+      <div class="form-row">
+<?php foreach($member['fields'] as $k => $v) : ?>
+        <div class="form-group col-md-6">
+          <label for="modprofile<?=$k?>" class="col-form-label"><?=$lang[$k]?></label>
+          <input id="modprofile<?=$k?>" type="text" class="form-control" id="loginUsername" name="<?=$k?>" placeholder="<?=$lang[$k]?>" value="<?=$v?>">
+        </div>
+<?php endforeach ?>
+      </div>
+      <div class="form-group">
+        <input type="submit" class="btn btn-default btn-primary" value="<?=$lang['submit']?>">
+      </div>
+    </form>
+  </div>
+<?php endif ?>
+
+
+
+
+
 
 
 
