@@ -17,8 +17,6 @@ Tags
 
 ## To do:
 
-Edit profile
-
 Post new Questions
 
 Reply to existed questions
