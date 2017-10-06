@@ -1,21 +1,37 @@
 # SegFault
 SegFault Project for UCR CS180 Software Engineering
 
+
 Currently hosted at [http://angda.info](http://angda.info), may be eventually migrated to another domain name.
 
 
-## Features
+## Implemented
 
-Sign Up
+### Member Authentication
 
-Sign In / Sign Out
+Sign up
+
+Sign in / Sign out
+
+Sign in history
+
+Failed login counter
+
+Auto ban user
+
+Auto ban IP
 
 Edit Profile
 
+### Question Related
+
 Tags
 
+Search by Tags
 
-## To do:
+
+
+## TODO's
 
 Post new Questions
 
