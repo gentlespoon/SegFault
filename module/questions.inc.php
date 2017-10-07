@@ -4,6 +4,10 @@
 
 $output['title'] = "Questions";
 
+
+$additionalSearchCondition = "";
+
+
 switch ($action) {
 
   case "viewthread":
@@ -15,13 +19,16 @@ switch ($action) {
 
 
 
-
+  case "search":
+    if (array_key_exists("tag", $_GET)) {
+      $additionalSearchCondition .= "AND (".makeLikeCond("tags", $_GET['tag']).")";
+    }
 
   default:
+
     // no action = list newest questions
     if (!array_key_exists("viewforum", $member) ||
         (array_key_exists("viewforum", $member) && $member['viewforum'] == 0)) {
-      $_GET['act'] = "";
       $output['alerttype'] = "alert-danger";
       $output['alert'] = $lang['permission-denied'];
       break;
@@ -33,8 +40,9 @@ switch ($action) {
     }
 
 
-    $threads = DB::query("SELECT forum_threads.* FROM forum_threads WHERE category=1 ORDER BY sendtime DESC LIMIT 10");
+    $threads = DB::query("SELECT forum_threads.* FROM forum_threads WHERE category=1 ".$additionalSearchCondition." ORDER BY sendtime DESC LIMIT 10");
     if (empty($threads)) {
+      $output['threads'] = $threads;
       $output['alerttype'] = "alert-danger";
       $output['alert'] = "0 questions found";
       break;

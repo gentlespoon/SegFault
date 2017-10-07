@@ -117,3 +117,14 @@ function toUserTime($time, $format=false) {
   $is = $dt->format($format);
   return $is;
 }
+
+
+
+// SQL, comma separated LIKE condition constructor
+function makeLikeCond($fieldname, $condition) {
+  $condition =  $fieldname." LIKE '".$condition.",%' OR ".    // as first value
+                $fieldname." LIKE '%,".$condition.",%' OR ".  // as middle value
+                $fieldname." LIKE '%,".$condition."' OR ".    // as last value
+                $fieldname." LIKE '".$condition."'";          // as only value
+  return $condition;
+}
