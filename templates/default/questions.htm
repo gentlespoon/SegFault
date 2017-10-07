@@ -66,7 +66,7 @@
     <!-- THREAD -->
 
     <div class="question-summary">
-      <h3><?=$output['thread']['title']?></h3>
+      <a href="/questions/viewthread/<?=$output['thread']['tid']?>"><h3><?=$output['thread']['title']?></h3></a>
     </div>
 
     <div class="question-summary">
@@ -84,8 +84,8 @@
           <?=$output['thread']['content']?>
         </div>
         <div class="question-content-author">
-          <a class="vote" tid="<?=$post['tid']?>" ud="upvote"><span class="badge badge-success">👍 <?=$output['thread']['upvote']?></span></a>
-          <a class="vote" tid="<?=$post['tid']?>" ud="downvote"><span class="badge badge-danger">👎 <?=$output['thread']['downvote']?></span></a>
+          <a class="vote" tid="<?=$output['thread']['tid']?>" pid="0" ud="upvote"><span class="badge badge-success">👍 <span id="upvote-<?=$output['thread']['tid']?>-0"><?=$output['thread']['upvote']?></span></span></a>
+          <a class="vote" tid="<?=$output['thread']['tid']?>" pid="0" ud="downvote"><span class="badge badge-danger">👎 <span id="downvote-<?=$output['thread']['tid']?>-0"><?=$output['thread']['downvote']?></span></span></a>
           <a href="/member/profile/<?=$output['thread']['author']['uid']?>"><?=$output['thread']['author']['username']?></a>
           at <?=$output['thread']['sendtime']?>
         </div>
@@ -98,8 +98,8 @@
           <?=$post['content']?>
         </div>
         <div class="question-content-author">
-          <a class="vote" pid="<?=$post['pid']?>" ud="upvote"><span class="badge badge-success">👍 <?=$post['upvote']?></span></a>
-          <a class="vote" pid="<?=$post['pid']?>" ud="downvote"><span class="badge badge-danger">👎 <?=$post['downvote']?></span></a>
+          <a class="vote" tid="0" pid="<?=$post['pid']?>" ud="upvote"><span class="badge badge-success">👍 <span id="upvote-0-<?=$post['pid']?>"><?=$post['upvote']?></span></span></a>
+          <a class="vote" tid="0" pid="<?=$post['pid']?>" ud="downvote"><span class="badge badge-danger">👎 <span id="downvote-0-<?=$post['pid']?>"><?=$post['downvote']?></span></span></a>
           <a href="/member/profile/<?=$post['author']['uid']?>"><?=$post['author']['username']?></a>
           at <?=$post['sendtime']?>
         </div>

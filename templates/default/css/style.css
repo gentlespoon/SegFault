@@ -5,6 +5,12 @@ html {
   font-size: 0.86em;
 }
 
+
+a {
+  cursor: pointer;
+}
+
+
 .btn {
   cursor: pointer;
 }

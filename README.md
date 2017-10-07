@@ -18,6 +18,8 @@ Currently hosted at [http://angda.info](http://angda.info), may be eventually mi
 * Tags
 * Search for questions by tags
 * Question list
+* View question thread
+* Vote for a thread/post
 
 ## TODO's
 
