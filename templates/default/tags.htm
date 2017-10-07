@@ -3,13 +3,13 @@
 
     <div class="card">
       <div class="card-body">
-        <h4 class="card-title">
-          <a href="/questions/search?tag=<?=$tagid?>"><span class="badge badge-dark"><?=$taginfo['tagname']?></span></a> x <?=$taginfo['count']?>
-        </h4>
+        <div class="card-title">
+          <a href="/questions/search?tag=<?=$tagid?>"><span class="badge badge-dark"><?=$taginfo['tagname']?></span></a> × <?=$taginfo['count']?>
+        </div>
         <p class="card-text">
           <?=$taginfo['description']?>
         </p>
       </div>
     </div>
 <?php endforeach ?>
-</div
+</div>

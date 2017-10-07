@@ -20,10 +20,29 @@ switch ($action) {
     if (!$member['viewthread']) {
       error($lang['permission-denied']);
     }
+
     // printv($path);
     if (is_numeric($path[2])) {
-      $output['thread'] = DB::query("SELECT * FROM forum_threads WHERE tid=%i", $path[2]);
-      $output['posts'] = DB::query("SELECT * FROM forum_posts WHERE tid=%i ORDER BY sendtime ASC", $path[2]);
+
+      // fetch thread
+      $thread = DB::query("SELECT * FROM forum_threads WHERE tid=%i", $path[2])[0];
+      $thread['tags'] = explode(",", $thread['tags']);
+      $thread['author'] = getUserInfo($thread['author']);
+      $thread['sendtime'] = toUserTime($thread['sendtime']);
+      $thread['content'] = htmlentities($thread['content']);
+      $output['thread'] = $thread;
+
+      // fetch posts
+      $posts = DB::query("SELECT * FROM forum_posts WHERE tid=%i ORDER BY sendtime ASC", $path[2]);
+      foreach($posts as $k => $post) {
+        $posts[$k]['author'] = getUserInfo($post['author']);
+        $posts[$k]['sendtime'] = toUserTime($post['sendtime']);
+        $posts[$k]['content'] = htmlentities($post['content']);
+      }
+      $output['posts'] = $posts;
+
+      // printv($output['thread']);
+      // printv($output['posts']);
     } else {
       error($lang['illegal-thread']);
     }
@@ -68,6 +87,7 @@ switch ($action) {
       if (strlen($threads[$k]['content'])>$summaryCharLimit) {
         $threads[$k]['content'] = substr($threads[$k]['content'], 0, strpos($threads[$k]['content'], " ", $summaryCharLimit-10))." ...";
       }
+      $threads[$k]['content'] = htmlentities($threads[$k]['content']);
       $threads[$k]['author'] = getUserInfo($threads[$k]['author']);
       $threads[$k]['sendtime'] = toUserTime($v['sendtime']);
       // get last response info

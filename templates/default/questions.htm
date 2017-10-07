@@ -1,7 +1,7 @@
 <div class="row">
 
 
-  <div class="col-sm-12 col-md-3" id="sidebar">
+  <div class="col-sm-12 col-md-3 col-lg-2" id="sidebar">
 <?php if ($_SESSION['uid']) : ?>
     <button type="button" class="btn btn-primary ml-sm-2" id="newThread">Ask Question</button>
 <?php else : ?>
@@ -10,7 +10,14 @@
   </div>
 
 
-  <div class="col-sm-12 col-md-9" id="maincanvas">
+  <div class="col-sm-12 col-md-9 col-lg-10" id="maincanvas">
+
+
+
+
+
+
+
 
 <?php if ($action == "search") : ?>
 
@@ -48,23 +55,65 @@
       </div>
 <?php endforeach ?>
     </div>
-  </div>
 
 
 
 
 
+<?php elseif ($action == "viewthread") : ?>
 
 
+    <!-- THREAD -->
 
+    <div class="question-summary">
+      <h3><?=$output['thread']['title']?></h3>
+    </div>
 
+    <div class="question-summary">
+      Tags:
+      <?php foreach ($output['thread']['tags'] as $k => $tag) : ?>
+        <a href="/questions/search?tag=<?=$tag?>"><span class="badge badge-dark"><?=$output['tags'][$tag]?></span></a>
+      <?php endforeach ?>
+    </div>
 
+    <div class="questions">
 
+      <!-- THREAD content -->
+      <div class="question-content">
+        <div>
+          <?=$output['thread']['content']?>
+        </div>
+        <div class="question-content-author">
+          <a href="/member/profile/<?=$output['thread']['author']['uid']?>"><?=$output['thread']['author']['username']?></a>
+          at <?=$output['thread']['sendtime']?>
+        </div>
+      </div>
 
+      <!-- POSTS content-->
+  <?php foreach ($output['posts'] as $k => $post) : ?>
+      <div class="question-content">
+        <div>
+          <?=$post['content']?>
+        </div>
+        <div class="question-content-author">
+          <a href="/member/profile/<?=$post['author']['uid']?>"><?=$post['author']['username']?></a>
+          at <?=$post['sendtime']?>
+        </div>
+      </div>
+  <?php endforeach ?>
+    </div>
 
 
 
 <?php endif ?>
 
+
+
+
+
+
+
+
+  </div> <!-- end maincanvas -->
 
 </div>
