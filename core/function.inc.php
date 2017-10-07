@@ -25,7 +25,7 @@ function printv($arr, $ret=false) {
 
 // render the HTML template
 // **** this function WILL TERMINATE the PHP EXECUTION ****
-function template($file, ...$extrafiles) {
+function template(...$files) {
   global $_SESSION;
   global $querycount;
   global $_GET;
@@ -35,6 +35,7 @@ function template($file, ...$extrafiles) {
   global $settings;
   global $member;
   global $redirect;
+  global $action;
 
   $_endtime = microtime(true);
   $_runtime = $_endtime - $_starttime;
@@ -42,8 +43,7 @@ function template($file, ...$extrafiles) {
 
   include_once(ROOT."templates/".$settings['template']."/header_html.htm");
   include_once(ROOT."templates/".$settings['template']."/header_visual.htm");
-  include_once(ROOT."templates/".$settings['template']."/".$file.".htm");
-  foreach ($extrafiles as $k => $v) {
+  foreach ($files as $k => $v) {
     include_once(ROOT."templates/".$settings['template']."/".$v.".htm");
   }
   include_once(ROOT."templates/".$settings['template']."/footer_visual.htm");

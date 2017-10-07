@@ -2,7 +2,7 @@
 <nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
   <div class="container">
     <a class="navbar-brand" href="/" title="<?=$settings['sitename']?>">
-      <img src="static/images/brand.png" width="30" height="30"  class="d-inline-block align-top"  alt="">
+      <img src="/static/images/brand.png" width="30" height="30"  class="d-inline-block align-top"  alt="">
       <?=$settings['sitename']?>
     </a>
 
@@ -14,16 +14,16 @@
       <!-- <div id="sf_navigation"> -->
       <ul class="navbar-nav">
         <li class="nav-item active">
-          <a class="nav-link" href="index.php">Questions <span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="/questions">Questions <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" href="jobs.php">Jobs</a>
+          <a class="nav-link disabled" href="/jobs">Jobs</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="tags.php">Tags</a>
+          <a class="nav-link" href="/tags">Tags</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="member.php">Users</a>
+          <a class="nav-link" href="/member">Users</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="https://github.com/gentlespoon/SegFault" target="_blank">GitHub</a>
@@ -43,12 +43,12 @@
 <?php else : ?>
       <ul class="navbar-nav">
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <?=$member['username']?>
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="member.php?act=modprofile">Edit Profile</a>
-            <a class="dropdown-item" href="member.php?act=logout">Log Out</a>
+            <a class="dropdown-item" href="/member/modprofile">Edit Profile</a>
+            <a class="dropdown-item" href="/member/logout">Log Out</a>
           </div>
         </li>
       </ul>

@@ -74,17 +74,17 @@ $(document).ready(function() {
 
 
   $("#register").click(function() {
-    window.location.replace("member.php?act=register");
+    window.location.href = "/member/register";
   });
 
   $("#login").click(function() {
-    window.location.replace("member.php?act=login");
+    window.location.href = "/member/login";
   });
 
 
 
   $(".tagBtn").click(function(){
-    window.location.replace("index.php?act=search&tag="+$(this).attr("tagid"));
+    window.location.href = "/questions/search?tag="+$(this).attr("tagid");
   });
 
 

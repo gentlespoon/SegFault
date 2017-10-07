@@ -1,13 +1,8 @@
 <?php
 
-define("ROOT", $_SERVER['DOCUMENT_ROOT']."/");
-require(ROOT."core/core.php");
+$output['title'] = "Member";
 
-
-
-$output['title'] = "Authentication";
-
-switch ($_GET['act']) {
+switch ($action) {
 
 
   case "register":

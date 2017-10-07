@@ -1,6 +1,6 @@
-<?php if ($_GET['act']=="register") : ?>
+<?php if ($action=="register") : ?>
   <div>
-    <form method="post" id="regForm" action="member.php?act=register">
+    <form method="post" id="regForm" action="/member/register">
       <div class="form-row">
         <div class="form-group col-md-6">
           <label for="regUsername" class="col-form-label"><?=$lang['username']?></label>
@@ -42,9 +42,9 @@
 
 
 
-<?php if ($_GET['act']=="login") : ?>
+<?php if ($action=="login") : ?>
   <div>
-    <form method="post" id="loginForm" action="member.php?act=login">
+    <form method="post" id="loginForm" action="/member/login">
       <div class="form-row">
         <div class="form-group col-md-12">
           <label for="loginUsername" class="col-form-label"><?=$lang['username']?></label>
@@ -73,9 +73,9 @@
 
 
 
-<?php if ($_GET['act']=="modprofile") : ?>
+<?php if ($action=="modprofile") : ?>
   <div>
-    <form method="POST" action="member.php?act=modprofile" id="modprofileForm">
+    <form method="POST" action="/member/modprofile" id="modprofileForm">
       <div class="form-row">
 <?php foreach($member['fields'] as $k => $v) : ?>
         <div class="form-group col-md-6">
@@ -104,7 +104,7 @@
 
 
 
-<?php if ($_GET['act']=="") : ?>
+<?php if ($action=="") : ?>
   <div>
     <table class="table table-responsive">
       <thead>
@@ -114,9 +114,11 @@
       </thead>
       <tbody>
 <?php foreach ($output['memberlist'] as $k => $v) : ?>
+        <tr>
 <?php foreach ($v as $k=>$c) :?>
           <td><?=$c?></td>
 <?php endforeach ?>
+        </tr>
 <?php endforeach ?>
       </tbody>
     </table>

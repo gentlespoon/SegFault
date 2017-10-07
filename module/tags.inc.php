@@ -1,13 +1,8 @@
 <?php
 
-define("ROOT", $_SERVER['DOCUMENT_ROOT']."/");
-require(ROOT."core/core.php");
-
-
-
 $output['title'] = "Tags";
 
-$tags = DB::query("SELECT * FROM tags");
+$tags = DB::query("SELECT * FROM forum_tags");
 foreach ($tags as $k => $v) {
   $output['tags'][$v['tagid']] = [
     "tagname" => $v['tagname'],
