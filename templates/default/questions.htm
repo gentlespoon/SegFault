@@ -9,7 +9,12 @@
       <div class="question-summary">
         <div class="row">
           <div class="col-8">
-            <a href="/questions/<?= $v['tid'] ?>"><h5><?= $v['title'] ?></h5></a>
+            <a href="/questions/viewthread/<?= $v['tid'] ?>"><h5><?= $v['title'] ?></h5></a>
+            <div>Tags:
+<?php foreach ($v['tags'] as $tag) : ?>
+              <a href="/questions/search?tag=<?=$tag?>"><span class="badge badge-dark"><?=$output['tags'][$tag]?></span></a>
+<?php endforeach ?>
+            </div>
             <p>
               <?=$v['content']?>
             </p>
