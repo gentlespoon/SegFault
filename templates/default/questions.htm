@@ -1,0 +1,39 @@
+<div class="row">
+
+  <div class="col-9" id="maincanvas">
+    <div class="question-summary">
+      <h3>Newest Questions</h3>
+    </div>
+    <div class="questions">
+<?php foreach ($output['threads'] as $k => $v) : ?>
+      <div class="question-summary">
+        <div class="row">
+          <div class="col-8">
+            <a href="/questions/<?= $v['tid'] ?>"><h5><?= $v['title'] ?></h5></a>
+            <p>
+              <?=$v['content']?>
+            </p>
+          </div>
+          <div class="col-4">
+            <div>
+              Asked by <a href="/member/profile/<?=$v['author']['uid']?>"><?= $v['author']['username'] ?></a><br />
+              at <?= $v['sendtime'] ?>
+            </div>
+<?php if (!empty($v['lastreply'])) : ?>
+            <div>
+              Last response by <a href="/member/profile/<?=$v['lastreply']['author']?>"><?=$v['lastreply']['username']?></a><br />
+              at <?=$v['lastreply']['sendtime']?>
+            </div>
+<?php endif ?>
+          </div>
+        </div>
+      </div>
+<?php endforeach ?>
+    </div>
+  </div>
+
+  <div class="col-3" id="sidebar" style="background-color: yellow;">
+    Wow this is a sidebar!
+  </div>
+
+</div>

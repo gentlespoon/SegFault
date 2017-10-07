@@ -6,18 +6,18 @@ $now = time();
 
 $querycount = 0;
 
-// mute all error before we initialize debug level
+// show ALL errors because we are developing.
 error_reporting(E_ALL);
 
-// start session before initializing debug level, so we can make debug level persist through the session.
+// start a session
 if(!isset($_SESSION)) {
   session_start();
 }
 
-// define document root
-if (!defined("ROOT")) {
-  define("ROOT", $_SERVER['DOCUMENT_ROOT']."/");
-}
+// // should be already defined in the entry index.php file
+// if (!defined("ROOT")) {
+//   define("ROOT", $_SERVER['DOCUMENT_ROOT']."/");
+// }
 
 // to measure runtime
 if (!isset($_starttime)) {
@@ -51,6 +51,18 @@ DB::$encoding = $config['db']['charset'];
 
 
 
+// initialize output
+if (!isset($output)) {
+  $output = [];
+}
+
+
+// initialize user session
+if (!array_key_exists("uid", $_SESSION)) {
+  $_SESSION['uid'] = 0;
+}
+
+
 // import functions
 require_once(ROOT."core/function.inc.php");
 
@@ -65,23 +77,6 @@ foreach($rs_settings as $k => $v) {
 }
 
 
-
-// initialize output
-if (!isset($output)) {
-  $output = [];
-}
-
-
-// init $_GET['act']
-if (!array_key_exists("act", $_GET)) {
-  $_GET['act'] = "";
-}
-
-
-// initialize user session
-if (!array_key_exists("uid", $_SESSION)) {
-  $_SESSION['uid'] = 0;
-}
 
 
 // fetch current userinfo

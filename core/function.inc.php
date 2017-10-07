@@ -57,7 +57,7 @@ function template(...$files) {
 function redirect($sec, $url) {
   global $redirect;
   $redirect = "<meta http-equiv='refresh' content='".$sec."; URL=".$url."'>";
-  template("alert");
+  template();
 }
 
 
@@ -92,15 +92,13 @@ function usernameCensor($string, $sensorlist) {
 
 
 // fetch userinfo
-function getUserInfo() {
+function getUserInfo($uid=NULL) {
   global $lang;
-  if ($_SESSION['uid'] > 0) {
-    // printv(DB::query("SELECT * FROM member WHERE uid=%i", $_SESSION['uid']));
-    $member = DB::query("SELECT * FROM member WHERE uid=%i", $_SESSION['uid'])[0];
-    return $member;
-  } else {
-    return ["username" => $lang['not-logged-in']];
+  if ($uid == NULL) {
+    $uid = $_SESSION['uid'];
   }
+  $userInfo = DB::query("SELECT member_groups.*, member.* FROM member_groups LEFT JOIN member ON member_groups.groupid = member.groupid WHERE member.uid=%i", $uid)[0];
+  return $userInfo;
 }
 
 

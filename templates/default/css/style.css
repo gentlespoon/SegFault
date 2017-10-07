@@ -35,3 +35,9 @@ html {
 .hidden {
   display: none;
 }
+
+
+.question-summary {
+  border-bottom: 1px solid #e4e6e8;
+  padding: 12px 0;
+}

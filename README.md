@@ -7,36 +7,23 @@ Currently hosted at [http://angda.info](http://angda.info), may be eventually mi
 
 ## Implemented
 
-### Member Authentication
-
-Sign up
-
-Sign in / Sign out
-
-Sign in history
-
-Failed login counter
-
-Auto ban user
-
-Auto ban IP
-
-Edit Profile
-
-### Question Related
-
-Tags
-
-Search by Tags
-
-
+* Router
+* Sign up
+* Sign in / Sign out
+* Sign in history
+* Failed login counter
+* Auto ban user with too many failed login attempts
+* Auto ban brute force IP
+* Edit Profile
+* Tags
+* Search for questions by tags
+* Question list
 
 ## TODO's
 
-Post new Questions
-
-Reply to existed questions
-
-Edit existed posts
-
-Search for questions
+* Post new questions
+* Reply to existed questions
+* Edit existed posts
+* Search for questions by keywords
+* View member profile
+* Search for questions by member
