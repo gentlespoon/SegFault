@@ -40,11 +40,11 @@ $(document).ready(function() {
     }
     if ($("#toggleShowRegPasswordBtn").attr("aria-pressed") == "false") {
       if ($("#regPassword").val() == $("#regPassword2").val()) {
-        $("#regPassword").val($.md5($("#regPassword").val()));
       } else {
         alert("Two passwords are different!");
         return false;
       }
+      $("#regPassword").val($.md5($("#regPassword").val()));
     }
   });
 
@@ -70,6 +70,7 @@ $(document).ready(function() {
       alert("Password cannot be blank");
       return false;
     }
+    $("#loginPassword").val($.md5($("#loginPassword").val()));
   });
 
 
