@@ -58,7 +58,11 @@
   </div>
 </nav>
 
+
+
+
 <div class="container" id="canvas">
-  <?php if (isset($output['alert']) and ($output['alert']!="")) : ?>
-    <div class="alert <?=$output['alerttype']?>"><?=$output['alert']?></div>
-  <?php endif ?>
+
+  <?php foreach ($output['alert'] as $k => $alert) : ?>
+    <div class="alert <?=$alert[1]?>"><?=$alert[0]?></div>
+  <?php endforeach ?>

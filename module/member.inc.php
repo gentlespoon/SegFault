@@ -15,8 +15,7 @@ switch ($action) {
           // if empty username
           if ($_POST['username'] == "") {
             // Invalid username with marks
-            $output['alerttype'] = "alert-danger";
-            $output['alert'] = $lang['blank-username'];
+            alert($lang['blank-username'], "alert-danger");
             break;
           }
 
@@ -26,8 +25,7 @@ switch ($action) {
           $unamecheck = usernameCensor($_POST['username'], $list);
           if ($unamecheck) {
             // Invalid username with marks
-            $output['alerttype'] = "alert-danger";
-            $output['alert'] = $lang['invalid-username-1'].$unamecheck.$lang['invalid-username-3'];
+            alert($lang['invalid-username-1'].$unamecheck.$lang['invalid-username-3'], "alert-danger");
             break;
           }
 
@@ -40,8 +38,7 @@ switch ($action) {
           $unamecheck = usernameCensor($_POST['username'], $list);
           if ($unamecheck) {
             // Invalid username with marks
-            $output['alerttype'] = "alert-danger";
-            $output['alert'] = $lang['invalid-username-2'].$unamecheck.$lang['invalid-username-3'];
+            alert($lang['invalid-username-2'].$unamecheck.$lang['invalid-username-3'], "alert-danger");
             break;
           }
 
@@ -49,8 +46,7 @@ switch ($action) {
           $r = DB::query("SELECT uid FROM member WHERE username=%s", $_POST['username']);
           if (!empty($r)) {
             // Username already registered
-            $output['alerttype'] = "alert-danger";
-            $output['alert'] = $lang['username-dup'];
+            alert($lang['username-dup'], "alert-danger");
             break;
           }
 
@@ -78,24 +74,20 @@ switch ($action) {
           // fetch userinfo
           $member = getUserInfo();
 
-
-          $output['alerttype'] = "alert-success";
-          $output['alert'] = $settings['registered-welcome'];
+          alert($settings['registered-welcome'], "alert-success");
 
           // redirect user to fill their profile
           redirect(5, "/member/modprofile");
 
         } else {
           // Already logged in, do not allow re-register
-          $output['alerttype'] = "alert-success";
-          $output['alert'] = $lang['logged-in'];
+          alert($lang['logged-in'], "alert-success");
           redirect(3, "/");
           break;
         }
       } else {
         // Some fields do not exist
-        $output['alerttype'] = "alert-danger";
-        $output['alert'] = $lang['empty-field'];
+        alert($lang['empty-field'], "alert-danger");
         break;
       }
     }
@@ -119,8 +111,7 @@ switch ($action) {
             if ($r[0]['count']>10) {
               if (($r[0]['lasttrial']+3600*24) > time()) {
                 // if temp ip ban still enforce
-                $output['alerttype'] = "alert-danger";
-                $output['alert'] = $lang['ip-ban-temp1'].(int)( (($r[0]['lasttrial']+3600*24) - time())/3600 ).$lang['ip-ban-temp2'];
+                alert($lang['ip-ban-temp1'].(int)( (($r[0]['lasttrial']+3600*24) - time())/3600 ).$lang['ip-ban-temp2'], "alert-danger");
                 break;
               }
             }
@@ -130,8 +121,7 @@ switch ($action) {
           $r = DB::query("SELECT uid, password, salt, failcount FROM member WHERE username= %s", $_POST['username']);
           if (empty($r)) {
             // User does not exist
-            $output['alerttype'] = "alert-danger";
-            $output['alert'] = $lang['username-dne'];
+            alert($lang['username-dne'], "alert-danger");
             break;
           }
 
@@ -143,8 +133,8 @@ switch ($action) {
           if (!empty($s)) {
             if (($s[0]['logindate']+$bantime)>time()) {
               // login failed penalty
-              $output['alerttype'] = "alert-danger";
-              $output['alert'] = $lang['fail-penalty1'].($s[0]['logindate']+$bantime-time())." (/".$bantime.")".$lang['fail-penalty2'];
+
+              alert($lang['fail-penalty1'].($s[0]['logindate']+$bantime-time())." (/".$bantime.")".$lang['fail-penalty2'], "alert-danger");
               break;
             }
           }
@@ -168,8 +158,7 @@ switch ($action) {
             if (empty($t)) {
               DB::query("INSERT INTO member_failedip (ip, lasttrial, count) VALUES (%s, %s, 0) ON DUPLICATE KEY UPDATE count=0, lasttrial=%s", $_SERVER['REMOTE_ADDR'], time(), time());
             }
-            $output['alerttype'] = "alert-success";
-            $output['alert'] = $lang['logged-in'];
+            alert($lang['logged-in'], "alert-success");
             redirect(3, "/");
 
 
@@ -192,20 +181,17 @@ switch ($action) {
               $attempted .= $_POST['username'];
               DB::query("UPDATE member_failedip SET lasttrial=".time().", count=count+1, attempted=%s WHERE ip=%s", $attempted, $_SERVER['REMOTE_ADDR']);
             }
-            $output['alerttype'] = "alert-danger";
-            $output['alert'] = $lang['invalid-cred'];
+            alert($lang['invalid-cred'], "alert-danger");
             break;
           }
         } else {
           // Already logged in, do not allow re-register
-          $output['alerttype'] = "alert-success";
-          $output['alert'] = $lang['logged-in'];
+          alert($lang['logged-in'], "alert-success");
           break;
         }
       } else {
         // Some fields do not exist
-        $output['alerttype'] = "alert-danger";
-        $output['alert'] = $lang['empty-field'];
+        alert($lang['empty-field'], "alert-danger");
         break;
       }
     }
@@ -230,11 +216,11 @@ switch ($action) {
             DB::query("UPDATE member SET ".$k."=%s WHERE uid=%i", $v, $_SESSION['uid']);
           } else {
             // $_POST contains illegal keys
-            die("??????");
+            error("????????? ILLEGAL KEY ???", "alert-danger");
           }
         }
-        $output['alerttype'] = "alert-success";
-        $output['alert'] = $lang['modprofile'].$lang['success'];
+
+        alert($lang['modprofile'].$lang['success'], "alert-success");
 
         // refresh userinfo
         $member = getUserInfo();
@@ -255,8 +241,7 @@ switch ($action) {
   case "logout":
     $_SESSION['username'] = "";
     $_SESSION['uid'] = 0;
-    $output['alerttype'] = "alert-success";
-    $output['alert'] = $lang['logged-out'];
+    alert($lang['logged-out'], "alert-success");
     break;
 
 

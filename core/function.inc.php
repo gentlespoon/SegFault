@@ -121,10 +121,30 @@ function toUserTime($time, $format=false) {
 
 
 // SQL, comma separated LIKE condition constructor
+// risk of SQL injection here !!!
+// find better solutions !!!
 function makeLikeCond($fieldname, $condition) {
   $condition =  $fieldname." LIKE '".$condition.",%' OR ".    // as first value
                 $fieldname." LIKE '%,".$condition.",%' OR ".  // as middle value
                 $fieldname." LIKE '%,".$condition."' OR ".    // as last value
                 $fieldname." LIKE '".$condition."'";          // as only value
   return $condition;
+}
+
+
+function alert($text, $type="alert-info") {
+  global $output;
+  array_push($output['alert'], [$text, $type]);
+}
+
+
+
+function error($text, $htmlcode=NULL) {
+  global $output;
+  if ($htmlcode!=NULL) {
+    header("HTTP/1.1 ".$htmlcode);
+  }
+  $output['title'] = "Error";
+  alert($text, "alert-danger");
+  template("error");
 }

@@ -37,6 +37,7 @@ $lang = [
   "invalid-username-3" => "')",
   "ip-ban-temp1" => "Your IP was banned for ",
   "ip-ban-temp2" => " hours",
+  "illegal-thread" => "Illegal thread id",
   "lastlogin" => "Last login: ",
   "link" => "Link",
   "logged-out" => "Signed Out",

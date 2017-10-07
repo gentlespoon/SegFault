@@ -14,8 +14,9 @@ html {
 }
 
 #sidebar {
-  background-color: #FFF8DC;
+  /*background-color: #FFF8DC;*/
   padding: 1em;
+  border-right: 1px solid #e4e6e8; 
 }
 
 .footer {

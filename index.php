@@ -36,9 +36,5 @@ if (isset($path[1])) {
 if (array_key_exists($path[0], $route)) {
   require_once("module/".$route[$path[0]].".inc.php");
 } else {
-  header("HTTP/1.1 404 Not Found");
-  $output['title'] = "404 Not Found";
-  $output['alert'] = "404 Not Found";
-  $output['alerttype'] = "alert-danger";
-  template();
+  error("404 Not Found", 404);
 }

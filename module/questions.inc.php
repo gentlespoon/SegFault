@@ -5,13 +5,28 @@
 $output['title'] = "Questions";
 
 
+$tags = DB::query("SELECT * FROM forum_tags");
+foreach ($tags as $k => $v) {
+  $output['tags'][$v['tagid']] = $v['tagname'];
+}
+
+
 $additionalSearchCondition = "";
 
 
 switch ($action) {
 
   case "viewthread":
-
+    if (!$member['viewthread']) {
+      error($lang['permission-denied']);
+    }
+    // printv($path);
+    if (is_numeric($path[2])) {
+      $output['thread'] = DB::query("SELECT * FROM forum_threads WHERE tid=%i", $path[2]);
+      $output['posts'] = DB::query("SELECT * FROM forum_posts WHERE tid=%i ORDER BY sendtime ASC", $path[2]);
+    } else {
+      error($lang['illegal-thread']);
+    }
     break;
 
 
@@ -28,27 +43,21 @@ switch ($action) {
     // do not break here!!! let it go to default branch and search!
 
   default:
+  // no action = list newest questions
     $action = "search";
 
-    // no action = list newest questions
-    if (!array_key_exists("viewforum", $member) ||
-        (array_key_exists("viewforum", $member) && $member['viewforum'] == 0)) {
-      $output['alerttype'] = "alert-danger";
-      $output['alert'] = $lang['permission-denied'];
+    if (!$member['viewforum']) {
+      $output['threads'] = [];
+      alert($lang['permission-denied'], "alert-danger");
       break;
     }
 
-    $tags = DB::query("SELECT * FROM forum_tags");
-    foreach ($tags as $k => $v) {
-      $output['tags'][$v['tagid']] = $v['tagname'];
-    }
 
 
     $threads = DB::query("SELECT forum_threads.* FROM forum_threads WHERE category=1 ".$additionalSearchCondition." ORDER BY sendtime DESC LIMIT 10");
     if (empty($threads)) {
-      $output['threads'] = $threads;
-      $output['alerttype'] = "alert-danger";
-      $output['alert'] = "0 questions found";
+      $output['threads'] = [];
+      alert("No Records", "alert-info");
       break;
     }
 
@@ -73,5 +82,14 @@ switch ($action) {
     break;
 
 }
+
+
+
+
+
+
+
+
+
 
 template("questions");

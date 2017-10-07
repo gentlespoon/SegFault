@@ -53,7 +53,10 @@ DB::$encoding = $config['db']['charset'];
 
 // initialize output
 if (!isset($output)) {
-  $output = [];
+  $output = [
+    "alert" => [],
+    "title" => "",
+  ];
 }
 
 

@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title><?php if ($output['title']) : echo $output['title']." - "; endif ?><?=$settings['sitename']?></title>
+  <title><?php if (array_key_exists("title", $output)) : echo $output['title']." - "; endif ?><?=$settings['sitename']?></title>
   <?=$redirect?>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="shortcut icon" href="/static/images/brand.png">
