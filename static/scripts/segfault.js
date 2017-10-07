@@ -108,6 +108,9 @@ $(document).ready(function() {
 
 
 
+  $("#newThread").click(function() {
+    window.location.href = "/questions/ask/advice?";
+  });
 
 
 

@@ -16,6 +16,20 @@ $additionalSearchCondition = "";
 
 switch ($action) {
 
+
+
+
+  case "ask":
+
+    break;
+
+
+
+
+
+
+
+
   case "viewthread":
     if (!$member['viewthread']) {
       error($lang['permission-denied']);
@@ -53,6 +67,11 @@ switch ($action) {
 
 
 
+
+
+
+
+
   case "search":
     if (array_key_exists("tag", $_GET)) {
       $additionalSearchCondition .= "AND (".makeLikeCond("tags", $_GET['tag']).")";
@@ -60,6 +79,10 @@ switch ($action) {
       $additionalSearchCondition .= "AND author=".$_GET['uid'];
     }
     // do not break here!!! let it go to default branch and search!
+
+
+
+
 
   default:
   // no action = list newest questions

@@ -60,8 +60,10 @@
 
 
 
-<?php elseif ($action == "viewthread") : ?>
 
+
+
+<?php elseif ($action == "viewthread") : ?>
 
     <!-- THREAD -->
 
@@ -106,6 +108,80 @@
       </div>
   <?php endforeach ?>
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?php elseif ($action == "ask") : ?>
+
+    <div>
+      <h3>How to Ask</h3>
+    </div>
+
+
+    <div class="content-page">
+      <p>Welcome to SegFault!</p>
+      <p>We’d love to help you, but the reality is that not every question gets answered. To <b>improve your chances</b>, here are some tips:</p>
+      <h5>Search, and research</h5>
+      <p>Have you <b><a href="/search">thoroughly searched for an answer</a></b> <i>before</i> asking your question? Sharing your research helps everyone. Tell us what you found (on this site or elsewhere) and why it didn’t meet your needs. This demonstrates that you’ve taken the time to try to help yourself, it saves us from reiterating obvious answers, and above all, it helps <i>you</i> get a more specific and relevant answer!</p>
+      <div class="ask-advice-search-container">
+        <input type="text" value="" class="search-title" autocomplete="off">
+        <input type="button" value="Search" class="search-button js-gps-track" data-gps-track="howtoask.searchclick">
+        <div id="question-suggestions"></div>
+        <p>Try our more <a href="/search" class="search-link js-gps-track" data-gps-track="howtoask.searchclick">advanced search</a>!</p>
+      </div>
+      <h5>Be on-topic</h5>
+      <p>Our community is defined by a <a href="/help/on-topic">specific set of topics in the help center</a>; please stick to those topics and <a href="/help/dont-ask">avoid asking for opinions or open-ended discussion</a>. If your question is about the site itself, ask on our <a href="https://meta.stackoverflow.com">meta-discussion site</a>. If you’re looking for a different topic, it might be covered on another <a href="https://stackexchange.com/sites">Stack Exchange site</a>.</p>
+      <h5>Be specific</h5>
+      <p>If you ask a vague question, you’ll get a vague answer. But if you give us details and context, we can provide a useful, relevant answer.</p>
+      <h5>Make it relevant to others</h5>
+      <p>We like to help as many people at a time as we can. Make it clear how your question is relevant to more people than just you, and more of us will be interested in your question and willing to look into it.</p>
+      <h5>Keep an open mind</h5>
+      <p>The answer to your question may not always be the one you wanted, but that doesn’t mean it is wrong. A conclusive answer isn’t always possible. When in doubt, ask people to cite their sources, or to explain how/where they learned something. Even if we don’t agree with you, or tell you exactly what you wanted to hear, remember: we’re just trying to help.</p>
+      <form id="theForm" method="post" action="/questions/ask">
+      <input type="checkbox" name="advised" id="advised" value="advised" class="js-gps-track" data-gps-track="howtoask.thanksclick">
+      <label for="advised">&nbsp; thanks, I will keep these tips in mind when asking</label>
+      <div style="text-align: right; width: 100%;" id="proceed">
+         <script>
+             $(function() {
+                 $("#proceed").append("<a onclick=\"$('#theForm').submit();\" style=\"color:#888\" class=\"js-gps-track\" data-gps-track=\"howtoask.proceedclick\">" + 'proceed' + " &raquo;</a>");
+             });
+             StackExchange.using("gps", function() {
+                 StackExchange.gps.track("howtoask.visit");
+             });
+         </script>
+         <noscript>
+             &lt;input type="submit" value="Proceed &amp;raquo;" class="js-gps-track" data-gps-track="howtoask.proceedclick"&gt;
+         </noscript>
+        <a onclick="$('#theForm').submit();" style="color:#888" class="js-gps-track" data-gps-track="howtoask.proceedclick">proceed »</a>
+      </div>
+      </form>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
