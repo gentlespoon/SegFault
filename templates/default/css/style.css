@@ -13,6 +13,11 @@ html {
   margin: 2em auto 8em auto;
 }
 
+#sidebar {
+  background-color: #FFF8DC;
+  padding: 1em;
+}
+
 .footer {
   position: absolute;
   bottom: 0;
@@ -44,5 +49,4 @@ html {
 
 
 .questions-author {
-  border-left: 1px solid #e4e6e8;
 }

@@ -22,9 +22,13 @@ switch ($action) {
   case "search":
     if (array_key_exists("tag", $_GET)) {
       $additionalSearchCondition .= "AND (".makeLikeCond("tags", $_GET['tag']).")";
+    } elseif (array_key_exists("uid", $_GET)) {
+      $additionalSearchCondition .= "AND author=".$_GET['uid'];
     }
+    // do not break here!!! let it go to default branch and search!
 
   default:
+    $action = "search";
 
     // no action = list newest questions
     if (!array_key_exists("viewforum", $member) ||
@@ -51,7 +55,7 @@ switch ($action) {
     foreach ($threads as $k => $v) {
       $threads[$k]['tags'] = explode(",", $threads[$k]['tags']);
       // if Question description is longer than $summaryCharLimit, cut it at the nearest whitespace and append ...
-      $summaryCharLimit = 270;
+      $summaryCharLimit = 300;
       if (strlen($threads[$k]['content'])>$summaryCharLimit) {
         $threads[$k]['content'] = substr($threads[$k]['content'], 0, strpos($threads[$k]['content'], " ", $summaryCharLimit-10))." ...";
       }
