@@ -38,8 +38,8 @@
       </form>
 
 <?php if ($_SESSION['uid'] == 0) : ?>
-      <button type="button" class="btn btn-light ml-sm-2" id="login">Sign In</button>
-      <button type="button" class="btn btn-secondary ml-sm-2" id="register">Sign Up</button>
+      <button type="button" class="btn btn-light ml-sm-2 loginBtn">Sign In</button>
+      <button type="button" class="btn btn-secondary ml-sm-2 registerBtn">Sign Up</button>
 <?php else : ?>
       <ul class="navbar-nav">
         <li class="nav-item dropdown">
@@ -58,7 +58,7 @@
   </div>
 </nav>
 
-<div class="container" id="canvas" title="#canvas">
+<div class="container" id="canvas">
   <?php if (isset($output['alert']) and ($output['alert']!="")) : ?>
     <div class="alert <?=$output['alerttype']?>"><?=$output['alert']?></div>
   <?php endif ?>

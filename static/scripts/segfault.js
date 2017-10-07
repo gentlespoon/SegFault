@@ -73,11 +73,11 @@ $(document).ready(function() {
   });
 
 
-  $("#register").click(function() {
+  $(".registerBtn").click(function() {
     window.location.href = "/member/register";
   });
 
-  $("#login").click(function() {
+  $(".loginBtn").click(function() {
     window.location.href = "/member/login";
   });
 

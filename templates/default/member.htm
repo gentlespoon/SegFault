@@ -10,18 +10,18 @@
           <label for="regEmail" class="col-form-label"><?=$lang['email']?></label>
           <input type="email" class="form-control" id="regEmail" name="email" placeholder="<?=$lang['email']?>">
         </div>
-        <div class="form-group col-md-11" id="passwordDiv">
+        <div class="form-group col-md-6" id="passwordDiv">
           <label for="regPassword" class="col-form-label"><?=$lang['password']?></label>
           <input type="text" class="form-control" id="regPassword" name="password" placeholder="<?=$lang['password']?>">
         </div>
-        <div class="form-group col-md-5 hidden" id="passwordDiv2">
+        <div class="form-group col-md-5" id="passwordDiv2">
           <label for="regPassword2" class="col-form-label"><?=$lang['password2']?></label>
           <input type="password" class="form-control" id="regPassword2" placeholder="<?=$lang['password2']?>">
         </div>
         <div class="form-group col-md-1" id="passwordDiv">
           <label for="toggleShowRegPasswordBtn" class="col-form-label"><?=$lang['visible']?></label>
-          <button type="button" class="btn btn-primary active" data-toggle="button" aria-pressed="true" autocomplete="off" id="toggleShowRegPasswordBtn" style="width: 100%;">
-            😲
+          <button type="button" class="btn btn-secondary" data-toggle="button" aria-pressed="false" autocomplete="off" id="toggleShowRegPasswordBtn" style="width: 100%;">
+            😑
           </button>
         </div>
       </div>
@@ -33,6 +33,9 @@
         </div>
       </div>
       <button type="submit" class="btn btn-primary" id="regFormSubmit"><?=$lang['register']?></button>
+      <span class="right">Already have an account?
+        <button type="button" class="btn btn-light ml-sm-2 loginBtn">Sign In</button>
+      </span>
     </form>
   </div>
 <?php endif ?>
@@ -62,6 +65,9 @@
         </div>
       </div>
       <button type="submit" class="btn btn-primary" id="loginFormSubmit"><?=$lang['login']?></button>
+      <span class="right">Haven't got an account?
+        <button type="button" class="btn btn-light ml-sm-2 registerBtn">Sign Up</button>
+      </span>
     </form>
   </div>
 <?php endif ?>

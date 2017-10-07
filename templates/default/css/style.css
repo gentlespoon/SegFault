@@ -41,3 +41,8 @@ html {
   border-bottom: 1px solid #e4e6e8;
   padding: 12px 0;
 }
+
+
+.questions-author {
+  border-left: 1px solid #e4e6e8;
+}
