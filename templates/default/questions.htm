@@ -84,6 +84,8 @@
           <?=$output['thread']['content']?>
         </div>
         <div class="question-content-author">
+          <a class="vote" tid="<?=$post['tid']?>" ud="upvote"><span class="badge badge-success">👍 <?=$output['thread']['upvote']?></span></a>
+          <a class="vote" tid="<?=$post['tid']?>" ud="downvote"><span class="badge badge-danger">👎 <?=$output['thread']['downvote']?></span></a>
           <a href="/member/profile/<?=$output['thread']['author']['uid']?>"><?=$output['thread']['author']['username']?></a>
           at <?=$output['thread']['sendtime']?>
         </div>
@@ -96,6 +98,8 @@
           <?=$post['content']?>
         </div>
         <div class="question-content-author">
+          <a class="vote" pid="<?=$post['pid']?>" ud="upvote"><span class="badge badge-success">👍 <?=$post['upvote']?></span></a>
+          <a class="vote" pid="<?=$post['pid']?>" ud="downvote"><span class="badge badge-danger">👎 <?=$post['downvote']?></span></a>
           <a href="/member/profile/<?=$post['author']['uid']?>"><?=$post['author']['username']?></a>
           at <?=$post['sendtime']?>
         </div>
