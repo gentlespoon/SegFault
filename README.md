@@ -1,8 +1,8 @@
 # SegFault
-SegFault Project for UCR CS180 Software Engineering
+SegFault Project for UCR CS180 Software Engineering.
 
 
-Currently hosted at [http://angda.info](http://angda.info), may be eventually migrated to another domain name.
+Currently hosted at [http://sfault.net](http://sfault.net).
 
 
 ## Implemented
@@ -23,6 +23,7 @@ Currently hosted at [http://angda.info](http://angda.info), may be eventually mi
 
 ## TODO's
 
+* Sort Tags by popularity
 * Post new questions
 * Reply to existed questions
 * Edit existed posts
