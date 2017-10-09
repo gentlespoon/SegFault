@@ -75,11 +75,11 @@ $(document).ready(function() {
 
 
   $(".registerBtn").click(function() {
-    window.location.href = "/member/register";
+    window.location.href = "/member/register?redirect="+redirectURI;
   });
 
   $(".loginBtn").click(function() {
-    window.location.href = "/member/login";
+    window.location.href = "/member/login?redirect="+redirectURI;
   });
 
 

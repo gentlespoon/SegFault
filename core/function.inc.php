@@ -29,6 +29,7 @@ function template(...$files) {
   global $_SESSION;
   global $querycount;
   global $_GET;
+  global $_POST;
   global $_starttime;
   global $output;
   global $lang;

@@ -2,6 +2,10 @@
 
 $output['title'] = "Member";
 
+if (!array_key_exists("redirect", $_GET)) {
+  $_GET['redirect'] = "/";
+}
+
 switch ($action) {
 
 
@@ -77,12 +81,15 @@ switch ($action) {
           alert($settings['registered-welcome'], "alert-success");
 
           // redirect user to fill their profile
-          redirect(5, "/member/modprofile");
+          // redirect(5, "/member/modprofile");
 
+          // redirect user to previous page
+          redirect(5, $_GET['redirect']);
+          
         } else {
           // Already logged in, do not allow re-register
           alert($lang['logged-in'], "alert-success");
-          redirect(3, "/");
+          redirect(3, $_GET['redirect']);
           break;
         }
       } else {
@@ -159,7 +166,7 @@ switch ($action) {
               DB::query("INSERT INTO member_failedip (ip, lasttrial, count) VALUES (%s, %s, 0) ON DUPLICATE KEY UPDATE count=0, lasttrial=%s", $_SERVER['REMOTE_ADDR'], time(), time());
             }
             alert($lang['logged-in'], "alert-success");
-            redirect(3, "/");
+            redirect(3, $_GET['redirect']);
 
 
           } else {
@@ -187,7 +194,7 @@ switch ($action) {
         } else {
           // Already logged in, do not allow re-register
           alert($lang['logged-in'], "alert-success");
-          break;
+          redirect(3, $_GET['redirect']);
         }
       } else {
         // Some fields do not exist

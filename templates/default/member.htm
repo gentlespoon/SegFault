@@ -1,6 +1,6 @@
 <?php if ($action=="register") : ?>
   <div>
-    <form method="post" id="regForm" action="/member/register">
+    <form method="post" id="regForm" action="/member/register?redirect=<?=$_GET['redirect']?>">
       <div class="form-row">
         <div class="form-group col-md-6">
           <label for="regUsername" class="col-form-label"><?=$lang['username']?></label>
@@ -47,7 +47,7 @@
 
 <?php if ($action=="login") : ?>
   <div>
-    <form method="post" id="loginForm" action="/member/login">
+    <form method="post" id="loginForm" action="/member/login?redirect=<?=$_GET['redirect']?>">
       <div class="form-row">
         <div class="form-group col-md-12">
           <label for="loginUsername" class="col-form-label"><?=$lang['username']?></label>
