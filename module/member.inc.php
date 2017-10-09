@@ -85,7 +85,7 @@ switch ($action) {
 
           // redirect user to previous page
           redirect(5, $_GET['redirect']);
-          
+
         } else {
           // Already logged in, do not allow re-register
           alert($lang['logged-in'], "alert-success");
@@ -279,6 +279,7 @@ switch ($action) {
       unset($output['memberlist'][$k]['groupid']);
       unset($output['memberlist'][$k]['failcount']);
     }
+    unset($output['memberlist'][0]);
 }
 
 template("member");

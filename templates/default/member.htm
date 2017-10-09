@@ -60,7 +60,7 @@
         <div class="form-group col-md-1" id="passwordDiv">
           <label for="toggleShowLoginPasswordBtn" class="col-form-label"><?=$lang['visible']?></label>
           <button type="button" class="btn btn-secondary" data-toggle="button" aria-pressed="false" autocomplete="off" id="toggleShowLoginPasswordBtn" style="width: 100%;">
-            😲
+            😑
           </button>
         </div>
       </div>
@@ -114,7 +114,7 @@
   <div>
     <table class="table table-responsive">
       <thead>
-<?php foreach ($output['memberlist'][0] as $k=>$v) :?>
+<?php foreach ($output['memberlist'][1] as $k=>$v) :?>
         <td><?=$lang[$k]?></td>
 <?php endforeach ?>
       </thead>
