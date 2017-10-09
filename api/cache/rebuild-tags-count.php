@@ -6,7 +6,7 @@ require(ROOT."core/core.php");
 
 $tags = DB::query("SELECT tagid FROM forum_tags");
 foreach ($tags as $k => $v) {
-  DB::query("UPDATE forum_tags SET count=(SELECT COUNT(*) FROM forum_threads WHERE ".makeLikeCond("tags", $v['tagid']).") WHERE tagid=".$v['tagid']);
+  DB::query("UPDATE forum_tags SET count=(SELECT COUNT(*) FROM forum_threads WHERE ".makeLikeCond("tags", $v['tagid'], ",").") WHERE tagid=".$v['tagid']);
 }
 
 echo "0";

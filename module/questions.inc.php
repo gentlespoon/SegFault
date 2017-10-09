@@ -73,15 +73,14 @@ switch ($action) {
 
 
   case "search":
-    if (array_key_exists("tag", $_GET)) {
-      $additionalSearchCondition .= "AND (".makeLikeCond("tags", $_GET['tag']).")";
+    if (array_key_exists("keyword", $_GET)) {
+      $additionalSearchCondition .= "AND ((".makeLikeCond("title", $_GET['keyword'], " ", true).") OR (".makeLikeCond("content", $_GET['keyword'], " ", true)."))";
+    } elseif (array_key_exists("tag", $_GET)) {
+      $additionalSearchCondition .= "AND (".makeLikeCond("tags", $_GET['tag'], ",").")";
     } elseif (array_key_exists("uid", $_GET)) {
       $additionalSearchCondition .= "AND author=".$_GET['uid'];
     }
     // do not break here!!! let it go to default branch and search!
-
-
-
 
 
   default:
@@ -95,8 +94,9 @@ switch ($action) {
     }
 
 
-
-    $threads = DB::query("SELECT forum_threads.* FROM forum_threads WHERE category=1 ".$additionalSearchCondition." ORDER BY sendtime DESC LIMIT 10");
+    $sql = "SELECT forum_threads.* FROM forum_threads WHERE category=1 ".$additionalSearchCondition." ORDER BY sendtime DESC LIMIT 10";
+    // echo $sql."<br />";
+    $threads = DB::query($sql);
     if (empty($threads)) {
       $output['threads'] = [];
       alert("No Records", "alert-info");

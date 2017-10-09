@@ -124,12 +124,15 @@ function toUserTime($time, $format=false) {
 // SQL, comma separated LIKE condition constructor
 // risk of SQL injection here !!!
 // find better solutions !!!
-function makeLikeCond($fieldname, $condition) {
-  $condition =  $fieldname." LIKE '".$condition.",%' OR ".    // as first value
-                $fieldname." LIKE '%,".$condition.",%' OR ".  // as middle value
-                $fieldname." LIKE '%,".$condition."' OR ".    // as last value
-                $fieldname." LIKE '".$condition."'";          // as only value
-  return $condition;
+function makeLikeCond($fieldname, $condition, $delim, $allowConcatenate=false) {
+  $conditionString =  $fieldname." LIKE '".$condition.$delim."%' OR ".          // as first value
+                $fieldname." LIKE '%".$delim.$condition.$delim."%' OR ".  // as middle value
+                $fieldname." LIKE '%".$delim.$condition."' OR ".          // as last value
+                $fieldname." LIKE '".$condition."'";                      // as only value
+  if ($allowConcatenate) {
+    $conditionString .= " OR ".$fieldname." LIKE '%".$condition."%'";                  // as part of a word, also next to a punctuation like "testing."
+  }
+  return $conditionString;
 }
 
 

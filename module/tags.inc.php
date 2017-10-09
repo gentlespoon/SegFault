@@ -11,31 +11,4 @@ foreach ($tags as $k => $v) {
   ];
 }
 
-echo $output[1];
-
-//
-// TODO:
-//
-// $tags => [
-//   tag0 => [
-//     tagname =>
-//     description =>
-//     count =>
-//   ],
-//   tag1 => [
-//     tagname =>
-//     description =>
-//     count =>
-//   ],
-//   tag2 => [
-//     tagname =>
-//     description =>
-//     count =>
-//   ],
-// ]
-//
-//
-// How do we sort $tags by count?
-//
-
 template("tags");
