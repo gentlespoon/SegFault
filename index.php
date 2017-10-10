@@ -8,12 +8,18 @@ define("ROOT", $_SERVER['DOCUMENT_ROOT']."/");
 require(ROOT."core/core.php");
 
 
-// path => filename
+// path => filename (/module/*.inc.php)
 $route = [
+  "jobs" => "jobs",
   "member" => "member",
   "questions" => "questions",
   "tags" => "tags",
 ];
+
+$output['activeNav'] = [];
+foreach($route as $k => $v) {
+  $output['activeNav'][$k] = "";
+}
 
 
 // /$1/$2/$3
@@ -34,6 +40,7 @@ if (isset($path[1])) {
 
 
 if (array_key_exists($path[0], $route)) {
+  $output['activeNav'][$path[0]] = "active";
   require_once("module/".$route[$path[0]].".inc.php");
 } else {
   error("404 Not Found", 404);

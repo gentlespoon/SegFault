@@ -61,6 +61,10 @@ a {
 }
 
 
+.voteBtn {
+  min-width: 5em;
+}
+
 .badge {
   font-size: 100%;
 }
@@ -79,4 +83,18 @@ a {
   position: absolute;
   padding: 12px 0;
   bottom: 0;
+}
+
+
+.removeTag {
+  height: 1em;
+  width: 1em;
+  display: inline-block;
+}
+.removeTag:hover {
+  background-color: red;
+}
+
+#tagsList > .badge {
+  margin-right: 5px;
 }

@@ -17,13 +17,30 @@ $additionalSearchCondition = "";
 switch ($action) {
 
 
-
-
-  case "ask":
-
+  case "advice":
     break;
 
 
+
+  case "asking":
+    if (!$member['newthread']) {
+      error($lang['permission-denied'], 403);
+    }
+    break;
+
+
+  case "asked":
+    if (!$member['newthread']) {
+      error($lang['permission-denied'], 403);
+    }
+    DB::query("INSERT INTO forum_threads (title, content, tags, sendtime, category, author) VALUES (%s, %s, %s, %i, %i, %i)", $_POST['title'], $_POST['editedHTML'], $_POST['tags'], $now, 1, $_SESSION['uid']);
+    // do not get the last inserted id
+    // since in high concurrency the last inserted id may be different
+    // use last tid from the author instead
+    $tid = DB::query("SELECT tid FROM forum_threads WHERE author=%i ORDER BY sendtime DESC", $_SESSION['uid'])[0]['tid'];
+    alert($lang['new-thread-success'], "alert-success");
+    redirect(5, "/questions/viewthread/".$tid);
+  break;
 
 
 
@@ -43,7 +60,8 @@ switch ($action) {
       $thread['tags'] = explode(",", $thread['tags']);
       $thread['author'] = getUserInfo($thread['author']);
       $thread['sendtime'] = toUserTime($thread['sendtime']);
-      $thread['content'] = htmlentities($thread['content']);
+      // $thread['content'] = htmlentities($thread['content']);
+      $thread['content'] = $thread['content'];
       $output['thread'] = $thread;
 
       // fetch posts
@@ -51,7 +69,8 @@ switch ($action) {
       foreach($posts as $k => $post) {
         $posts[$k]['author'] = getUserInfo($post['author']);
         $posts[$k]['sendtime'] = toUserTime($post['sendtime']);
-        $posts[$k]['content'] = htmlentities($post['content']);
+        // $posts[$k]['content'] = htmlentities($post['content']);
+        $posts[$k]['content'] = $post['content'];
       }
       $output['posts'] = $posts;
 
@@ -110,7 +129,7 @@ switch ($action) {
       if (strlen($threads[$k]['content'])>$summaryCharLimit) {
         $threads[$k]['content'] = substr($threads[$k]['content'], 0, strpos($threads[$k]['content'], " ", $summaryCharLimit-10))." ...";
       }
-      $threads[$k]['content'] = htmlentities($threads[$k]['content']);
+      $threads[$k]['content'] = strip_tags($threads[$k]['content']);
       $threads[$k]['author'] = getUserInfo($threads[$k]['author']);
       $threads[$k]['sendtime'] = toUserTime($v['sendtime']);
       // get last response info

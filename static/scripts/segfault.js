@@ -108,13 +108,47 @@ $(document).ready(function() {
 
 
 
-  $("#newThread").click(function() {
-    window.location.href = "/questions/ask/advice?";
+
+
+  $("#editorForm").submit(function() {
+    var tags = [];
+    $('#tagsList').children('span').each(function () {
+      tags.push(this.getAttribute("tagid"));
+    });
+    $("#hiddenTags").val(tags.join(","));
+    $("#hiddenEditedHTML").val($('#summernote').summernote('code'));
   });
 
+  $('#summernote').summernote({
+    height: 150,
+    tabsize: 4
+  });
 
-
-
-
+  $("#newThreadTagSearchbox").change(function() {
+      var tagName=$("#newThreadTagSearchbox").val();
+      var obj=$("#tagList").find("option[value='"+tagName+"']");
+      if (obj != null && obj.length>0) {
+        var tagid = obj.attr('tagid');
+        var tagName = obj.val();
+        if ($("#newThreadTag-"+tagid).length == 0) {
+          var $newTag = $("<span id='newThreadTag-" + tagid + "' tagid='" + tagid + "' class='badge badge-dark'>" + tagName +"<div class='removeTag' onclick='removeTag(" + tagid + ");'>×</div></span>");
+          $("#tagsList").append($newTag);
+          $("#newThreadTagSearchbox").val("");
+          return true;
+        }
+        $("#newThreadTagSearchbox").val("");
+        return false;
+      }
+      else {
+        alert("No maching tag");
+        return false;
+      }
+  });
 
 });
+
+function removeTag(tagid) {
+  var tag = document.getElementById("newThreadTag-"+tagid);
+  tag.outerHTML = "";
+  delete tag;
+}

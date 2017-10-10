@@ -13,16 +13,16 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <!-- <div id="sf_navigation"> -->
       <ul class="navbar-nav">
-        <li class="nav-item active">
+        <li class="nav-item <?=$output['activeNav']['questions']?>">
           <a class="nav-link" href="/questions">Questions <span class="sr-only">(current)</span></a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item <?=$output['activeNav']['jobs']?>">
           <a class="nav-link disabled" href="/jobs">Jobs</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item <?=$output['activeNav']['tags']?>">
           <a class="nav-link" href="/tags">Tags</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item <?=$output['activeNav']['member']?>">
           <a class="nav-link" href="/member">Users</a>
         </li>
         <li class="nav-item">
