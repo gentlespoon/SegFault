@@ -98,3 +98,7 @@ a {
 #tagsList > .badge {
   margin-right: 5px;
 }
+
+.loginBtn {
+  color: white !important;
+}

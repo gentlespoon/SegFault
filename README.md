@@ -24,10 +24,10 @@ Currently hosted at [http://sfault.net](http://sfault.net).
 * (10/07/2017 A.S.) Vote for a thread/post
 * (10/09/2017 A.S.) Sort Tags by popularity
 * (10/09/2017 A.S.) Search for questions by keywords
+* (10/10/2017 A.S.) Post new questions
+* (10/10/2017 A.S.) Reply to existed questions
 
 ## TODO's
 
-* Post new questions
-* Reply to existed questions
 * Edit existed posts
 * View member profile

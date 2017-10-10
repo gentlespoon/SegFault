@@ -18,11 +18,13 @@ switch ($action) {
 
 
   case "advice":
+    $output['title'] = "Before asking a question...";
     break;
 
 
 
   case "asking":
+  $output['title'] = "Ask your question";
     if (!$member['newthread']) {
       error($lang['permission-denied'], 403);
     }
@@ -38,11 +40,22 @@ switch ($action) {
     // since in high concurrency the last inserted id may be different
     // use last tid from the author instead
     $tid = DB::query("SELECT tid FROM forum_threads WHERE author=%i ORDER BY sendtime DESC", $_SESSION['uid'])[0]['tid'];
+    $output['title'] = "Asked Successfully";
     alert($lang['new-thread-success'], "alert-success");
     redirect(5, "/questions/viewthread/".$tid);
-  break;
+    break;
 
 
+
+  case "answer":
+      if (!$member['newpost']) {
+        error($lang['permission-denied'], 403);
+      }
+      DB::query("INSERT INTO forum_posts (tid, content, sendtime, author) VALUES (%i, %s, %i, %i)", $_POST['tid'], $_POST['editedHTML'], $now, $_SESSION['uid']);
+      $output['title'] = "Answered Successfully";
+      alert($lang['new-post-success'], "alert-success");
+      redirect(5, "/questions/viewthread/".$_POST['tid']);
+      break;
 
 
 

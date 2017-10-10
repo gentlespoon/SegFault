@@ -5,7 +5,7 @@
 <?php if ($_SESSION['uid']) : ?>
     <a href="/questions/advice" class="btn btn-primary ml-sm-2">Ask Question</a>
 <?php else : ?>
-    <a href="/member/login" class="btn btn-primary ml-sm-2 loginBtn">Ask Question</a>
+    <a class="btn btn-primary ml-sm-2 loginBtn">Ask Question</a>
 <?php endif ?>
   </div>
 
@@ -73,9 +73,9 @@
 
     <div class="question-summary">
       Tags:
-      <?php foreach ($output['thread']['tags'] as $k => $tag) : ?>
+<?php foreach ($output['thread']['tags'] as $k => $tag) : ?>
         <a href="/questions/search?tag=<?=$tag?>"><span class="badge badge-dark"><?=$output['tags'][$tag]?></span></a>
-      <?php endforeach ?>
+<?php endforeach ?>
     </div>
 
     <div class="questions">
@@ -98,7 +98,7 @@
       </div>
 
       <!-- POSTS content-->
-  <?php foreach ($output['posts'] as $k => $post) : ?>
+<?php foreach ($output['posts'] as $k => $post) : ?>
       <div class="question-content">
         <div>
           <?=$post['content']?>
@@ -114,11 +114,31 @@
           at <?=$post['sendtime']?>
         </div>
       </div>
-  <?php endforeach ?>
+<?php endforeach ?>
     </div>
 
+    <hr />
 
-
+    <div class="question-reply">
+<?php if ($member['uid']) : ?>
+  <?php if ($member['newpost']) : ?>
+      <form id="editorForm" method="post" action="/questions/answer">
+        <div class="form-group">
+          <div id="summernote"></div>
+          <input id="hiddenEditedHTML" type="hidden" name="editedHTML" value="" required/>
+        </div>
+        <div class="form-group">
+          <input type="hidden" name="tid" value="<?=$output['thread']['tid']?>">
+          <button class="btn btn-primary" type="submit"><?=$lang['new-post-send']?></button>
+        </div>
+      </form>
+  <?php else : ?>
+      You do not have permission to answer question.
+  <?php endif ?>
+<?php else : ?>
+        <a class="btn btn-primary ml-sm-2 loginBtn">Sign In</a> to answer this question.
+<?php endif ?>
+    </div>
 
 
 
