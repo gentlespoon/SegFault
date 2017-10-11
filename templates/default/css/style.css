@@ -16,7 +16,8 @@ a {
 }
 
 #canvas {
-  margin: 2em auto 8em auto;
+  margin-top: 2em;
+  padding-bottom: 12em;
 }
 
 #sidebar {
