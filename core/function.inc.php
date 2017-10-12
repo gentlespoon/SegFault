@@ -42,13 +42,11 @@ function template(...$files) {
   $_runtime = $_endtime - $_starttime;
   $_runtime = sprintf('%0.5f', $_runtime);
 
-  include_once(ROOT."templates/".$settings['template']."/header_html.htm");
-  include_once(ROOT."templates/".$settings['template']."/header_visual.htm");
+  include_once(ROOT."templates/".$settings['template']."/header.htm");
   foreach ($files as $k => $v) {
     include_once(ROOT."templates/".$settings['template']."/".$v.".htm");
   }
-  include_once(ROOT."templates/".$settings['template']."/footer_visual.htm");
-  include_once(ROOT."templates/".$settings['template']."/footer_html.htm");
+  include_once(ROOT."templates/".$settings['template']."/footer.htm");
   exit();
 }
 
