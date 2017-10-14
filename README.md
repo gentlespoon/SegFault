@@ -20,12 +20,13 @@ Currently hosted at [http://sfault.net](http://sfault.net).
 * (10/07/2017 A.S.) View question thread
 * (10/07/2017 A.S.) Tags
 * (10/07/2017 A.S.) Search for questions by tags
-* (10/07/2017 A.S.) Search for questions by member
+* (10/07/2017 A.S.) Search for questions by uid
 * (10/07/2017 A.S.) Vote for a thread/post
 * (10/09/2017 A.S.) Sort Tags by popularity
 * (10/09/2017 A.S.) Search for questions by keywords
 * (10/10/2017 A.S.) Post new questions
 * (10/10/2017 A.S.) Reply to existed questions
+* (10/13/2017 A.S.) Search for questions by username
 
 ## TODO's
 
