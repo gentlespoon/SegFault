@@ -69,13 +69,16 @@ switch ($action) {
     if (is_numeric($path[2])) {
 
       // fetch thread
-      $thread = DB::query("SELECT * FROM forum_threads WHERE tid=%i", $path[2])[0];
-      $thread['tags'] = explode(",", $thread['tags']);
-      $thread['author'] = getUserInfo($thread['author']);
-      $thread['sendtime'] = toUserTime($thread['sendtime']);
-      // $thread['content'] = htmlentities($thread['content']);
-      $thread['content'] = $thread['content'];
-      $output['thread'] = $thread;
+      $thread = DB::query("SELECT * FROM forum_threads WHERE tid=%i", $path[2]);
+      if (!empty($thread)) {
+        $thread = $thread[0];
+        $thread['tags'] = explode(",", $thread['tags']);
+        $thread['author'] = getUserInfo($thread['author']);
+        $thread['sendtime'] = toUserTime($thread['sendtime']);
+        // $thread['content'] = htmlentities($thread['content']);
+        // $thread['content'] = $thread['content'];
+        $output['thread'] = $thread;
+      }
 
       // fetch posts
       $posts = DB::query("SELECT * FROM forum_posts WHERE tid=%i ORDER BY sendtime ASC", $path[2]);
@@ -111,6 +114,12 @@ switch ($action) {
       $additionalSearchCondition .= "AND (".makeLikeCond("tags", $_GET['tag'], ",").")";
     } elseif (array_key_exists("uid", $_GET)) {
       $additionalSearchCondition .= "AND author=".$_GET['uid'];
+    } elseif (array_key_exists("username", $_GET)) {
+      $uid = DB::query("SELECT uid FROM member WHERE username=%s", $_GET['username']);
+      if (!empty($uid)) {
+        $uid = $uid[0]['uid'];
+      }
+      $additionalSearchCondition .= "AND author=".$uid;
     }
     // do not break here!!! let it go to default branch and search!
 
