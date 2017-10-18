@@ -1,6 +1,11 @@
-<div class="card-columns">
-<?php foreach ($output['tags'] as $tagid => $taginfo) : ?>
-
+<?php
+$row = 0;
+foreach ($output['tags'] as $tagid => $taginfo) :
+  $row++;
+  if ($row == 1) :
+?>
+    <div class="card-group">
+<?php endif ?>
     <div class="card">
       <div class="card-body">
         <div class="card-title">
@@ -11,5 +16,10 @@
         </p>
       </div>
     </div>
+<?php
+  if ($row == 3) :
+    $row = 0;
+?>
+  </div>
+<?php endif ?>
 <?php endforeach ?>
-</div>

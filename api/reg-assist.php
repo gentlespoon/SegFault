@@ -10,13 +10,9 @@ if (array_key_exists("username", $_GET)) {
     echo $lang['username-dup'];
   }
 } elseif (array_key_exists("email", $_GET)) {
-  // check for duplicate usernames
+  // check for duplicate email
   $r = DB::query("SELECT uid FROM member WHERE email=%s", $_GET['email']);
   if (!empty($r)) {
     echo $lang['email-dup'];
   }
 }
-
-
-
-// $sql = "UPDATE forum_tags SET count=(SELECT COUNT(*) FROM forum_threads WHERE forum_tags.tagid LIKE '%,forum_tags.tagid,%')";

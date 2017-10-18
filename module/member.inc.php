@@ -160,6 +160,7 @@ switch ($action) {
             DB::query("UPDATE member_loginhistory SET success=1, uid=%i WHERE id=%i", $_SESSION['uid'], $historyId);
             DB::query("UPDATE member SET lastattempt=%i, failcount=0 WHERE uid=%i", $now, $_SESSION['uid']);
             alert($lang['logged-in'], "alert-success");
+            redirect(3, $_GET['redirect']);
           }
 
         } else {
@@ -218,6 +219,7 @@ switch ($action) {
     $_SESSION['username'] = "";
     $_SESSION['uid'] = 0;
     alert($lang['logged-out'], "alert-success");
+    redirect(5, $_GET['redirect']);
     break;
 
 
