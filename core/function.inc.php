@@ -64,7 +64,7 @@ function redirect($sec, $url) {
 // Generate a random string
 // used for password salt
 function randomStr($length) {
-    $keyspace = '0123456789abcdefghijklmnopqrstuvwxyz';
+    $keyspace = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
     $str = '';
     $max = strlen($keyspace) - 1;
     for ($i = 0; $i < $length; ++$i) {
@@ -97,6 +97,8 @@ function getUserInfo($uid=NULL) {
     $uid = $_SESSION['uid'];
   }
   $userInfo = DB::query("SELECT member_groups.*, member.* FROM member_groups LEFT JOIN member ON member_groups.gid = member.gid WHERE member.uid=%i", $uid)[0];
+  unset($userInfo['password']);
+  unset($userInfo['salt']);
   return $userInfo;
 }
 

@@ -19,28 +19,71 @@ $(document).ready(function() {
     }
   });
 
+
+  $("#regEmail").blur(function() {
+    if ($("#regEmail").val()!=="") {
+      $.ajax({ url: "/api/reg-assist.php?email="+$("#regEmail").val(), method: "get"})
+      .done(function(data) {
+        if (data=="1") {
+          $("#regEmailHint").text("");
+          $("#regEmail").addClass("is-valid");
+        } else {
+          $("#regEmailHint").text(data);
+          $("#regEmail").addClass("is-invalid");
+        }
+      });
+    } else {
+      $("#regEmailHint").text("");
+      $("#regEmail").removeClass("is-invalid");
+      $("#regEmail").removeClass("is-valid");
+    }
+  });
+
   $("#regForm").submit(function() {
     if ($("#regUsername").val() === "") {
-      alert("Username cannot be blank");
+      $("#regUsername").addClass("is-invalid");
+      $("#regUsernameHint").text("Username cannot be blank");
       return false;
+    } else {
+      $("#regUsername").removeClass("is-invalid");
+      $("#regUsernameHint").text("");
     }
+
     if ($("#regEmail").val() === "") {
-      alert("Email cannot be blank");
+      $("#regEmail").addClass("is-invalid");
+      $("#regEmailHint").text("Email cannot be blank");
       return false;
+    } else {
+      $("#regEmail").removeClass("is-invalid");
+      $("#regEmailHint").text("");
     }
+
     if ($("#regPassword").val() === "") {
-      alert("Password cannot be blank");
+      $("#regPassword").addClass("is-invalid");
+      $("#regPasswordHint").text("Password cannot be blank");
       return false;
+    } else {
+      $("#regPassword").removeClass("is-invalid");
+      $("#regPasswordHint").text("");
     }
+
     if (!$("#agreeCheckbox").prop("checked")) {
-      alert("You must agree the terms to register");
+      $("#agreeCheckbox").addClass("is-invalid");
+      $("#regAgreementHint").text("You must agree the terms to register");
       return false;
+    } else {
+      $("#agreecheckbox").removeClass("is-invalid");
+      $("#regAgreementHint").text("");
     }
+
     if ($("#toggleShowRegPasswordBtn").attr("aria-pressed") === "false") {
-      if ($("#regPassword").val() === $("#regPassword2").val()) {
-      } else {
-        alert("Two passwords are different!");
+      if ($("#regPassword").val() !== $("#regPassword2").val()) {
+        $("#regPassword2").addClass("is-invalid");
+        $("#regPassword2Hint").text("Two passwords are different!");
         return false;
+      } else {
+        $("#regPassword2").removeClass("is-invalid");
+        $("#regPassword2Hint").text("");
       }
       $("#regPassword").val($.md5($("#regPassword").val()));
     }
@@ -141,15 +184,6 @@ $(document).ready(function() {
       }
   });
 
-  $("#regEmail").blur(function() {
-    if ($("#regEmail").val()!=="") {
-      $.ajax({ url: "/api/reg-assist.php?email="+$("#regEmail").val(), method: "get"})
-      .done(function(data) {
-        alert(data);
-      });
-
-    }
-  });
 
 });
 
