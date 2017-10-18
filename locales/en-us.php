@@ -50,6 +50,7 @@ $lang = [
   "manage" => "Manage",
   "member-stat" => "Member Stats",
   "modprofile" => "Edit Profile",
+  "modprofile-done" => "Profile Saved",
   "modpwd" => "Modify Password",
   "navigation" => "NavigationBar",
   "nav-category" => "Navigation Category",

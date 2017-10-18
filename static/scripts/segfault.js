@@ -159,8 +159,8 @@ $(document).ready(function() {
   });
 
   $('#summernote').summernote({
-    height: 400,
-    tabsize: 4
+    height: 200,
+    tabsize: 2
   });
 
   $("#newThreadTagSearchbox").change(function() {

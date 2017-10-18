@@ -127,7 +127,13 @@
 <?php foreach ($output['memberlist'] as $k => $v) : ?>
         <tr>
 <?php foreach ($v as $k=>$c) :?>
+<?php if ($k == "avatar") : ?>
+          <td><img class="avatar-32" src="<?=$c?>"></td>
+<?php elseif ($k == "username") : ?>
+          <td><a href="/member/profile/<?=$v['uid']?>"><?=$c?></a></td>
+<?php else : ?>
           <td><?=$c?></td>
+<?php endif ?>
 <?php endforeach ?>
         </tr>
 <?php endforeach ?>

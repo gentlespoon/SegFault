@@ -59,9 +59,10 @@
         <ul class="navbar-nav">
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <?=$member['username']?>
+              <img class="avatar-32" src="<?=$member['avatar']?>" title="<?=$member['username']?>" alt="<?=$member['username']?>">
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href="/member/profile"></a>
               <a class="dropdown-item" href="/member/modprofile">Edit Profile</a>
               <a class="dropdown-item" href="/member/logout">Log Out</a>
             </div>

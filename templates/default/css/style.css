@@ -103,3 +103,10 @@ a {
 .loginBtn {
   /*color: white !important;*/
 }
+
+.avatar-32 {
+  border-radius: .25rem;
+  border: 1px solid black;
+  width: 32px;
+  height: 32px;
+}

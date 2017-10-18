@@ -197,7 +197,7 @@ switch ($action) {
           }
         }
 
-        alert($lang['modprofile'].$lang['success'], "alert-success");
+        alert($lang['modprofile-done'], "alert-success");
 
         // refresh userinfo
         $member = getUserInfo();
@@ -206,6 +206,14 @@ switch ($action) {
       $member_fields = DB::query("SELECT * FROM member WHERE uid=%i",$_SESSION['uid']);
       $member['fields'] = $member_fields[0];
       unset($member['fields']['salt']);
+      unset($member['fields']['posts']);
+      unset($member['fields']['threads']);
+      unset($member['fields']['gid']);
+      unset($member['fields']['regdate']);
+      unset($member['fields']['lastlogin']);
+      unset($member['fields']['lastattempt']);
+      unset($member['fields']['failcount']);
+      unset($member['fields']['regip']);
       break;
 
 
@@ -249,6 +257,8 @@ switch ($action) {
       $output['memberlist'][$k]['usergroup'] = $uGroupInfo[$output['memberlist'][$k]['gid']];
       unset($output['memberlist'][$k]['gid']);
       unset($output['memberlist'][$k]['failcount']);
+      unset($output['memberlist'][$k]['lastattempt']);
+      unset($output['memberlist'][$k]['regip']);
     }
     unset($output['memberlist'][0]);
 }
