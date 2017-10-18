@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title><?php if (array_key_exists("title", $output)) : echo $output['title']." - "; endif ?><?=$settings['sitename']?></title>
+  <title><?php if (array_key_exists("title", $output)) : echo $output['title']." - "; endif ?><?=$config['sitename']?></title>
   <?=$redirect?>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="shortcut icon" href="/static/images/brand.png">
@@ -13,9 +13,9 @@
 
   <nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
     <div class="container">
-      <a class="navbar-brand" href="/" title="<?=$settings['sitename']?>">
+      <a class="navbar-brand" href="/" title="<?=$config['sitename']?>">
         <img src="/static/images/brand.png" width="30" height="30"  class="d-inline-block align-top"  alt="">
-        <?=$settings['sitename']?>
+        <?=$config['sitename']?>
       </a>
 
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

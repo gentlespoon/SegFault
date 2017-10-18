@@ -33,7 +33,7 @@ function template(...$files) {
   global $_starttime;
   global $output;
   global $lang;
-  global $settings;
+  global $config;
   global $member;
   global $redirect;
   global $action;
@@ -42,11 +42,11 @@ function template(...$files) {
   $_runtime = $_endtime - $_starttime;
   $_runtime = sprintf('%0.5f', $_runtime);
 
-  include_once(ROOT."templates/".$settings['template']."/header.htm");
+  include_once(ROOT."templates/".$config['template']."/header.htm");
   foreach ($files as $k => $v) {
-    include_once(ROOT."templates/".$settings['template']."/".$v.".htm");
+    include_once(ROOT."templates/".$config['template']."/".$v.".htm");
   }
-  include_once(ROOT."templates/".$settings['template']."/footer.htm");
+  include_once(ROOT."templates/".$config['template']."/footer.htm");
   exit();
 }
 
@@ -96,7 +96,7 @@ function getUserInfo($uid=NULL) {
   if ($uid == NULL) {
     $uid = $_SESSION['uid'];
   }
-  $userInfo = DB::query("SELECT member_groups.*, member.* FROM member_groups LEFT JOIN member ON member_groups.groupid = member.groupid WHERE member.uid=%i", $uid)[0];
+  $userInfo = DB::query("SELECT member_groups.*, member.* FROM member_groups LEFT JOIN member ON member_groups.gid = member.gid WHERE member.uid=%i", $uid)[0];
   return $userInfo;
 }
 

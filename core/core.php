@@ -73,11 +73,11 @@ require_once(ROOT."core/function.inc.php");
 
 
 // fetch site settings
-$rs_settings = DB::query("SELECT * FROM common_settings");
-$settings = [];
-foreach($rs_settings as $k => $v) {
-  $settings[$v['name']] = $v['data'];
-}
+// $rs_settings = DB::query("SELECT * FROM common_settings");
+// $settings = [];
+// foreach($rs_settings as $k => $v) {
+//   $settings[$v['name']] = $v['data'];
+// }
 
 
 

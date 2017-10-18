@@ -141,6 +141,16 @@ $(document).ready(function() {
       }
   });
 
+  $("#regEmail").blur(function() {
+    if ($("#regEmail").val()!=="") {
+      $.ajax({ url: "/api/reg-assist.php?email="+$("#regEmail").val(), method: "get"})
+      .done(function(data) {
+        alert(data);
+      });
+
+    }
+  });
+
 });
 
 function removeTag(tagid) {
