@@ -17,5 +17,6 @@ $config = [
     "iso"    => "Y/m/d H:i:s",
   ],
   "locale" => "en-us",
-
+  "template" => "default",
+  "sitename" => "Segmentation Fault",
 ];
