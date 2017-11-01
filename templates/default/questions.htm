@@ -46,7 +46,7 @@
             </div>
 <?php if (!empty($v['lastreply'])) : ?>
             <div class="col-lg-12 col-md-12 col-sm-6">
-              Last response by <a href="/member/profile/<?=$v['lastreply']['author']?>"><?=$v['lastreply']['username']?></a><br />
+              Last response by <a href="/member/profile/<?=$v['lastreply']['uid']?>"><?=$v['lastreply']['username']?></a><br />
               at <?=$v['lastreply']['sendtime']?>
             </div>
 <?php endif ?>
