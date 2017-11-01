@@ -5,7 +5,7 @@ echo "\n\n> mkdir ../tmp\n"
 mkdir ../tmp
 echo "================================\n"
 
-echo "\n\n> https://github.com/gentlespoon/SegFault/archive/master.zip -O ../tmp/SegFault.zip\n"
+echo "\n\n> wget https://github.com/gentlespoon/SegFault/archive/master.zip -O ../tmp/SegFault.zip\n"
 wget https://github.com/gentlespoon/SegFault/archive/master.zip -O ../tmp/SegFault.zip
 echo "================================\n"
 
