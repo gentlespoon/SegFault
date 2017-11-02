@@ -61,11 +61,18 @@
             <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <img class="avatar-32" src="<?=$member['avatar']?>" title="<?=$member['username']?>" alt="<?=$member['username']?>">
             </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="/member/profile"><?= $member['username'] ?></a>
-              <a class="dropdown-item" href="/member/modprofile">Edit Profile</a>
-              <a class="dropdown-item" href="/member/logout">Log Out</a>
-            </div>
+            <!-- <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"> -->
+              <ul class="dropdown-menu dropdown-menu-sw">
+                <li class="dropdown-item">Signed in as:<br /><a href="/member/profile"><?= $member['username'] ?></a></li>
+                <li class="dropdown-divider"></li>
+                <li class="dropdown-item"><a href="/member/modprofile">Your Profile</a></li>
+                <li class="dropdown-item"><a href="/questions/search/?uid=<?=$member['uid']?>">Your Questions</a></li>
+                <li class="dropdown-item"><a href="/questions/search/?uid=<?=$member['uid']?>">Your Answers</a></li>
+                <li class="dropdown-item"><a href="/faq">Help</a></li>
+                <li class="dropdown-divider"></li>
+                <li class="dropdown-item"><a href="/member/logout">Log Out</a></li>
+              </ul>
+            <!-- </div> -->
           </li>
         </ul>
   <?php endif ?>
