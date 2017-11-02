@@ -10,10 +10,14 @@ require(ROOT."core/core.php");
 
 // path => filename (/module/*.inc.php)
 $route = [
-  "jobs" => "jobs",
-  "member" => "member",
-  "questions" => "questions",
-  "tags" => "tags",
+  "jobs",
+  "member",
+  "questions",
+  "tags",
+];
+
+$api = [
+  "register",
 ];
 
 $output['activeNav'] = [];
@@ -33,15 +37,18 @@ if (array_key_exists("path", $_GET)) {
   $path = ["questions"]; // default page
 }
 
-$action = "";
-if (isset($path[1])) {
-  $action = $path[1];
-}
 
-
-if (array_key_exists($path[0], $route)) {
-  $output['activeNav'][$path[0]] = "active";
-  require_once("module/".$route[$path[0]].".inc.php");
+if ($path[0] == "api") {
+  require_once("api/".$path[1]."/".$path[2].".php");
 } else {
-  error("404 Not Found", 404);
+  if (in_array($path[0], $route)) {
+    $action = "";
+    if (isset($path[1])) {
+      $action = $path[1];
+    }
+    $output['activeNav'][$path[0]] = "active";
+    require_once("module/".$path[0].".inc.php");
+  } else {
+    error("404 Not Found", 404);
+  }
 }

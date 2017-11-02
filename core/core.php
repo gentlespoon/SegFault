@@ -3,6 +3,7 @@
 date_default_timezone_set("UTC");
 
 $now = time();
+$GLOBALS['now'] = $now;
 
 $querycount = 0;
 
@@ -49,6 +50,7 @@ DB::$password = $config['db']['password'];
 DB::$dbName = $config['db']['dbname'];
 DB::$encoding = $config['db']['charset'];
 
+require_once(ROOT."core/class/member.class.php");
 
 
 // initialize output
