@@ -48,7 +48,7 @@ switch ($action) {
           alert($lang['logged-in'], "alert-success");
           redirect(3, $_GET['redirect']);
         } else {
-          alert($reuslt['message'], "alert-danger");
+          alert($result['message'], "alert-danger");
           break;
         }
       }
