@@ -73,7 +73,7 @@ switch ($action) {
       if (!empty($thread)) {
         $thread = $thread[0];
         $thread['tags'] = explode(",", $thread['tags']);
-        $thread['author'] = getUserInfo($thread['uid']);
+        $thread['author'] = member::getUserInfo($thread['uid']);
         $thread['sendtime'] = toUserTime($thread['sendtime']);
         // $thread['content'] = htmlentities($thread['content']);
         // $thread['content'] = $thread['content'];
@@ -83,7 +83,7 @@ switch ($action) {
       // fetch posts
       $posts = DB::query("SELECT * FROM forum_posts WHERE tid=%i ORDER BY sendtime ASC", $path[2]);
       foreach($posts as $k => $post) {
-        $posts[$k]['author'] = getUserInfo($post['uid']);
+        $posts[$k]['author'] = member::getUserInfo($post['uid']);
         $posts[$k]['sendtime'] = toUserTime($post['sendtime']);
         // $posts[$k]['content'] = htmlentities($post['content']);
         $posts[$k]['content'] = $post['content'];
@@ -146,7 +146,7 @@ switch ($action) {
         $threads[$k]['content'] = substr($threads[$k]['content'], 0, strpos($threads[$k]['content'], " ", $summaryCharLimit-10))." ...";
       }
       $threads[$k]['content'] = strip_tags($threads[$k]['content']);
-      $threads[$k]['author'] = getUserInfo($threads[$k]['uid']);
+      $threads[$k]['author'] = member::getUserInfo($threads[$k]['uid']);
       $threads[$k]['sendtime'] = toUserTime($v['sendtime']);
       // get last response info
       $threads[$k]['lastreply'] = DB::query("SELECT member.username, forum_posts.sendtime, forum_posts.uid FROM forum_posts LEFT JOIN member ON member.uid=forum_posts.uid WHERE tid=%i ORDER BY sendtime DESC LIMIT 1", $threads[$k]['tid']);

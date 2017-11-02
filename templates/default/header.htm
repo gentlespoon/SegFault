@@ -62,7 +62,7 @@
               <img class="avatar-32" src="<?=$member['avatar']?>" title="<?=$member['username']?>" alt="<?=$member['username']?>">
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="/member/profile"></a>
+              <a class="dropdown-item" href="/member/profile"><?= $member['username'] ?></a>
               <a class="dropdown-item" href="/member/modprofile">Edit Profile</a>
               <a class="dropdown-item" href="/member/logout">Log Out</a>
             </div>

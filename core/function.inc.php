@@ -75,35 +75,6 @@ function randomStr($length) {
 
 
 
-// check to see if username contains any restricted words
-// returns the restricted word if the username contains any
-// returns false if the username is valid
-function usernameCensor($string, $sensorlist) {
-  foreach ($sensorlist as $k => $v) {
-    if (strpos($string, $v) !== false) {
-      return $v;
-    }
-  }
-  return false;
-}
-
-
-
-
-// fetch userinfo
-function getUserInfo($uid=NULL) {
-  global $lang;
-  if ($uid == NULL) {
-    $uid = $_SESSION['uid'];
-  }
-  $userInfo = DB::query("SELECT member_groups.*, member.* FROM member_groups LEFT JOIN member ON member_groups.gid = member.gid WHERE member.uid=%i", $uid)[0];
-  unset($userInfo['password']);
-  unset($userInfo['salt']);
-  return $userInfo;
-}
-
-
-
 // convert timestamp to human readable time
 // default time format is ISO
 function toUserTime($time, $format=false) {
@@ -151,4 +122,10 @@ function error($text, $htmlcode=NULL) {
   $output['title'] = "Error";
   alert($text, "alert-danger");
   template("error");
+}
+
+
+
+function api_write($result) {
+  echo json_encode( $result );
 }

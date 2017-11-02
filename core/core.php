@@ -38,6 +38,7 @@ else {
 // separate code and locales
 $locale = $config['locale'];
 require_once(ROOT."locales/".$locale.".php");
+$GLOBALS['lang'] = $lang;
 
 
 
@@ -85,4 +86,4 @@ require_once(ROOT."core/function.inc.php");
 
 
 // fetch current userinfo
-$member = getUserInfo();
+$member = member::getUserInfo();

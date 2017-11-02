@@ -10,174 +10,50 @@ switch ($action) {
 
 
   case "register":
+    if ($_SESSION['uid'] != 0) {
+      redirect(0, "/member/profile");
+    }
     $output['title'] = $lang['register'];
     if (array_key_exists("username", $_POST)) {
-      // when user submits a reg
-      // username will not be empty
-      // so we know it is submitting, instead of requesting for a reg form
+      // when user submits a reg, username will not be empty, so we know it is submitting, instead of requesting for a reg form
       if (array_key_exists("password", $_POST)) {
         // if both field exists
+        $result = member::register($_POST['username'], $_POST['password'], $_POST['email']);
+        if (!$result['success']) {
+          alert($result['message'], "alert-danger");
+          break;
+        }
+        member::login($_POST['username'], $_POST['password']);
+        $member = member::getUserInfo();
+        alert($lang['registered-welcome'], "alert-success");
+        // redirect user to previous page
+        redirect(5, $_GET['redirect']);
+      }
+    }
+    break;
 
-        if ($_SESSION['uid'] < 1) {
-          // If user is currently guest
 
-          // if empty username
-          if ($_POST['username'] == "") {
-            alert($lang['blank-username'], "alert-danger");
-            break;
-          }
 
-          // check for marks in username
-          $list = "!@#$%^&*{[(<>)]};'\" `~?/\\|=+";
-          $list = str_split($list);
-          if (usernameCensor($_POST['username'], $list)) {
-            alert($lang['invalid-username-1'].$unamecheck.$lang['invalid-username-3'], "alert-danger");
-            break;
-          }
-          // check for restricted usernames
-          $restrictedNames = DB::query("SELECT word FROM member_restrictname");
-          $list = [];
-          foreach ($restrictedNames as $k => $v) {
-            array_push($list, $v['word']);
-          }
-          if (usernameCensor($_POST['username'], $list)) {
-            alert($lang['invalid-username-2'].$unamecheck.$lang['invalid-username-3'], "alert-danger");
-            break;
-          }
-
-          // check for duplicate username
-          $existedUser = DB::query("SELECT uid FROM member WHERE username=%s", $_POST['username']);
-          if (!empty($existedUser)) {
-            alert($lang['username-dup'], "alert-danger");
-            break;
-          }
-          // check for duplicate email
-          $existedUser = DB::query("SELECT uid FROM member WHERE email=%s", $_POST['email']);
-          if (!empty($existedUser)) {
-            alert($lang['email-dup'], "alert-danger");
-            break;
-          }
-
-          // if both Username and Email OK
-
-          // generate password salt
-          $salt = randomStr(6);
-
-          // encrypt password
-          $encryptedPassword = md5($_POST['password'].$salt);
-
-          // register this new user
-          DB::query("INSERT INTO member (username, email, password, salt, regdate, lastattempt) VALUES ( %s , %s , %s , %s, %s, %s)", $_POST['username'], $_POST['email'], $encryptedPassword, $salt, $now, $now);
-
-          // log this user in
-          $member = getUserInfo();
-          $_SESSION['uid'] = DB::query("SELECT uid FROM member WHERE username=%s", $_POST['username'])[0]['uid'];
-          DB::query("INSERT INTO member_loginhistory (uid, username, login_date, success, ip) VALUES (%i, %s, %s, %s, %s)", $_SESSION['uid'], $member['username'], $now, 1, $_SERVER['REMOTE_ADDR']);
-          DB::query("UPDATE member SET lastlogin= %s, failcount=0 WHERE uid= %i", $now, $_SESSION['uid']);
-          alert($lang['registered-welcome'], "alert-success");
-
-          // redirect user to fill their profile
-          // redirect(5, "/member/modprofile");
-
-          // redirect user to previous page
-          redirect(5, $_GET['redirect']);
-
-        } else {
-          // Already logged in, do not allow re-register
+  case "login":
+    if ($_SESSION['uid'] != 0) {
+      redirect(0, "/member/profile");
+    }
+    $title = $lang['login'];
+    if (array_key_exists("username", $_POST)) {
+      // when user submits a login, username will not be empty, so we know it is submitting, instead of requesting for a login form
+      if (array_key_exists("password", $_POST)) {
+        $result = member::login($_POST['username'], $_POST['password']);
+        if ($result['success']) {
+          $member = member::getUserInfo();
           alert($lang['logged-in'], "alert-success");
           redirect(3, $_GET['redirect']);
+        } else {
+          alert($reuslt['message'], "alert-danger");
           break;
         }
       }
     }
     break;
-
-
-
-
-
-
-
-  case "login":
-    $title = $lang['login'];
-    if (array_key_exists("username", $_POST)) {
-      // when user submits a login
-      // username will not be empty
-      // so we know it is submitting, instead of requesting for a login form
-      if (array_key_exists("password", $_POST)) {
-        // if both field exists
-
-        if ($_SESSION['uid'] < 1) {
-          // If user is currently guest
-
-          // Check if this IP has recent failed login history
-          $failedCount = DB::query("SELECT count(*) FROM member_loginhistory WHERE IP=%s AND success=0 AND login_date>%i", $_SERVER['REMOTE_ADDR'], $now-3600*12)[0]['count(*)'];
-          if ($failedCount >= 10) {
-            // More than 10 failed attempts in 12 hours.
-            // Consider this IP trying to brute force.
-            // Temporarily ban this IP
-            alert($lang['too-many-failed-attempts'], "alert-danger");
-            break;
-          }
-
-          // Record this login attempt
-          DB::query("INSERT INTO member_loginhistory (username, login_date, ip) VALUES (%s, %i, %s)", $_POST['username'], $now, $_SERVER['REMOTE_ADDR']);
-          $historyId = DB::query("SELECT id FROM member_loginhistory WHERE username=%s AND ip=%s", $_POST['username'], $_SERVER['REMOTE_ADDR'])[0]['id'];
-
-          // Check if this username exists
-          $attemptedUser = DB::query("SELECT uid, password, salt, failcount, lastattempt FROM member WHERE username=%s", $_POST['username']);
-          if (empty($attemptedUser)) {
-            // if username does not exist
-            alert($lang['username-dne'], "alert-danger");
-            break;
-          }
-
-          // If the user exists
-          $attemptedUser = $attemptedUser[0];
-
-          // If this user has many failed attempts
-          // Give him a time penalty
-          if ($attemptedUser['failcount'] > 2) {
-            $bantime = 5*pow(2, $attemptedUser['failcount']);
-            if ($attemptedUser['lastattempt'] > $now-$bantime) {
-              // if this user still in failed attempt penalty
-              alert($lang['fail-penalty1'].($attemptedUser['lastattempt']+$bantime-$now)." (/".$bantime.")".$lang['fail-penalty2'], "alert-danger");
-              break;
-            }
-          }
-
-          // If the user exists and is not in penalty, encrypt the password and compare
-          $encryptedPassword = md5($_POST['password'].$attemptedUser['salt']);
-          if ($encryptedPassword != $attemptedUser['password']) {
-            // Incorrect Password
-            DB::query("UPDATE member SET lastattempt=%i, failcount=failcount+1 WHERE uid=%i", $now, $attemptedUser['uid']);
-            alert($lang['invalid-cred'], "alert-danger");
-
-          } else {
-            // Password OK
-            $_SESSION['uid'] = $attemptedUser['uid'];
-            $member = getUserInfo($_SESSION['uid']);
-            DB::query("UPDATE member_loginhistory SET success=1, uid=%i WHERE id=%i", $_SESSION['uid'], $historyId);
-            DB::query("UPDATE member SET lastattempt=%i, failcount=0 WHERE uid=%i", $now, $_SESSION['uid']);
-            alert($lang['logged-in'], "alert-success");
-            redirect(3, $_GET['redirect']);
-          }
-
-        } else {
-          // if user is not guest (already logged in)
-          alert($lang['logged-in'], "alert-success");
-          redirect(3, $_GET['redirect']);
-        }
-
-
-      }
-    }
-    break;
-
-
-
-
-
 
 
 
@@ -200,7 +76,7 @@ switch ($action) {
         alert($lang['modprofile-done'], "alert-success");
 
         // refresh userinfo
-        $member = getUserInfo();
+        $member = member::getUserInfo();
       }
       // select columns that are allowed to modify
       $member_fields = DB::query("SELECT * FROM member WHERE uid=%i",$_SESSION['uid']);
