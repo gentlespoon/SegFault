@@ -175,6 +175,11 @@ $(document).ready(function() {
     $('#tagsList').children('span').each(function () {
       tags.push(this.getAttribute("tagid"));
     });
+    if (tags.length == 0) {
+      $("#newThreadTagSearchboxHint").text("You must add at least one tag to your question.");
+      $("#newThreadTagSearchbox").addClass("is-invalid");
+      return false;
+    }
     $("#hiddenTags").val(tags.join(","));
     $("#hiddenEditedHTML").val($('#summernote').summernote('code'));
   });
@@ -183,6 +188,7 @@ $(document).ready(function() {
     height: 200,
     tabsize: 2
   });
+
 
   $("#newThreadTagSearchbox").change(function() {
       var tagName=$("#newThreadTagSearchbox").val();
@@ -194,6 +200,7 @@ $(document).ready(function() {
           var $newTag = $("<span id='newThreadTag-" + tagid + "' tagid='" + tagid + "' class='badge badge-dark'>" + tagName +"<div class='removeTag' onclick='removeTag(" + tagid + ");'>×</div></span>");
           $("#tagsList").append($newTag);
           $("#newThreadTagSearchbox").val("");
+          $("#newThreadTagSearchbox").removeClass("is-invalid");
           return true;
         }
         $("#newThreadTagSearchbox").val("");
