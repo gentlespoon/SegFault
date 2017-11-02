@@ -128,10 +128,11 @@ switch ($action) {
   // no action = list newest questions
     $action = "search";
 
-
-    $sql = "SELECT forum_threads.* FROM forum_threads WHERE visible<=%i ".$additionalSearchCondition." ORDER BY sendtime DESC LIMIT 10";
+    $offset = 0;
+    // this SQL can be unsafe!!
+    $sql = "SELECT forum_threads.* FROM forum_threads WHERE visible<=%i ".$additionalSearchCondition." ORDER BY sendtime DESC LIMIT 20 OFFSET %i";
     // echo $sql."<br />";
-    $threads = DB::query($sql, $member['gid']);
+    $threads = DB::query($sql, $member['gid'], $offset);
     if (empty($threads)) {
       $output['threads'] = [];
       alert("No Records", "alert-info");
