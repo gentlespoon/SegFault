@@ -22,20 +22,41 @@ $(document).ready(function() {
 
   $("#regEmail").blur(function() {
     if ($("#regEmail").val()!=="") {
-      $.ajax({ url: "/api/reg-assist.php?email="+$("#regEmail").val(), method: "get"})
+      $.ajax({ url: "/api/member/validate?email="+$("#regEmail").val(), method: "get"})
       .done(function(data) {
-        if (data=="1") {
+        var result = $.parseJSON(data);
+        if (result.success=="1") {
           $("#regEmailHint").text("");
-          $("#regEmail").addClass("is-valid");
+          $("#regEmail").addClass("is-valid").removeClass("is-invalid");
         } else {
-          $("#regEmailHint").text(data);
-          $("#regEmail").addClass("is-invalid");
+          $("#regEmailHint").text(result.message);
+          $("#regEmail").addClass("is-invalid").removeClass("is-valid");;
         }
       });
     } else {
       $("#regEmailHint").text("");
       $("#regEmail").removeClass("is-invalid");
       $("#regEmail").removeClass("is-valid");
+    }
+  });
+
+  $("#regUsername").blur(function() {
+    if ($("#regUsername").val()!=="") {
+      $.ajax({ url: "/api/member/validate?username="+$("#regUsername").val(), method: "get"})
+      .done(function(data) {
+        var result = $.parseJSON(data);
+        if (result.success=="1") {
+          $("#regUsernameHint").text("");
+          $("#regUsername").addClass("is-valid").removeClass("is-invalid");;
+        } else {
+          $("#regUsernameHint").text(result.message);
+          $("#regUsername").addClass("is-invalid").removeClass("is-valid");;;
+        }
+      });
+    } else {
+      $("#regUsernameHint").text("");
+      $("#regUsername").removeClass("is-invalid");
+      $("#regUsername").removeClass("is-valid");
     }
   });
 

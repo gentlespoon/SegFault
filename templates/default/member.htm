@@ -3,12 +3,12 @@
     <form method="post" id="regForm" action="/member/register?redirect=<?=$_GET['redirect']?>" autocomplete="off">
       <div class="form-row">
         <div class="form-group col-md-6">
-          <label for="regUsername" class="col-form-label"><?=$lang['username']?> (without AJAX)</label>
+          <label for="regUsername" class="col-form-label"><?=$lang['username']?></label>
           <input type="text" class="form-control" id="regUsername" name="username" placeholder="<?=$lang['username']?>" autocomplete="off">
           <small id="regUsernameHint" class="form-text text-danger"></small>
         </div>
         <div class="form-group col-md-6">
-          <label for="regEmail" class="col-form-label"><?=$lang['email']?> (with AJAX)</label>
+          <label for="regEmail" class="col-form-label"><?=$lang['email']?></label>
           <input type="email" class="form-control" id="regEmail" name="email" placeholder="<?=$lang['email']?>" autocomplete="off">
           <small id="regEmailHint" class="form-text text-danger"></small>
         </div>

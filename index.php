@@ -16,10 +16,6 @@ $route = [
   "tags",
 ];
 
-$api = [
-  "register",
-];
-
 $output['activeNav'] = [];
 foreach($route as $k => $v) {
   $output['activeNav'][$k] = "";
