@@ -1,3 +1,3 @@
 <?php
 
-echo shell_exec("./update.sh 2>&1");
+echo shell_exec("./cd ..; git pull 2>&1");
