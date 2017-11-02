@@ -4,7 +4,7 @@ foreach ($output['tags'] as $tagid => $taginfo) :
   $row++;
   if ($row == 1) :
 ?>
-    <div class="card-group">
+  <div class="card-group">
 <?php endif ?>
     <div class="card">
       <div class="card-body">
@@ -16,10 +16,12 @@ foreach ($output['tags'] as $tagid => $taginfo) :
         </p>
       </div>
     </div>
-<?php
-  if ($row == 3) :
-    $row = 0;
-?>
+<?php if ($row == 3) : $row = 0; ?>
   </div>
 <?php endif ?>
 <?php endforeach ?>
+
+
+<?php if ($row != 0) : ?>
+  </div>
+<?php endif ?>
