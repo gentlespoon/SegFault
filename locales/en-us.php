@@ -1,6 +1,7 @@
 <?php
 
-$lang = [
+$GLOBALS['lang'] = [
+  "already-signed-up" => "Already have an account?",
   "adminback" => "Admin-Backend",
   "adminfront" => "Admin-Frontend",
   "adminpanel" => "Admin Panel",
@@ -40,6 +41,7 @@ $lang = [
   "ip-ban-temp1" => "Your IP was banned for ",
   "ip-ban-temp2" => " hours",
   "illegal-thread" => "Illegal thread id",
+  "lastattempt" => "Last login attempt",
   "lastlogin" => "Last login: ",
   "link" => "Link",
   "logged-out" => "Signed Out",
@@ -71,13 +73,15 @@ $lang = [
   "new-post-success" => "Replied Successful",
   "new-post-title" => "Title",
   "not-logged-in" => "Not Logged In",
+  "no-account" => "Haven't got an account?",
   "password" => "Password",
   "password2" => "Retype Password",
   "permission-denied" => "Permission Denied",
+  "reg-agreement" => "By registering, you agree to the privacy policy and terms of service.",
   "regdate" => "Registration Date",
   "register" => "Sign Up",
   "regip" => "Registration IP",
-  "registered-welcome" => "Register-Welcome",
+  "registered-welcome" => "Welcome, [USERNAME]! You will now be redirected to the page before signing up.",
   "registered" => "Registered",
   "root-forum" => "Root Forum",
   "salt" => "Salt",

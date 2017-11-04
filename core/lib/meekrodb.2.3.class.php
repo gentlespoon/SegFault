@@ -596,8 +596,7 @@ class MeekroDB {
   protected function queryHelper() {
 
     // Add querycount for SegFault stats.
-    global $querycount;
-    $querycount++;
+    $GLOBALS['queryCount']++;
 
     $args = func_get_args();
     $type = array_shift($args);

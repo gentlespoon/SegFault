@@ -1,19 +1,17 @@
 <?php
 
-$output['title'] = "Member";
+$GLOBALS['output']['title'] = "Member";
 
 if (!array_key_exists("redirect", $_GET)) {
   $_GET['redirect'] = "/";
 }
 
 switch ($action) {
-
-
   case "register":
     if ($_SESSION['uid'] != 0) {
       redirect(0, "/member/profile");
     }
-    $output['title'] = $lang['register'];
+    $GLOBALS['output']['title'] = $GLOBALS['lang']['register'];
     if (array_key_exists("username", $_POST)) {
       // when user submits a reg, username will not be empty, so we know it is submitting, instead of requesting for a reg form
       if (array_key_exists("password", $_POST)) {
@@ -24,8 +22,8 @@ switch ($action) {
           break;
         }
         member::login($_POST['username'], $_POST['password']);
-        $member = member::getUserInfo();
-        alert($lang['registered-welcome'], "alert-success");
+        $GLOBALS['lang']['registered-welcome'] = str_replace("[USERNAME]", $GLOBALS['curUser']['username'], $GLOBALS['lang']['registered-welcome']);
+        alert($GLOBALS['lang']['registered-welcome'], "alert-success");
         // redirect user to previous page
         redirect(5, $_GET['redirect']);
       }
@@ -38,14 +36,13 @@ switch ($action) {
     if ($_SESSION['uid'] != 0) {
       redirect(0, "/member/profile");
     }
-    $title = $lang['login'];
+    $title = $GLOBALS['lang']['login'];
     if (array_key_exists("username", $_POST)) {
       // when user submits a login, username will not be empty, so we know it is submitting, instead of requesting for a login form
       if (array_key_exists("password", $_POST)) {
         $result = member::login($_POST['username'], $_POST['password']);
         if ($result['success']) {
-          $member = member::getUserInfo();
-          alert($lang['logged-in'], "alert-success");
+          alert($GLOBALS['lang']['logged-in'], "alert-success");
           redirect(3, $_GET['redirect']);
         } else {
           alert($result['message'], "alert-danger");
@@ -57,39 +54,22 @@ switch ($action) {
 
 
 
-    case "modprofile":
-      $title = $lang['modprofile'];
-      if (array_key_exists("username", $_POST)) {
-        // fetch table keys
-        $tablekeys = DB::query("SELECT * FROM member WHERE uid=%i", $_SESSION['uid']);
-        foreach ($_POST as $k => $v) {
-          // verify if key exists
-          if(array_key_exists($k, $tablekeys[0])) {
-            // if the key exists, then it is safe to update
-            DB::query("UPDATE member SET ".$k."=%s WHERE uid=%i", $v, $_SESSION['uid']);
-          } else {
-            // $_POST contains illegal keys
-            error("????????? ILLEGAL KEY ???", "alert-danger");
-          }
+    case "profile":
+      $title = $GLOBALS['lang']['modprofile'];
+      if (array_key_exists("submitmod", $_POST)) {
+        unset($_POST['submitmod']);
+        $result = member::modProfile($_POST);
+        if ($result['success']) {
+          alert($result['message'], "alert-success");
+        } else {
+          alert($result['message'], "alert-danger");
         }
-
-        alert($lang['modprofile-done'], "alert-success");
-
-        // refresh userinfo
-        $member = member::getUserInfo();
       }
       // select columns that are allowed to modify
-      $member_fields = DB::query("SELECT * FROM member WHERE uid=%i",$_SESSION['uid']);
-      $member['fields'] = $member_fields[0];
-      unset($member['fields']['salt']);
-      unset($member['fields']['posts']);
-      unset($member['fields']['threads']);
-      unset($member['fields']['gid']);
-      unset($member['fields']['regdate']);
-      unset($member['fields']['lastlogin']);
-      unset($member['fields']['lastattempt']);
-      unset($member['fields']['failcount']);
-      unset($member['fields']['regip']);
+      $GLOBALS['output']['fields'] = member::getFields($_GET['uid']);
+      if (empty($GLOBALS['output']['fields'])) {
+        alert("You do not have the permission to view other member's profile.", "alert-danger");
+      }
       break;
 
 
@@ -102,7 +82,7 @@ switch ($action) {
   case "logout":
     $_SESSION['username'] = "";
     $_SESSION['uid'] = 0;
-    alert($lang['logged-out'], "alert-success");
+    alert($GLOBALS['lang']['logged-out'], "alert-success");
     redirect(5, $_GET['redirect']);
     break;
 
@@ -123,20 +103,20 @@ switch ($action) {
     }
 
     // fetch member list
-    $output['memberlist'] = DB::query("SELECT * FROM member");
-    foreach ($output['memberlist'] as $k => $v) {
-      unset($output['memberlist'][$k]['password']);
-      unset($output['memberlist'][$k]['salt']);
-      unset($output['memberlist'][$k]['salt']);
-      $output['memberlist'][$k]['regdate'] = toUserTime($output['memberlist'][$k]['regdate']);
-      $output['memberlist'][$k]['lastlogin'] = toUserTime($output['memberlist'][$k]['lastlogin']);
-      $output['memberlist'][$k]['usergroup'] = $uGroupInfo[$output['memberlist'][$k]['gid']];
-      unset($output['memberlist'][$k]['gid']);
-      unset($output['memberlist'][$k]['failcount']);
-      unset($output['memberlist'][$k]['lastattempt']);
-      unset($output['memberlist'][$k]['regip']);
+    $GLOBALS['output']['memberlist'] = DB::query("SELECT * FROM member");
+    foreach ($GLOBALS['output']['memberlist'] as $k => $v) {
+      unset($GLOBALS['output']['memberlist'][$k]['password']);
+      unset($GLOBALS['output']['memberlist'][$k]['salt']);
+      unset($GLOBALS['output']['memberlist'][$k]['salt']);
+      $GLOBALS['output']['memberlist'][$k]['regdate'] = toUserTime($GLOBALS['output']['memberlist'][$k]['regdate']);
+      $GLOBALS['output']['memberlist'][$k]['lastlogin'] = toUserTime($GLOBALS['output']['memberlist'][$k]['lastlogin']);
+      $GLOBALS['output']['memberlist'][$k]['usergroup'] = $uGroupInfo[$GLOBALS['output']['memberlist'][$k]['gid']];
+      unset($GLOBALS['output']['memberlist'][$k]['gid']);
+      unset($GLOBALS['output']['memberlist'][$k]['failcount']);
+      unset($GLOBALS['output']['memberlist'][$k]['lastattempt']);
+      unset($GLOBALS['output']['memberlist'][$k]['regip']);
     }
-    unset($output['memberlist'][0]);
+    unset($GLOBALS['output']['memberlist'][0]);
 }
 
 template("member");

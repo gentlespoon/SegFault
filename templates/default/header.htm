@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title><?php if (array_key_exists("title", $output)) : echo $output['title']." - "; endif ?><?=$config['sitename']?></title>
+  <title><?php if (array_key_exists("title", $GLOBALS['output'])) : echo $GLOBALS['output']['title']." - "; endif ?><?=$config['sitename']?></title>
   <?=$redirect?>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="shortcut icon" href="/static/images/favicon.png">
@@ -15,7 +15,6 @@
     <div class="container">
       <a class="navbar-brand" href="/" title="<?=$config['sitename']?>">
         <img src="/static/images/brandingImage.png" width="270" height="30" class="d-inline-block align-top"  alt="<?=$config['sitename']?>" title="<?=$config['sitename']?>">
-
       </a>
 
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,16 +24,16 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <!-- <div id="sf_navigation"> -->
         <ul class="navbar-nav">
-          <li class="nav-item <?=$output['activeNav']['questions']?>">
+          <li class="nav-item <?=$GLOBALS['output']['activeNav']['questions']?>">
             <a class="nav-link" href="/questions">Questions <span class="sr-only">(current)</span></a>
           </li>
-          <li class="nav-item <?=$output['activeNav']['jobs']?>">
+          <li class="nav-item <?=$GLOBALS['output']['activeNav']['jobs']?>">
             <a class="nav-link disabled" href="/jobs">Jobs</a>
           </li>
-          <li class="nav-item <?=$output['activeNav']['tags']?>">
+          <li class="nav-item <?=$GLOBALS['output']['activeNav']['tags']?>">
             <a class="nav-link" href="/tags">Tags</a>
           </li>
-          <li class="nav-item <?=$output['activeNav']['member']?>">
+          <li class="nav-item <?=$GLOBALS['output']['activeNav']['member']?>">
             <a class="nav-link" href="/member">Users</a>
           </li>
           <li class="nav-item">
@@ -52,22 +51,22 @@
         <script>
         var redirectURI = "<?=$_SERVER['REQUEST_URI']?>";
         </script>
-  <?php if ($_SESSION['uid'] == 0) : ?>
+<?php if ($_SESSION['uid'] == 0) : ?>
         <button type="button" class="btn btn-light ml-sm-2 loginBtn">Sign In</button>
         <button type="button" class="btn btn-secondary ml-sm-2 registerBtn">Sign Up</button>
-  <?php else : ?>
+<?php else : ?>
         <ul class="navbar-nav">
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <img class="avatar-32" src="<?=$member['avatar']?>" title="<?=$member['username']?>" alt="<?=$member['username']?>">
+              <img class="avatar-32" src="<?=$GLOBALS['curUser']['avatar']?>" title="<?=$GLOBALS['curUser']['username']?>" alt="<?=$GLOBALS['curUser']['username']?>">
             </a>
             <!-- <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"> -->
               <ul class="dropdown-menu dropdown-menu-sw">
-                <li class="dropdown-item">Signed in as:<br /><a href="/member/profile"><?= $member['username'] ?></a></li>
+                <li class="dropdown-item">Signed in as:<br /><b><?= $GLOBALS['curUser']['username'] ?></b></li>
                 <li class="dropdown-divider"></li>
-                <li class="dropdown-item"><a href="/member/modprofile">Your Profile</a></li>
-                <li class="dropdown-item"><a href="/questions/search/?uid=<?=$member['uid']?>">Your Questions</a></li>
-                <li class="dropdown-item"><a href="/questions/search/?uid=<?=$member['uid']?>">Your Answers</a></li>
+                <li class="dropdown-item"><a href="/member/profile">Your Profile</a></li>
+                <li class="dropdown-item"><a href="/questions/search/?uid=<?=$GLOBALS['curUser']['uid']?>">Your Questions</a></li>
+                <li class="dropdown-item"><a href="/questions/search/?uid=<?=$GLOBALS['curUser']['uid']?>">Your Answers</a></li>
                 <li class="dropdown-item"><a href="/faq">Help</a></li>
                 <li class="dropdown-divider"></li>
                 <li class="dropdown-item"><a href="/member/logout">Log Out</a></li>
@@ -75,7 +74,7 @@
             <!-- </div> -->
           </li>
         </ul>
-  <?php endif ?>
+<?php endif ?>
 
       </div>
     </div>
@@ -86,6 +85,6 @@
 
   <div class="container" id="canvas">
 
-    <?php foreach ($output['alert'] as $k => $alert) : ?>
+<?php foreach ($GLOBALS['output']['alert'] as $k => $alert) : ?>
       <div class="alert <?=$alert[1]?>"><?=$alert[0]?></div>
-    <?php endforeach ?>
+<?php endforeach ?>

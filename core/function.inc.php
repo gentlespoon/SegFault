@@ -27,28 +27,22 @@ function printv($arr, $ret=false) {
 // **** this function WILL TERMINATE the PHP EXECUTION ****
 function template(...$files) {
   global $_SESSION;
-  global $querycount;
   global $_GET;
   global $_POST;
-  global $_starttime;
-  global $output;
-  global $lang;
   global $config;
-  global $member;
   global $redirect;
   global $action;
 
   $_endtime = microtime(true);
-  $_runtime = $_endtime - $_starttime;
+  $_runtime = $_endtime - $GLOBALS['startTime'];
   $_runtime = sprintf('%0.5f', $_runtime);
 
   include_once(ROOT."templates/".$config['template']."/header.htm");
-  foreach ($files as $k => $v) {
-    include_once(ROOT."templates/".$config['template']."/".$v.".htm");
-  }
+  foreach ($files as $k => $v) include_once(ROOT."templates/".$config['template']."/".$v.".htm");
   include_once(ROOT."templates/".$config['template']."/footer.htm");
   exit();
 }
+
 
 
 // redirect the user to another URL
@@ -107,19 +101,18 @@ function makeLikeCond($fieldname, $condition, $delim, $allowConcatenate=false) {
 }
 
 
+
 function alert($text, $type="alert-info") {
-  global $output;
-  array_push($output['alert'], [$text, $type]);
+  array_push($GLOBALS['output']['alert'], [$text, $type]);
 }
 
 
 
 function error($text, $htmlcode=NULL) {
-  global $output;
   if ($htmlcode!=NULL) {
     header("HTTP/1.1 ".$htmlcode);
   }
-  $output['title'] = "Error";
+  $GLOBALS['output']['title'] = "Error";
   alert($text, "alert-danger");
   template("error");
 }

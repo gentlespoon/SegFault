@@ -1,10 +1,12 @@
 html {
-  /*font-family: monospace !important;*/
   position: relative;
   min-height: 100%;
-  font-size: 0.86em;
+  font-size: 0.85em;
 }
 
+body {
+  font-family: Helvetica, Arial, sans-serif;
+}
 
 a {
   cursor: pointer;
@@ -109,4 +111,9 @@ a {
   border: 1px solid black;
   width: 32px;
   height: 32px;
+}
+
+
+.sidebarItem {
+
 }

@@ -3,27 +3,27 @@
     <form method="post" id="regForm" action="/member/register?redirect=<?=$_GET['redirect']?>" autocomplete="off">
       <div class="form-row">
         <div class="form-group col-md-6">
-          <label for="regUsername" class="col-form-label"><?=$lang['username']?></label>
-          <input type="text" class="form-control" id="regUsername" name="username" placeholder="<?=$lang['username']?>" autocomplete="off">
+          <label for="regUsername" class="col-form-label"><?=$GLOBALS['lang']['username']?></label>
+          <input type="text" class="form-control" id="regUsername" name="username" placeholder="<?=$GLOBALS['lang']['username']?>" autocomplete="off">
           <small id="regUsernameHint" class="form-text text-danger"></small>
         </div>
         <div class="form-group col-md-6">
-          <label for="regEmail" class="col-form-label"><?=$lang['email']?></label>
-          <input type="email" class="form-control" id="regEmail" name="email" placeholder="<?=$lang['email']?>" autocomplete="off">
+          <label for="regEmail" class="col-form-label"><?=$GLOBALS['lang']['email']?></label>
+          <input type="email" class="form-control" id="regEmail" name="email" placeholder="<?=$GLOBALS['lang']['email']?>" autocomplete="off">
           <small id="regEmailHint" class="form-text text-danger"></small>
         </div>
         <div class="form-group col-md-6" id="passwordDiv">
-          <label for="regPassword" class="col-form-label"><?=$lang['password']?></label>
-          <input type="password" class="form-control" id="regPassword" name="password" placeholder="<?=$lang['password']?>" autocomplete="off">
+          <label for="regPassword" class="col-form-label"><?=$GLOBALS['lang']['password']?></label>
+          <input type="password" class="form-control" id="regPassword" name="password" placeholder="<?=$GLOBALS['lang']['password']?>" autocomplete="off">
           <small id="regPasswordHint" class="form-text text-danger"></small>
         </div>
         <div class="form-group col-md-5" id="passwordDiv2">
-          <label for="regPassword2" class="col-form-label"><?=$lang['password2']?></label>
-          <input type="password" class="form-control" id="regPassword2" placeholder="<?=$lang['password2']?>" autocomplete="off">
+          <label for="regPassword2" class="col-form-label"><?=$GLOBALS['lang']['password2']?></label>
+          <input type="password" class="form-control" id="regPassword2" placeholder="<?=$GLOBALS['lang']['password2']?>" autocomplete="off">
           <small id="regPassword2Hint" class="form-text text-danger"></small>
         </div>
         <div class="form-group col-md-1" id="passwordDiv">
-          <label for="toggleShowRegPasswordBtn" class="col-form-label"><?=$lang['visible']?></label>
+          <label for="toggleShowRegPasswordBtn" class="col-form-label"><?=$GLOBALS['lang']['visible']?></label>
           <button type="button" class="btn btn-secondary" data-toggle="button" aria-pressed="false" autocomplete="off" id="toggleShowRegPasswordBtn" style="width: 100%;">
             😑
           </button>
@@ -32,13 +32,13 @@
       <div class="form-group">
         <div class="form-check">
           <label class="form-check-label">
-            <input class="form-check-input" type="checkbox" checked="checked" id="agreeCheckbox"> By registering, you agree to the privacy policy and terms of service.
+            <input class="form-check-input" type="checkbox" checked="checked" id="agreeCheckbox"><?=$GLOBALS['lang']['reg-agreement']?>
           </label>
           <small id="regAgreementHint" class="form-text text-danger"></small>
         </div>
       </div>
-      <button type="submit" class="btn btn-primary" id="regFormSubmit"><?=$lang['register']?></button>
-      <span class="right">Already have an account?
+      <button type="submit" class="btn btn-primary" id="regFormSubmit"><?=$GLOBALS['lang']['register']?></button>
+      <span class="right"><?=$GLOBALS['lang']['already-signed-up']?>
         <button type="button" class="btn btn-light ml-sm-2 loginBtn">Sign In</button>
       </span>
     </form>
@@ -55,22 +55,22 @@
     <form method="post" id="loginForm" action="/member/login?redirect=<?=$_GET['redirect']?>">
       <div class="form-row">
         <div class="form-group col-md-12">
-          <label for="loginUsername" class="col-form-label"><?=$lang['username']?></label>
-          <input type="text" class="form-control" id="loginUsername" name="username" placeholder="<?=$lang['username']?>">
+          <label for="loginUsername" class="col-form-label"><?=$GLOBALS['lang']['username']?></label>
+          <input type="text" class="form-control" id="loginUsername" name="username" placeholder="<?=$GLOBALS['lang']['username']?>">
         </div>
         <div class="form-group col-md-11" id="passwordDiv">
-          <label for="loginPassword" class="col-form-label"><?=$lang['password']?></label>
-          <input type="password" class="form-control" id="loginPassword" name="password" placeholder="<?=$lang['password']?>">
+          <label for="loginPassword" class="col-form-label"><?=$GLOBALS['lang']['password']?></label>
+          <input type="password" class="form-control" id="loginPassword" name="password" placeholder="<?=$GLOBALS['lang']['password']?>">
         </div>
         <div class="form-group col-md-1" id="passwordDiv">
-          <label for="toggleShowLoginPasswordBtn" class="col-form-label"><?=$lang['visible']?></label>
+          <label for="toggleShowLoginPasswordBtn" class="col-form-label"><?=$GLOBALS['lang']['visible']?></label>
           <button type="button" class="btn btn-secondary" data-toggle="button" aria-pressed="false" autocomplete="off" id="toggleShowLoginPasswordBtn" style="width: 100%;">
             😑
           </button>
         </div>
       </div>
-      <button type="submit" class="btn btn-primary" id="loginFormSubmit"><?=$lang['login']?></button>
-      <span class="right">Haven't got an account?
+      <button type="submit" class="btn btn-primary" id="loginFormSubmit"><?=$GLOBALS['lang']['login']?></button>
+      <span class="right"><?=$GLOBALS['lang']['no-account']?>
         <button type="button" class="btn btn-light ml-sm-2 registerBtn">Sign Up</button>
       </span>
     </form>
@@ -84,23 +84,40 @@
 
 
 
-<?php if ($action=="modprofile") : ?>
+<?php
+if ($action=="profile") :
+if (!empty($GLOBALS['output']['fields'])) :
+?>
   <div>
-    <form method="POST" action="/member/modprofile" id="modprofileForm">
+    <form method="POST" action="/member/profile?uid=<?=$_GET['uid']?>" id="modprofileForm">
       <div class="form-row">
-<?php foreach($member['fields'] as $k => $v) : ?>
-        <div class="form-group col-md-6">
-          <label for="modprofile<?=$k?>" class="col-form-label"><?=$lang[$k]?></label>
-          <input id="modprofile<?=$k?>" type="text" class="form-control" id="loginUsername" name="<?=$k?>" placeholder="<?=$lang[$k]?>" value="<?=$v?>">
+
+<?php foreach($GLOBALS['output']['fields'] as $k => $v) : ?>
+<?php if ($k != "editable") : ?>
+        <div class="form-group col-md-6 col-sm-12">
+          <label for="modprofile<?=$k?>" class="col-form-label"><?=$GLOBALS['lang'][$k]?></label>
+<?php if ($v['editable']) : ?>
+          <input id="modprofile<?=$k?>" type="text" class="form-control" name="<?=$k?>" placeholder="<?=$GLOBALS['lang'][$k]?>" value="<?=$v['value']?>">
+<?php else : ?>
+          <div id="modprofile<?=$k?>" class="form-control"><?=$v['value']?></div>
+<?php endif ?>
+<?php endif ?>
         </div>
 <?php endforeach ?>
       </div>
+<?php if ($GLOBALS['output']['fields']['editable']) : ?>
       <div class="form-group">
-        <input type="submit" class="btn btn-default btn-primary" value="<?=$lang['submit']?>">
+        <input type="hidden" value="<?=$_GET['uid']?>" name="uid" />
+        <input type="hidden" value="true" name="submitmod" />
+        <input type="submit" class="btn btn-default btn-primary" value="<?=$GLOBALS['lang']['submit']?>">
       </div>
+<?php endif ?>
     </form>
   </div>
-<?php endif ?>
+<?php
+endif;
+endif;
+?>
 
 
 
@@ -119,18 +136,18 @@
   <div>
     <table class="table table-responsive">
       <thead>
-<?php foreach ($output['memberlist'][1] as $k=>$v) :?>
-        <td><?=$lang[$k]?></td>
+<?php foreach ($GLOBALS['output']['memberlist'][1] as $k=>$v) :?>
+        <td><?=$GLOBALS['lang'][$k]?></td>
 <?php endforeach ?>
       </thead>
       <tbody>
-<?php foreach ($output['memberlist'] as $k => $v) : ?>
+<?php foreach ($GLOBALS['output']['memberlist'] as $k => $v) : ?>
         <tr>
 <?php foreach ($v as $k=>$c) :?>
 <?php if ($k == "avatar") : ?>
           <td><img class="avatar-32" src="<?=$c?>"></td>
 <?php elseif ($k == "username") : ?>
-          <td><a href="/member/profile/<?=$v['uid']?>"><?=$c?></a></td>
+          <td><a href="/member/profile?uid=<?=$v['uid']?>"><?=$c?></a></td>
 <?php else : ?>
           <td><?=$c?></td>
 <?php endif ?>

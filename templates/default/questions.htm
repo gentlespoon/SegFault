@@ -2,11 +2,25 @@
 
 
   <div class="col-sm-12 col-md-3 col-lg-2" id="sidebar">
+    <div class="sidebarItem">
 <?php if ($_SESSION['uid']) : ?>
-    <a href="/questions/advice" class="btn btn-primary ml-sm-2">Ask Question</a>
+      <a href="/questions/advice" class="btn btn-primary ml-sm-2">Ask Question</a>
 <?php else : ?>
-    <button class="btn btn-primary ml-sm-2 loginBtn">Ask Question</button>
+      <button class="btn btn-primary ml-sm-2 loginBtn">Ask Question</button>
 <?php endif ?>
+    </div>
+    <div class="sidebarItem">
+      <div class="" id="favTags">
+<?php foreach ($GLOBALS['output']['favTags'] as $v) : ?>
+        <div class"favTag">
+          <a href="/questions/search?tag=<?=$v['tagid']?>"><?=$v['tagname']?></a>
+        </div>
+<?php endforeach ?>
+      </div>
+      <div class="" id="favTagsMan">
+        <a href="/tags/manage">Manage your FavTags</a>
+      </div>
+    </div>
   </div>
 
 
@@ -25,14 +39,14 @@
       <h3>Questions</h3>
     </div>
     <div class="questions">
-<?php foreach ($output['threads'] as $k => $v) : ?>
+<?php foreach ($GLOBALS['output']['threads'] as $k => $v) : ?>
       <div class="question-summary">
         <div class="row">
           <div class="col-lg-8 col-md-7 col-sm-12">
             <a href="/questions/viewthread/<?= $v['tid'] ?>"><h5><?= $v['title'] ?></h5></a>
             <div>Tags:
 <?php foreach ($v['tags'] as $tag) : ?>
-              <a href="/questions/search?tag=<?=$tag?>"><span class="badge badge-dark"><?=$output['tags'][$tag]?></span></a>
+              <a href="/questions/search?tag=<?=$tag?>"><span class="badge badge-dark"><?=$GLOBALS['output']['tags'][$tag]?></span></a>
 <?php endforeach ?>
             </div>
             <p>
@@ -68,13 +82,13 @@
     <!-- THREAD -->
 
     <div class="question-summary">
-      <a href="/questions/viewthread/<?=$output['thread']['tid']?>"><h3><?=$output['thread']['title']?></h3></a>
+      <a href="/questions/viewthread/<?=$GLOBALS['output']['thread']['tid']?>"><h3><?=$GLOBALS['output']['thread']['title']?></h3></a>
     </div>
 
     <div class="question-summary">
       Tags:
-<?php foreach ($output['thread']['tags'] as $k => $tag) : ?>
-        <a href="/questions/search?tag=<?=$tag?>"><span class="badge badge-dark"><?=$output['tags'][$tag]?></span></a>
+<?php foreach ($GLOBALS['output']['thread']['tags'] as $k => $tag) : ?>
+        <a href="/questions/search?tag=<?=$tag?>"><span class="badge badge-dark"><?=$GLOBALS['output']['tags'][$tag]?></span></a>
 <?php endforeach ?>
     </div>
 
@@ -83,24 +97,24 @@
       <!-- THREAD content -->
       <div class="question-content">
         <div>
-          <?=$output['thread']['content']?>
+          <?=$GLOBALS['output']['thread']['content']?>
         </div>
         <div class="question-content-author">
-          <a class="vote" tid="<?=$output['thread']['tid']?>" pid="0" ud="upvote">
-            <div class="voteBtn badge badge-success">👍 <span id="upvote-<?=$output['thread']['tid']?>-0"><?=$output['thread']['upvote']?></span></div>
+          <a class="vote" tid="<?=$GLOBALS['output']['thread']['tid']?>" pid="0" ud="upvote">
+            <div class="voteBtn badge badge-success">👍 <span id="upvote-<?=$GLOBALS['output']['thread']['tid']?>-0"><?=$GLOBALS['output']['thread']['upvote']?></span></div>
           </a>
-          <a class="vote" tid="<?=$output['thread']['tid']?>" pid="0" ud="downvote">
-            <div class="voteBtn badge badge-danger">👎 <span id="downvote-<?=$output['thread']['tid']?>-0"><?=$output['thread']['downvote']?></span></div>
+          <a class="vote" tid="<?=$GLOBALS['output']['thread']['tid']?>" pid="0" ud="downvote">
+            <div class="voteBtn badge badge-danger">👎 <span id="downvote-<?=$GLOBALS['output']['thread']['tid']?>-0"><?=$GLOBALS['output']['thread']['downvote']?></span></div>
           </a>
-          <a href="/member/profile/<?=$output['thread']['author']['uid']?>">
-            <img class="avatar-32" src="<?=$output['thread']['author']['avatar']?>">
-            <?=$output['thread']['author']['username']?>
-          </a> at <?=$output['thread']['sendtime']?>
+          <a href="/member/profile/<?=$GLOBALS['output']['thread']['author']['uid']?>">
+            <img class="avatar-32" src="<?=$GLOBALS['output']['thread']['author']['avatar']?>">
+            <?=$GLOBALS['output']['thread']['author']['username']?>
+          </a> at <?=$GLOBALS['output']['thread']['sendtime']?>
         </div>
       </div>
 
       <!-- POSTS content-->
-<?php foreach ($output['posts'] as $k => $post) : ?>
+<?php foreach ($GLOBALS['output']['posts'] as $k => $post) : ?>
       <div class="question-content">
         <div>
           <?=$post['content']?>
@@ -124,16 +138,16 @@
     <hr />
 
     <div class="question-reply">
-<?php if ($member['uid']) : ?>
-  <?php if ($member['newpost']) : ?>
+<?php if ($GLOBALS['member']['uid']) : ?>
+  <?php if ($GLOBALS['member']['newpost']) : ?>
       <form id="editorForm" method="post" action="/questions/answer">
         <div class="form-group">
           <div id="summernote"></div>
           <input id="hiddenEditedHTML" type="hidden" name="editedHTML" value="" required/>
         </div>
         <div class="form-group">
-          <input type="hidden" name="tid" value="<?=$output['thread']['tid']?>">
-          <button class="btn btn-primary" type="submit"><?=$lang['new-post-send']?></button>
+          <input type="hidden" name="tid" value="<?=$GLOBALS['output']['thread']['tid']?>">
+          <button class="btn btn-primary" type="submit"><?=$GLOBALS['lang']['new-post-send']?></button>
         </div>
       </form>
   <?php else : ?>
@@ -223,7 +237,7 @@
         <input type="hidden" id="hiddenTags" name="tags" value="" />
         <input type="text" class="form-control" id="newThreadTagSearchbox" aria-describedby="newThreadTagSearchbox" placeholder="Search for tags" list="tagList">
         <datalist id="tagList">
-<?php foreach ($output['tags'] as $tagid => $tagName) : ?>
+<?php foreach ($GLOBALS['output']['tags'] as $tagid => $tagName) : ?>
           <option value="<?=$tagName?>" tagid="<?=$tagid?>" />
 <?php endforeach ?>
         </datalist>
@@ -236,7 +250,7 @@
       <input id="hiddenEditedHTML" type="hidden" name="editedHTML" value="" required/>
     </div>
     <div class="form-group">
-      <button class="btn btn-primary" type="submit"><?=$lang['new-thread-send']?></button>
+      <button class="btn btn-primary" type="submit"><?=$GLOBALS['lang']['new-thread-send']?></button>
     </div>
   </form>
 

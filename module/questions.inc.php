@@ -2,12 +2,12 @@
 
 // This is the questions page
 
-$output['title'] = "Questions";
+$GLOBALS['output']['title'] = "Questions";
 
 
 $tags = DB::query("SELECT * FROM forum_tags");
 foreach ($tags as $k => $v) {
-  $output['tags'][$v['tagid']] = $v['tagname'];
+  $GLOBALS['output']['tags'][$v['tagid']] = $v['tagname'];
 }
 
 
@@ -18,42 +18,42 @@ switch ($action) {
 
 
   case "advice":
-    $output['title'] = "Before asking a question...";
+    $GLOBALS['output']['title'] = "Before asking a question...";
     break;
 
 
 
   case "asking":
-  $output['title'] = "Ask your question";
-    if (!$member['newthread']) {
-      error($lang['permission-denied'], 403);
+  $GLOBALS['output']['title'] = "Ask your question";
+    if (!$GLOBALS['member']['newthread']) {
+      error($GLOBALS['lang']['permission-denied'], 403);
     }
     break;
 
 
   case "asked":
-    if (!$member['newthread']) {
-      error($lang['permission-denied'], 403);
+    if (!$GLOBALS['member']['newthread']) {
+      error($GLOBALS['lang']['permission-denied'], 403);
     }
     DB::query("INSERT INTO forum_threads (title, content, tags, sendtime, uid) VALUES (%s, %s, %s, %i, %i)", $_POST['title'], $_POST['editedHTML'], $_POST['tags'], $now, $_SESSION['uid']);
     // do not get the last inserted id
     // since in high concurrency the last inserted id may be different
     // use last tid from the uid instead
     $tid = DB::query("SELECT tid FROM forum_threads WHERE uid=%i ORDER BY sendtime DESC", $_SESSION['uid'])[0]['tid'];
-    $output['title'] = "Asked Successfully";
-    alert($lang['new-thread-success'], "alert-success");
+    $GLOBALS['output']['title'] = "Asked Successfully";
+    alert($GLOBALS['lang']['new-thread-success'], "alert-success");
     redirect(5, "/questions/viewthread/".$tid);
     break;
 
 
 
   case "answer":
-      if (!$member['newpost']) {
-        error($lang['permission-denied'], 403);
+      if (!$GLOBALS['member']['newpost']) {
+        error($GLOBALS['lang']['permission-denied'], 403);
       }
       DB::query("INSERT INTO forum_posts (tid, content, sendtime, uid) VALUES (%i, %s, %i, %i)", $_POST['tid'], $_POST['editedHTML'], $now, $_SESSION['uid']);
-      $output['title'] = "Answered Successfully";
-      alert($lang['new-post-success'], "alert-success");
+      $GLOBALS['output']['title'] = "Answered Successfully";
+      alert($GLOBALS['lang']['new-post-success'], "alert-success");
       redirect(5, "/questions/viewthread/".$_POST['tid']);
       break;
 
@@ -61,8 +61,8 @@ switch ($action) {
 
 
   case "viewthread":
-    if (!$member['viewthread']) {
-      error($lang['permission-denied']);
+    if (!$GLOBALS['member']['viewthread']) {
+      error($GLOBALS['lang']['permission-denied']);
     }
 
     // printv($path);
@@ -77,7 +77,7 @@ switch ($action) {
         $thread['sendtime'] = toUserTime($thread['sendtime']);
         // $thread['content'] = htmlentities($thread['content']);
         // $thread['content'] = $thread['content'];
-        $output['thread'] = $thread;
+        $GLOBALS['output']['thread'] = $thread;
       }
 
       // fetch posts
@@ -88,12 +88,12 @@ switch ($action) {
         // $posts[$k]['content'] = htmlentities($post['content']);
         $posts[$k]['content'] = $post['content'];
       }
-      $output['posts'] = $posts;
+      $GLOBALS['output']['posts'] = $posts;
 
-      // printv($output['thread']);
-      // printv($output['posts']);
+      // printv($GLOBALS['output']['thread']);
+      // printv($GLOBALS['output']['posts']);
     } else {
-      error($lang['illegal-thread']);
+      error($GLOBALS['lang']['illegal-thread']);
     }
     break;
 
@@ -132,9 +132,9 @@ switch ($action) {
     // this SQL can be unsafe!!
     $sql = "SELECT forum_threads.* FROM forum_threads WHERE visible<=%i ".$additionalSearchCondition." ORDER BY sendtime DESC LIMIT 20 OFFSET %i";
     // echo $sql."<br />";
-    $threads = DB::query($sql, $member['gid'], $offset);
+    $threads = DB::query($sql, $GLOBALS['member']['gid'], $offset);
     if (empty($threads)) {
-      $output['threads'] = [];
+      $GLOBALS['output']['threads'] = [];
       alert("No Records", "alert-info");
       break;
     }
@@ -157,7 +157,7 @@ switch ($action) {
       }
     }
 
-    $output['threads'] = $threads;
+    $GLOBALS['output']['threads'] = $threads;
     break;
 
 }

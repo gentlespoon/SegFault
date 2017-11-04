@@ -29,7 +29,7 @@ class member {
     $salt = randomStr(6);
     $encryptedPassword = md5($password.$salt);
 
-    DB::query("INSERT INTO member (username, email, password, salt, regdate) VALUES ( %s , %s , %s, %s, %s)", $username, $email, $encryptedPassword, $salt, $GLOBALS['now']);
+    DB::query("INSERT INTO member (username, email, password, salt, regdate, regip) VALUES ( %s , %s , %s, %s, %s, %s)", $username, $email, $encryptedPassword, $salt, $GLOBALS['now'], $_SERVER['REMOTE_ADDR']);
 
     return ["success" => 1, "message" => ""];
   }
@@ -118,31 +118,109 @@ class member {
       $_SESSION['uid'] = $attemptedUser['uid'];
       DB::query("UPDATE member_loginhistory SET success=1, uid=%i WHERE id=%i", $_SESSION['uid'], $historyId);
       DB::query("UPDATE member SET lastattempt=%i, failcount=0 WHERE uid=%i", $GLOBALS['now'], $_SESSION['uid']);
+      $GLOBALS['curUser'] = member::getUserInfo();
       return ["success" => 1, "message" => ""];
     }
   }
 
 
 
+  // modify user profile
+  public static function modProfile($data) {
+    $uid = $data['uid'];
+    unset($data['uid']);
+    $fields = member::getAvailableFields($uid);
+    // printv($fields);
+    foreach ($data as $key => $value) {
+      if (!$fields[$key]) {
+        return ["success" => 0, "message" => "Illegal DB field: ".$key];
+      }
+    }
+    DB::query("UPDATE member SET %? WHERE uid=%i", $data, $uid);
+    return ["success" => 1, "message" => $GLOBALS['lang']["modprofile-done"]];
+    $GLOBALS['curUser'] = getUserInfo();
+  }
+
+
+
+  public static function getFields($uid) {
+    $fields = member::getAvailableFields($uid);
+    if (!empty($fields)) {
+      $fieldStr = "";
+      $editable = 0;
+      foreach($fields as $k => $v) {
+        $fieldStr .= $k." ,";
+        $editable += $v;
+      }
+      $fieldStr = substr($fieldStr, 0, -2);
+      $result = DB::query("SELECT ".$fieldStr." FROM member WHERE uid=%i", $uid)[0];
+      if (!empty($result)) {
+        foreach ($result as $k => $v) {
+          $fields[$k] = ["value" => $v, "editable" => $fields[$k]];
+        }
+      }
+    }
+    $fields['editable'] = $editable;
+    return $fields;
+  }
+
+
+
+  private static function getAvailableFields($uid) {
+    // default permission for viewing curUser's own profile
+    // -1:--   0:r-   1:rw
+    $fields = [
+      'uid' => 0,
+      'avatar' => 1,
+      'username' => 1,
+      'email' => 1,
+      // 'password' => 1,
+      // 'salt' => 0,
+      'posts' => 0,
+      'threads' => 0,
+      'gid' => 0,
+      'regdate' => 0,
+      'lastlogin' => 0,
+      'lastattempt' => 0,
+      'failcount' => 0,
+      'regip' => 0,
+    ];
+    if ($uid != $_SESSION['uid']) {
+      if (!$GLOBALS['curUser']['viewprofile']) {
+        // if curUser is not allowed to view other's profile
+        return []; // return an empty array
+      }
+      if (!$GLOBALS['curUser']['modprofile']) {
+        // if not admin, do not allow modprofile, make all fields readonly
+        foreach ($fields as $k => $v) {
+          $fields[$k] = 0;
+        }
+      }
+    }
+    if ($GLOBALS['curUser']['admin']) {
+      $fields['gid'] = 1;
+    }
+    return $fields;
+  }
+
+
+
   // fetch userinfo
   public static function getUserInfo($uid=NULL) {
-    if ($uid == NULL) {
-      $uid = $_SESSION['uid'];
-    }
+    if ($uid == NULL) $uid = $_SESSION['uid'];
     $userInfo = DB::query("SELECT member_groups.*, member.* FROM member_groups LEFT JOIN member ON member_groups.gid = member.gid WHERE member.uid=%i", $uid)[0];
     return $userInfo;
   }
 
 
 
-
-
-
-
-
-
-
-
+  public static function getUGroupInfo() {
+    $groups = DB::query("SELECT * FROM member_groups");
+    foreach ($groups as $row) {
+      $groups[$row['gid']] = $row;
+    }
+    return $groups;
+  }
 
 
 
