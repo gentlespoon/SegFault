@@ -115,5 +115,16 @@ a {
 
 
 .sidebarItem {
+  margin-top: 1em;
+  padding: 0.5em;
+  background-color: #f8f9fa;
+}
 
+.favTag {
+  padding: 0.5em 1em;
+  margin: 0.2em;
+}
+
+.askBtn {
+  margin-left: 0 !important;
 }

@@ -2,23 +2,20 @@
 
 
   <div class="col-sm-12 col-md-3 col-lg-2" id="sidebar">
-    <div class="sidebarItem">
+    <!-- <div class="sidebarItem"> -->
 <?php if ($_SESSION['uid']) : ?>
-      <a href="/questions/advice" class="btn btn-primary ml-sm-2">Ask Question</a>
+    <a href="/questions/advice" class="btn btn-primary ml-sm-2 askBtn">Ask Question</a>
 <?php else : ?>
-      <button class="btn btn-primary ml-sm-2 loginBtn">Ask Question</button>
+    <button class="btn btn-primary ml-sm-2 loginBtn askBtn">Ask Question</button>
 <?php endif ?>
-    </div>
+    <!-- </div> -->
     <div class="sidebarItem">
       <div class="" id="favTags">
-<?php foreach ($GLOBALS['output']['favTags'] as $v) : ?>
-        <div class"favTag">
-          <a href="/questions/search?tag=<?=$v['tagid']?>"><?=$v['tagname']?></a>
-        </div>
-<?php endforeach ?>
+        <b>Your FavTags</b>
+<?php foreach ($GLOBALS['output']['favTags'] as $tagid => $taginfo) : ?><a href="/questions/search?tag=<?=$tagid?>"><span class="badge badge-dark favTag"><?=$taginfo['tagname']?></span></a><?php endforeach ?>
       </div>
       <div class="" id="favTagsMan">
-        <a href="/tags/manage">Manage your FavTags</a>
+        <a href="/tags/manage">Manage FavTags</a>
       </div>
     </div>
   </div>
@@ -46,7 +43,7 @@
             <a href="/questions/viewthread/<?= $v['tid'] ?>"><h5><?= $v['title'] ?></h5></a>
             <div>Tags:
 <?php foreach ($v['tags'] as $tag) : ?>
-              <a href="/questions/search?tag=<?=$tag?>"><span class="badge badge-dark"><?=$GLOBALS['output']['tags'][$tag]?></span></a>
+              <a href="/questions/search?tag=<?=$tag?>"><span class="badge badge-dark"><?=$GLOBALS['output']['tags'][$tag]['tagname']?></span></a>
 <?php endforeach ?>
             </div>
             <p>

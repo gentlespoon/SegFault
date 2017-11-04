@@ -5,11 +5,8 @@
 $GLOBALS['output']['title'] = "Questions";
 
 
-$tags = DB::query("SELECT * FROM forum_tags");
-foreach ($tags as $k => $v) {
-  $GLOBALS['output']['tags'][$v['tagid']] = $v['tagname'];
-}
-
+$GLOBALS['output']['tags'] = tags::getTags();
+$GLOBALS['output']['favTags'] = tags::getFavTags($_SESSION['uid']);
 
 $additionalSearchCondition = "";
 
@@ -132,7 +129,7 @@ switch ($action) {
     // this SQL can be unsafe!!
     $sql = "SELECT forum_threads.* FROM forum_threads WHERE visible<=%i ".$additionalSearchCondition." ORDER BY sendtime DESC LIMIT 20 OFFSET %i";
     // echo $sql."<br />";
-    $threads = DB::query($sql, $GLOBALS['member']['gid'], $offset);
+    $threads = DB::query($sql, $GLOBALS['curUser']['gid'], $offset);
     if (empty($threads)) {
       $GLOBALS['output']['threads'] = [];
       alert("No Records", "alert-info");
