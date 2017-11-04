@@ -85,8 +85,7 @@ switch ($action) {
 
 
   case "logout":
-    $_SESSION['username'] = "";
-    $_SESSION['uid'] = 0;
+    member::logout();
     alert($GLOBALS['lang']['logged-out'], "alert-success");
     redirect(5, $_GET['redirect']);
     break;

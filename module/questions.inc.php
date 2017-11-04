@@ -19,17 +19,17 @@ switch ($action) {
 
   case "asking":
   $GLOBALS['output']['title'] = "Ask your question";
-    if (!$GLOBALS['member']['newthread']) {
+    if (!$GLOBALS['curUser']['newthread']) {
       error($GLOBALS['lang']['permission-denied'], 403);
     }
     break;
 
 
   case "asked":
-    if (!$GLOBALS['member']['newthread']) {
+    if (!$GLOBALS['curUser']['newthread']) {
       error($GLOBALS['lang']['permission-denied'], 403);
     }
-    DB::query("INSERT INTO forum_threads (title, content, tags, sendtime, uid) VALUES (%s, %s, %s, %i, %i)", $_POST['title'], $_POST['editedHTML'], $_POST['tags'], $now, $_SESSION['uid']);
+    DB::query("INSERT INTO forum_threads (title, content, tags, sendtime, uid) VALUES (%s, %s, %s, %i, %i)", $_POST['title'], $_POST['editedHTML'], $_POST['tags'], $GLOBALS['now'], $_SESSION['uid']);
     // do not get the last inserted id
     // since in high concurrency the last inserted id may be different
     // use last tid from the uid instead
@@ -42,14 +42,17 @@ switch ($action) {
 
 
   case "answer":
-      if (!$GLOBALS['member']['newpost']) {
-        error($GLOBALS['lang']['permission-denied'], 403);
-      }
-      DB::query("INSERT INTO forum_posts (tid, content, sendtime, uid) VALUES (%i, %s, %i, %i)", $_POST['tid'], $_POST['editedHTML'], $now, $_SESSION['uid']);
-      $GLOBALS['output']['title'] = "Answered Successfully";
-      alert($GLOBALS['lang']['new-post-success'], "alert-success");
+    $result = forum::post($_POST['tid'], $_POST['editedHTML']);
+    printv($_POST);
+    if ($result['success']) {
+      $GLOBALS['output']['title'] = "Answered";
+      alert($result['message'], "alert-success");
       redirect(5, "/questions/viewthread/".$_POST['tid']);
-      break;
+    } else {
+      $GLOBALS['output']['title'] = "Error";
+      error($result['message'], "alert-danger");
+    }
+    break;
 
 
 
@@ -62,11 +65,11 @@ switch ($action) {
         $GLOBALS['output']['thread'] = $result['message'];
       } else {
         error($result['message'], "alert-danger");
-        break; // do not load posts
       }
 
       // fetch posts
-      $GLOBALS['output']['posts'] = forum::getPosts($tid, 0)['message'];
+      $GLOBALS['output']['posts'] = forum::getPosts($tid, 5, 0)['message'];
+      $GLOBALS['output']['postCount'] = forum::getPostCount($tid)['message'];
     break;
 
 
@@ -99,6 +102,8 @@ switch ($action) {
   default:
   // no action = list newest questions
     $action = "search";
+
+    $GLOBALS['output']['threadCount'] = DB::query("SELECT count(*) FROM forum_threads WHERE visible<=%i ".$additionalSearchCondition, $GLOBALS['curUser']['gid'])[0]["count(*)"];
 
     $offset = 0;
     // this SQL can be unsafe!!

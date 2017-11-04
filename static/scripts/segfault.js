@@ -149,28 +149,8 @@ $(document).ready(function() {
   });
 
 
-  $(".vote").click(function() {
-    var tid=$(this).attr("tid");
-    var pid=$(this).attr("pid");
-    $.ajax({ url: "/api/vote.php", data: { ud: $(this).attr("ud"), tid: tid, pid: pid}, method: "get"})
-      .done(function(data) {
-        var score = jQuery.parseJSON(data);
-        $("#upvote-"+tid+"-"+pid).text(score.upvote);
-        $("#downvote-"+tid+"-"+pid).text(score.downvote);
-      })
-      .fail(function(data) {
-        alert("Vote Failed!\n\n"+data);
-      })
-      .always(function(data) {
-        // alert( "complete\n" + data );
-      });
-  });
 
-
-
-
-
-  $("#editorForm").submit(function() {
+  $("#newThreadForm").submit(function() {
     var tags = [];
     $('#tagsList').children('span').each(function () {
       tags.push(this.getAttribute("tagid"));
@@ -181,6 +161,10 @@ $(document).ready(function() {
       return false;
     }
     $("#hiddenTags").val(tags.join(","));
+    $("#hiddenEditedHTML").val($('#summernote').summernote('code'));
+  });
+
+  $("#newPostForm").submit(function() {
     $("#hiddenEditedHTML").val($('#summernote').summernote('code'));
   });
 
@@ -213,6 +197,59 @@ $(document).ready(function() {
   });
 
 
+  $("#loadMoreAnswers").click(function() {
+    if (currentAnswers < totalAnswers) {
+      var url = "/api/forum/loadpost?tid="+tid+"&offset="+Number(currentAnswers);
+      // alert(url);
+      $.ajax({ url: url, method: "get"})
+      .done(function(data) {
+        // alert(data);
+        var result = $.parseJSON(data);
+        if (result.success=="1") {
+          var newPosts = 0;
+          result.message.forEach(function(item, index) {
+            newPosts++;
+            var obj = `
+            <div class="question-content">
+              <div>
+                `+item.content+`
+              </div>
+              <div class="question-content-author">
+                <a class="vote" onclick="vote('upvote', 0, `+item.pid+`)">
+                  <div class="voteBtn badge badge-success">👍 <span id="upvote-0-`+item.pid+`">`+item.upvote+`</span></div>
+                </a>
+                <a class="vote" onclick="vote('downvote', 0, `+item.pid+`)">
+                  <div class="voteBtn badge badge-danger">👎 <span id="downvote-0-`+item.pid+`">`+item.downvote+`</span></div>
+                </a>
+                <a href="/member/profile/`+item.author.uid+`">
+                  <img class="avatar-32" src="`+item.author.avatar+`">
+                  `+item.author.username+`
+                </a> at `+item.sendtime+`
+              </div>
+            </div>
+            `;
+            $("#question-answers").append(obj);
+          });
+          currentAnswers += newPosts;
+          $("#currentAnswers").text(currentAnswers);
+          if (currentAnswers >= totalAnswers) {
+            $("#loadMoreAnswers").text("All answers are displayed");
+          }
+        } else {
+          alert("Load answers failed: "+result.message);
+        }
+      });
+    }
+
+  });
+
+
+  $("#loadMoreQuestions").click(function() {
+  });
+
+
+
+
 });
 
 function removeTag(tagid) {
@@ -220,3 +257,19 @@ function removeTag(tagid) {
   tag.outerHTML = "";
   delete tag;
 }
+
+
+function vote(ud, tid, pid) {
+  $.ajax({ url: "/api/vote.php", data: { ud: ud, tid: tid, pid: pid}, method: "get"})
+    .done(function(data) {
+      var score = jQuery.parseJSON(data);
+      $("#upvote-"+tid+"-"+pid).text(score.upvote);
+      $("#downvote-"+tid+"-"+pid).text(score.downvote);
+    })
+    .fail(function(data) {
+      alert("Vote Failed!\n\n"+data);
+    })
+    .always(function(data) {
+      // alert( "complete\n" + data );
+    });
+};

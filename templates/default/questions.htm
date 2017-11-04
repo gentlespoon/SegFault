@@ -10,8 +10,8 @@
 <?php endif ?>
     <!-- </div> -->
     <div class="sidebarItem">
+      <b>Your FavTags</b>
       <div class="" id="favTags">
-        <b>Your FavTags</b>
 <?php foreach ($GLOBALS['output']['favTags'] as $tagid => $taginfo) : ?><a href="/questions/search?tag=<?=$tagid?>"><span class="badge badge-dark favTag"><?=$taginfo['tagname']?></span></a><?php endforeach ?>
       </div>
       <div class="" id="favTagsMan">
@@ -65,6 +65,16 @@
         </div>
       </div>
 <?php endforeach ?>
+<script>
+  var totalQuestions = <?=$GLOBALS['output']['threadCount']?>;
+  var currentQuestions = 20;
+  var searchConditions = "";
+</script>
+<?php if ($GLOBALS['output']['threadCount'] > 20) : ?>
+      <div>
+        <button id="loadMoreQuestions" type="button" class="col-md-12 btn btn-light">Load more questions (<span id="currentQuestions">20</span> of <?=$GLOBALS['output']['threadCount']?>)</button>
+      </div>
+<?php endif ?>
     </div>
 
 
@@ -93,10 +103,10 @@
           <?=$GLOBALS['output']['thread']['content']?>
         </div>
         <div class="question-content-author">
-          <a class="vote" tid="<?=$GLOBALS['output']['thread']['tid']?>" pid="0" ud="upvote">
+          <a class="vote"  onclick="vote('upvote', <?=$GLOBALS['output']['thread']['tid']?>, 0)">
             <div class="voteBtn badge badge-success">👍 <span id="upvote-<?=$GLOBALS['output']['thread']['tid']?>-0"><?=$GLOBALS['output']['thread']['upvote']?></span></div>
           </a>
-          <a class="vote" tid="<?=$GLOBALS['output']['thread']['tid']?>" pid="0" ud="downvote">
+          <a class="vote" onclick="vote('downvote', <?=$GLOBALS['output']['thread']['tid']?>, 0)">
             <div class="voteBtn badge badge-danger">👎 <span id="downvote-<?=$GLOBALS['output']['thread']['tid']?>-0"><?=$GLOBALS['output']['thread']['downvote']?></span></div>
           </a>
           <a href="/member/profile/<?=$GLOBALS['output']['thread']['author']['uid']?>">
@@ -107,25 +117,37 @@
       </div>
 
       <!-- POSTS content-->
+      <div id="question-answers">
 <?php foreach ($GLOBALS['output']['posts'] as $k => $post) : ?>
-      <div class="question-content">
-        <div>
-          <?=$post['content']?>
+        <div class="question-content">
+          <div>
+            <?=$post['content']?>
+          </div>
+          <div class="question-content-author">
+            <a class="vote" onclick="vote('upvote', 0, <?=$post['pid']?>)">
+              <div class="voteBtn badge badge-success">👍 <span id="upvote-0-<?=$post['pid']?>"><?=$post['upvote']?></span></div>
+            </a>
+            <a class="vote" onclick="vote('downvote', 0, <?=$post['pid']?>)">
+              <div class="voteBtn badge badge-danger">👎 <span id="downvote-0-<?=$post['pid']?>"><?=$post['downvote']?></span></div>
+            </a>
+            <a href="/member/profile/<?=$post['author']['uid']?>">
+              <img class="avatar-32" src="<?=$post['author']['avatar']?>">
+              <?=$post['author']['username']?>
+            </a> at <?=$post['sendtime']?>
+          </div>
         </div>
-        <div class="question-content-author">
-          <a class="vote" tid="0" pid="<?=$post['pid']?>" ud="upvote">
-            <div class="voteBtn badge badge-success">👍 <span id="upvote-0-<?=$post['pid']?>"><?=$post['upvote']?></span></div>
-          </a>
-          <a class="vote" tid="0" pid="<?=$post['pid']?>" ud="downvote">
-            <div class="voteBtn badge badge-danger">👎 <span id="downvote-0-<?=$post['pid']?>"><?=$post['downvote']?></span></div>
-          </a>
-          <a href="/member/profile/<?=$post['author']['uid']?>">
-            <img class="avatar-32" src="<?=$post['author']['avatar']?>">
-            <?=$post['author']['username']?>
-          </a> at <?=$post['sendtime']?>
-        </div>
-      </div>
 <?php endforeach ?>
+      </div>
+<script>
+  var totalAnswers = <?=$GLOBALS['output']['postCount']?>;
+  var currentAnswers = 5;
+  var tid = <?=$GLOBALS['output']['thread']['tid']?>;
+</script>
+<?php if ($GLOBALS['output']['postCount'] > 5) : ?>
+      <div>
+        <button id="loadMoreAnswers" type="button" class="col-md-12 btn btn-light">Load more answers (<span id="currentAnswers">5</span> of <?=$GLOBALS['output']['postCount']?>)</button>
+      </div>
+<?php endif ?>
     </div>
 
     <hr />
@@ -133,14 +155,14 @@
     <div class="question-reply">
 <?php if ($GLOBALS['curUser']['uid']) : ?>
   <?php if ($GLOBALS['curUser']['newpost']) : ?>
-      <form id="editorForm" method="post" action="/questions/answer">
+      <form id="newPostForm" method="post" action="/questions/answer">
         <div class="form-group">
           <div id="summernote"></div>
-          <input id="hiddenEditedHTML" type="hidden" name="editedHTML" value="" required/>
+          <input id="hiddenEditedHTML" type="hidden" name="editedHTML" value="" />
         </div>
         <div class="form-group">
           <input type="hidden" name="tid" value="<?=$GLOBALS['output']['thread']['tid']?>">
-          <button class="btn btn-primary" type="submit"><?=$GLOBALS['lang']['new-post-send']?></button>
+          <input class="btn btn-primary" type="submit" value="<?=$GLOBALS['lang']['new-post-send']?>">
         </div>
       </form>
   <?php else : ?>
@@ -215,7 +237,7 @@
 
 <?php elseif ($action == "asking") : ?>
 
-  <form id="editorForm" method="post" action="/questions/asked">
+  <form id="newThreadForm" method="post" action="/questions/asked">
     <div class="form-row">
       <div class="form-group col-sm-12 col-md-6">
         <label for="newThreadTitle">Title</label>

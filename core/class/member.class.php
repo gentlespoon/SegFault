@@ -125,6 +125,14 @@ class member {
 
 
 
+  public static function logout() {
+    $_SESSION['username'] = "";
+    $_SESSION['uid'] = 0;
+    $GLOBALS['curUser'] = member::getUserInfo();
+  }
+
+
+
   // modify user profile
   public static function modProfile($data) {
     $uid = $data['uid'];

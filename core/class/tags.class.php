@@ -19,6 +19,7 @@ class tags {
 
   public static function getFavTags($uid) {
     $result = DB::query("SELECT forum_favtags.tagid, forum_tags.* FROM forum_favtags LEFT JOIN forum_tags ON forum_tags.tagid=forum_favtags.tagid WHERE uid=%i ORDER BY forum_tags.count DESC", $uid);
+    $tags = [];
     foreach ($result as $k => $v) {
       $tags[$v['tagid']] = [
         "tagname" => $v['tagname'],
