@@ -77,20 +77,16 @@
 <?php elseif ($action == "viewthread") : ?>
 
     <!-- THREAD -->
-
     <div class="question-summary">
       <a href="/questions/viewthread/<?=$GLOBALS['output']['thread']['tid']?>"><h3><?=$GLOBALS['output']['thread']['title']?></h3></a>
     </div>
-
     <div class="question-summary">
       Tags:
-<?php foreach ($GLOBALS['output']['thread']['tags'] as $k => $tag) : ?>
-        <a href="/questions/search?tag=<?=$tag?>"><span class="badge badge-dark"><?=$GLOBALS['output']['tags'][$tag]?></span></a>
+<?php foreach ($GLOBALS['output']['thread']['tags'] as $tagid) : ?>
+        <a href="/questions/search?tag=<?=$tagid?>"><span class="badge badge-dark"><?=$GLOBALS['output']['tags'][$tagid]['tagname']?></span></a>
 <?php endforeach ?>
     </div>
-
     <div class="questions">
-
       <!-- THREAD content -->
       <div class="question-content">
         <div>
@@ -135,8 +131,8 @@
     <hr />
 
     <div class="question-reply">
-<?php if ($GLOBALS['member']['uid']) : ?>
-  <?php if ($GLOBALS['member']['newpost']) : ?>
+<?php if ($GLOBALS['curUser']['uid']) : ?>
+  <?php if ($GLOBALS['curUser']['newpost']) : ?>
       <form id="editorForm" method="post" action="/questions/answer">
         <div class="form-group">
           <div id="summernote"></div>

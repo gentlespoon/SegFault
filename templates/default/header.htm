@@ -27,9 +27,9 @@
           <li class="nav-item <?=$GLOBALS['output']['activeNav']['questions']?>">
             <a class="nav-link" href="/questions">Questions <span class="sr-only">(current)</span></a>
           </li>
-          <li class="nav-item <?=$GLOBALS['output']['activeNav']['jobs']?>">
+          <!-- <li class="nav-item <?=$GLOBALS['output']['activeNav']['jobs']?>">
             <a class="nav-link disabled" href="/jobs">Jobs</a>
-          </li>
+          </li> -->
           <li class="nav-item <?=$GLOBALS['output']['activeNav']['tags']?>">
             <a class="nav-link" href="/tags">Tags</a>
           </li>
@@ -64,7 +64,7 @@
               <ul class="dropdown-menu dropdown-menu-sw">
                 <li class="dropdown-item">Signed in as:<br /><b><?= $GLOBALS['curUser']['username'] ?></b></li>
                 <li class="dropdown-divider"></li>
-                <li class="dropdown-item"><a href="/member/profile">Your Profile</a></li>
+                <li class="dropdown-item"><a href="/member/profile?uid=<?=$GLOBALS['curUser']['uid']?>">Your Profile</a></li>
                 <li class="dropdown-item"><a href="/questions/search/?uid=<?=$GLOBALS['curUser']['uid']?>">Your Questions</a></li>
                 <li class="dropdown-item"><a href="/questions/search/?uid=<?=$GLOBALS['curUser']['uid']?>">Your Answers</a></li>
                 <li class="dropdown-item"><a href="/faq">Help</a></li>

@@ -159,9 +159,11 @@ class member {
           $fields[$k] = ["value" => $v, "editable" => $fields[$k]];
         }
       }
+      $fields['editable'] = $editable;
+      return ["success" => 1, "message" => $fields];
+    } else {
+      return ["success" => 1, "message" => $GLOBALS['lang']['permission-denied']];
     }
-    $fields['editable'] = $editable;
-    return $fields;
   }
 
 

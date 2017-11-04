@@ -4,15 +4,12 @@
 
 $GLOBALS['output']['title'] = "Questions";
 
-
 $GLOBALS['output']['tags'] = tags::getTags();
 $GLOBALS['output']['favTags'] = tags::getFavTags($_SESSION['uid']);
 
 $additionalSearchCondition = "";
 
-
 switch ($action) {
-
 
   case "advice":
     $GLOBALS['output']['title'] = "Before asking a question...";
@@ -58,40 +55,18 @@ switch ($action) {
 
 
   case "viewthread":
-    if (!$GLOBALS['member']['viewthread']) {
-      error($GLOBALS['lang']['permission-denied']);
-    }
-
-    // printv($path);
-    if (is_numeric($path[2])) {
-
-      // fetch thread
-      $thread = DB::query("SELECT * FROM forum_threads WHERE tid=%i", $path[2]);
-      if (!empty($thread)) {
-        $thread = $thread[0];
-        $thread['tags'] = explode(",", $thread['tags']);
-        $thread['author'] = member::getUserInfo($thread['uid']);
-        $thread['sendtime'] = toUserTime($thread['sendtime']);
-        // $thread['content'] = htmlentities($thread['content']);
-        // $thread['content'] = $thread['content'];
-        $GLOBALS['output']['thread'] = $thread;
+    if (!is_numeric($path[2])) exit($GLOBALS['lang']['illegal-thread']);
+      $tid = $path[2];
+      $result = forum::getThread($tid);
+      if ($result['success']) {
+        $GLOBALS['output']['thread'] = $result['message'];
+      } else {
+        error($result['message'], "alert-danger");
+        break; // do not load posts
       }
 
       // fetch posts
-      $posts = DB::query("SELECT * FROM forum_posts WHERE tid=%i ORDER BY sendtime ASC", $path[2]);
-      foreach($posts as $k => $post) {
-        $posts[$k]['author'] = member::getUserInfo($post['uid']);
-        $posts[$k]['sendtime'] = toUserTime($post['sendtime']);
-        // $posts[$k]['content'] = htmlentities($post['content']);
-        $posts[$k]['content'] = $post['content'];
-      }
-      $GLOBALS['output']['posts'] = $posts;
-
-      // printv($GLOBALS['output']['thread']);
-      // printv($GLOBALS['output']['posts']);
-    } else {
-      error($GLOBALS['lang']['illegal-thread']);
-    }
+      $GLOBALS['output']['posts'] = forum::getPosts($tid, 0)['message'];
     break;
 
 

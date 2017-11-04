@@ -66,7 +66,12 @@ switch ($action) {
         }
       }
       // select columns that are allowed to modify
-      $GLOBALS['output']['fields'] = member::getFields($_GET['uid']);
+      $result = member::getFields($_GET['uid']);
+      if ($result['success']) {
+        $GLOBALS['output']['fields'] = $result['message'];
+      } else {
+        alert($result['message'], "alert-danger");
+      }
       if (empty($GLOBALS['output']['fields'])) {
         alert("You do not have the permission to view other member's profile.", "alert-danger");
       }
