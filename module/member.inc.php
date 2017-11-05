@@ -56,6 +56,8 @@ switch ($action) {
 
     case "profile":
       $title = $GLOBALS['lang']['modprofile'];
+      $GLOBALS['output']['fields'] = [];
+      // if submit profile change
       if (array_key_exists("submitmod", $_POST)) {
         unset($_POST['submitmod']);
         $result = member::modProfile($_POST);

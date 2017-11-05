@@ -170,7 +170,7 @@ class member {
       $fields['editable'] = $editable;
       return ["success" => 1, "message" => $fields];
     } else {
-      return ["success" => 1, "message" => $GLOBALS['lang']['permission-denied']];
+      return ["success" => 1, "message" => []];
     }
   }
 
