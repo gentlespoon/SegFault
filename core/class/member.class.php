@@ -195,7 +195,7 @@ class member {
       'failcount' => 0,
       'regip' => 0,
     ];
-    if ($uid != $_SESSION['uid']) {
+    if ($uid != $_SESSION['uid'] || $uid<1) {
       if (!$GLOBALS['curUser']['viewprofile']) {
         // if curUser is not allowed to view other's profile
         return []; // return an empty array

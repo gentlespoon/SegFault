@@ -56,6 +56,13 @@ switch ($action) {
 
     case "profile":
       $title = $GLOBALS['lang']['modprofile'];
+      if (!array_key_exists("uid", $_GET)) {
+        $_GET['uid'] = NULL;
+      } else {
+        if (!is_numeric($_GET['uid']) || $_GET['uid']<1) {
+          $_GET['uid'] = NULL;
+        }
+      }
       $GLOBALS['output']['fields'] = [];
       // if submit profile change
       if (array_key_exists("submitmod", $_POST)) {
