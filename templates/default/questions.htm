@@ -252,8 +252,8 @@
         <input type="hidden" id="hiddenTags" name="tags" value="" />
         <input type="text" class="form-control" id="newThreadTagSearchbox" aria-describedby="newThreadTagSearchbox" placeholder="Search for tags" list="tagList">
         <datalist id="tagList">
-<?php foreach ($GLOBALS['output']['tags'] as $tagid => $tagName) : ?>
-          <option value="<?=$tagName?>" tagid="<?=$tagid?>" />
+<?php foreach ($GLOBALS['output']['tags'] as $tagid => $taginfo) : ?>
+          <option value="<?=$taginfo['tagname']?>" tagid="<?=$tagid?>" />
 <?php endforeach ?>
         </datalist>
         <small id="newThreadTagSearchboxHint" class="form-text text-muted">Choosing relevant tags will put your question in an accurate category.</small></small>
