@@ -1,8 +1,8 @@
 <?php
   if (
     !array_key_exists("ud", $_GET) ||
-    !array_key_exists("password", $_GET) ||
-    !array_key_exists("email", $_GET)
+    !array_key_exists("tid", $_GET) ||
+    !array_key_exists("pid", $_GET)
   ) {
     api_write(0, "Insufficient arguments");
   }
