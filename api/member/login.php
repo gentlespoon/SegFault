@@ -1,7 +1,7 @@
 <?php
   if (
-    array_key_exists("username", $_GET) && $_GET['username']!="" &&
-    array_key_exists("password", $_GET) && $_GET['password']!=""
+    !array_key_exists("username", $_GET) || $_GET['username']=="" ||
+    !array_key_exists("password", $_GET) || $_GET['password']==""
   ) {
     api_write(0, "Insufficient arguments");
   }
