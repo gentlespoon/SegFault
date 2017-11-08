@@ -1,3 +1,2 @@
 <?php
-  member::logout();
-  api_write( ["success"=>1, "msg"=>"Logged out"] );
+  api_write( member::logout() );

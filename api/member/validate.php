@@ -1,10 +1,8 @@
 <?php
   if ( array_key_exists("email", $_GET) ) {
-    $result = member::validEmail($_GET['email']);
-    api_write($result);
+    api_write( member::validEmail($_GET['email']) );
   } elseif ( array_key_exists("username", $_GET) ) {
-    $result = member::validUsername($_GET['username']);
-    api_write($result);
+    api_write( member::validUsername($_GET['username']) );
   } else {
-    api_write(["success"=>0, "msg"=>"Insufficient arguments"]);
+    api_write( 0, "Insufficient arguments");
   }

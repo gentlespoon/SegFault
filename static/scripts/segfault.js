@@ -260,7 +260,7 @@ function removeTag(tagid) {
 
 
 function vote(ud, tid, pid) {
-  $.ajax({ url: "/api/vote.php", data: { ud: ud, tid: tid, pid: pid}, method: "get"})
+  $.ajax({ url: "/api/forum/vote.php", data: { ud: ud, tid: tid, pid: pid}, method: "get"})
     .done(function(data) {
       var score = jQuery.parseJSON(data);
       $("#upvote-"+tid+"-"+pid).text(score.upvote);

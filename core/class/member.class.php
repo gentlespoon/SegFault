@@ -129,6 +129,7 @@ class member {
     $_SESSION['username'] = "";
     $_SESSION['uid'] = 0;
     $GLOBALS['curUser'] = member::getUserInfo();
+    return ["success" => 1, "message" => $GLOBALS['lang']["logged-out"]];
   }
 
 

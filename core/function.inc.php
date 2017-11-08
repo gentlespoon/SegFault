@@ -119,6 +119,15 @@ function error($text, $htmlcode=NULL) {
 
 
 
-function api_write($result) {
-  echo json_encode( $result );
+function api_write($result, $message=NULL) {
+  if (is_array($result)) {
+    exit(json_encode($result));
+  }
+
+  if (is_numeric($result)) {
+    if ($message == NULL) $message = "";
+    exit(json_encode( ["success" => $result, "message" => $message] ));
+  }
+
+  exit("ERROR: api_write param error");
 }
