@@ -43,6 +43,6 @@ if ($GLOBALS['curUser']['gid'] < 2 && $GLOBALS['curUser']['uid'] !== $post['auth
   exit("Insufficient Permissions");
 }
 
-$result['success'] = EditPost($post['pid'], $post['cotent'], $_GET['content']);
+$result['success'] = EditPost($post['pid'], $post['content'], $_GET['content']);
 
 echo json_encode($result);
