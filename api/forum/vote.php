@@ -3,7 +3,7 @@
     !array_key_exists("ud", $_GET) ||
     !array_key_exists("password", $_GET) ||
     !array_key_exists("email", $_GET)
-  } else {
+  ) {
     api_write(0, "Insufficient arguments");
   }
 
