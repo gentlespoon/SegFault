@@ -1,8 +1,5 @@
 <?php
 
-define("ROOT", $_SERVER['DOCUMENT_ROOT']."/");
-require(ROOT."core/core.php");
-
 //@param id of thread to remove
 //@return 0 on failure, 1 otherwise
 function RemoveThread($tid) {
@@ -15,9 +12,9 @@ function RemoveThread($tid) {
   return DB::affectedRows(); //if no rows changed, already removed
 }
 
-$result = array('success' => 0);
+$result = 0;
 
-if (!is_numeric($_GET['tid'])) {
+if (!array_key_exists('tid', $_GET) || !is_numeric($_GET['tid'])) {
   exit("? tid");
 }
 
@@ -33,6 +30,6 @@ if ($GLOBALS['curUser']['gid'] < 2 && $GLOBALS['curUser']['uid'] !== $thread['au
   exit("Insufficient Permissions");
 }
 
-$result['success'] = RemoveThread($thread['tid']);
+$result = RemoveThread($thread['tid']);
 
-echo json_encode($result);
+echo api_write($result);

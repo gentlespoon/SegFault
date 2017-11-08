@@ -1,8 +1,5 @@
 <?php
 
-define("ROOT", $_SERVER['DOCUMENT_ROOT']."/");
-require(ROOT."core/core.php");
-
 //@param id of post to remove
 //@return 0 on failure, 1 otherwise
 function RemovePost($pid) {
@@ -15,9 +12,9 @@ function RemovePost($pid) {
   return DB::affectedRows(); //if no rows changed, already removed
 }
 
-$result = array('success' => 0);
+$result = 0;
 
-if (!is_numeric($_GET['pid'])) {
+if (!array_key_exists('pid', $_GET) || !is_numeric($_GET['pid'])) {
   exit("? pid");
 }
 
@@ -33,6 +30,6 @@ if ($GLOBALS['curUser']['gid'] < 2 && $GLOBALS['curUser']['uid'] !== $post['auth
   exit("Insufficient Permissions");
 }
 
-$result['success'] = RemovePost($post['pid']);
+$result = RemovePost($post['pid']);
 
-echo json_encode($result);
+echo api_write($result);

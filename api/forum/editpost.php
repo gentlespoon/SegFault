@@ -1,8 +1,5 @@
 <?php
 
-define("ROOT", $_SERVER['DOCUMENT_ROOT']."/");
-require(ROOT."core/core.php");
-
 //@param id of post to edit
 //@param old content of post to be appended
 //@param new content to append onto old
@@ -10,10 +7,12 @@ require(ROOT."core/core.php");
 function EditPost($pid, $oldContent, $newContent) {
   //We avoid using CONCAT here as that would require using
   //DB::sqleval with user-submitted data, which isn't safe
-  $newContent = $oldContent."<br />".$newContent;
+  //Escape user-submitted data so that we can use sqleval
+  //allowing for an atomic update to avoid race conditions
+  $newContent = "'" . DB::get()->real_escape_string(strval("<br />".$newContent)) . "'";
 
   $table = "forum_posts";
-  $set = array("content" => $newContent); //what we are setting with this update
+  $set = array("content" => DB::sqleval("CONCAT(content, ".$newContent.")")); //what we are setting with this update
   $cond = "pid=%i";
 
   DB::update($table, $set, $cond, $pid);
@@ -21,13 +20,13 @@ function EditPost($pid, $oldContent, $newContent) {
   return DB::affectedRows(); //if no rows changed, already editted
 }
 
-$result = array('success' => 0);
+$result = 0;
 
-if (!is_numeric($_GET['pid'])) {
+if (!array_key_exists('pid', $_GET) || !is_numeric($_GET['pid'])) {
   exit("? pid");
 }
 
-if (empty($_GET['content'])) {
+if (!array_key_exists('content', $_GET) || empty($_GET['content'])) {
   exit("? content");
 }
 
@@ -43,6 +42,6 @@ if ($GLOBALS['curUser']['gid'] < 2 && $GLOBALS['curUser']['uid'] !== $post['auth
   exit("Insufficient Permissions");
 }
 
-$result['success'] = EditPost($post['pid'], $post['content'], $_GET['content']);
+$result = EditPost($post['pid'], $post['content'], $_GET['content']);
 
-echo json_encode($result);
+echo api_write($result);
