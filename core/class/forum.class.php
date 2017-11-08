@@ -43,6 +43,21 @@ class forum {
 
 
 
+  public static function getPost($pid) {
+    if (!$GLOBALS['curUser']['viewthread']) error($GLOBALS['lang']['permission-denied']);
+    $result = DB::query("SELECT * FROM forum_posts WHERE pid=%i", $pid);
+    if (!empty($result)) {
+      $post = $result[0];
+      $post['author'] = member::getUserInfo($post['uid']);
+      $post['sendtime'] = toUserTime($post['sendtime']);
+      return ["success" => 1, "message" => $post];
+    } else {
+      return ["success" => 0, "message" => $GLOBALS['lang']["invalid-thread-id"]];
+    }
+  }
+
+
+
   public static function post($tid, $content) {
     if (!$GLOBALS['curUser']['newpost']) {
       return ["success" => 0, "message" => $GLOBALS['lang']['permission-denied']];
