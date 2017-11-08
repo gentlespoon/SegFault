@@ -7,7 +7,7 @@ require(ROOT."core/core.php");
 //@return 0 on failure, 1 otherwise
 function RemovePost($pid) {
   $table = "forum_posts";
-  $set = array('visible' => 99, 'open' => 99); //what we are setting with this update
+  $set = array('visible' => 99); //what we are setting with this update
   $cond = "pid=%i";
 
   DB::update($table, $set, $cond, $pid);
