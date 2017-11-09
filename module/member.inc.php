@@ -9,9 +9,20 @@ if (!array_key_exists("redirect", $_GET)) {
 switch ($action) {
   case "register":
 
-    printv($_POST);
+    $url = 'https://www.google.com/recaptcha/api/siteverify';
+    $data = array('secret' => '6LfcUTcUAAAAAPNcLotrUqCgm2G0nqen1hNS3ACt', 'response' => $_POST['g-recaptcha-response']);
+    $options = array(
+          'http' => array(
+          'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+          'method'  => 'POST',
+          'content' => http_build_query($data),
+      )
+    );
 
-    
+    $context  = stream_context_create($options);
+    $result = file_get_contents($url, false, $context);
+    printv($result);
+
     if ($_SESSION['uid'] != 0) {
       redirect(0, "/member/profile");
     }
