@@ -8,6 +8,10 @@ if (!array_key_exists("redirect", $_GET)) {
 
 switch ($action) {
   case "register":
+
+    printv($_POST);
+
+    
     if ($_SESSION['uid'] != 0) {
       redirect(0, "/member/profile");
     }
