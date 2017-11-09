@@ -263,11 +263,11 @@ function vote(ud, tid, pid) {
   $.ajax({ url: "/api/forum/vote", data: { ud: ud, tid: tid, pid: pid}, method: "get"})
     .done(function(data) {
       var score = jQuery.parseJSON(data);
-      $("#upvote-"+tid+"-"+pid).text(score.upvote);
-      $("#downvote-"+tid+"-"+pid).text(score.downvote);
+      $("#upvote-"+tid+"-"+pid).text(score.message.upvote);
+      $("#downvote-"+tid+"-"+pid).text(score.message.downvote);
     })
     .fail(function(data) {
-      alert("Vote Failed!\n\n"+data);
+      alert("Vote Failed!");
     })
     .always(function(data) {
       // alert( "complete\n" + data );
