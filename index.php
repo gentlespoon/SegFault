@@ -15,12 +15,6 @@ $route = [
 $GLOBALS['output']['activeNav'] = [];
 foreach($route as $v) $GLOBALS['output']['activeNav'][$v] = "";
 
-//    http://sfault.net/$1/$2/$3
-// $1 = moduleName (in /module)
-// $2 = action
-// $3... = real $_GET
-
-
 if (array_key_exists("path", $_GET)) $path = explode("/", $_GET['path']);
 else $path = ["questions"]; // default page
 

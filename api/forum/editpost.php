@@ -23,25 +23,25 @@ function EditPost($pid, $oldContent, $newContent) {
 $result = 0;
 
 if (!array_key_exists('pid', $_GET) || !is_numeric($_GET['pid'])) {
-  exit("? pid");
+  api_write(0, "Invalid pid");
 }
 
 if (!array_key_exists('content', $_GET) || empty($_GET['content'])) {
-  exit("? content");
+  api_write(0, "Invalid content");
 }
 
 $getPostResult = forum::getPost($_GET['pid']);
 
 if ($getPostResult['success'] !== 1) {
-  exit("Could not get post info");
+  api_write(0, "Cannot get post");
 }
 
 $post = $getPostResult['message'];
 
 if ($GLOBALS['curUser']['gid'] < 2 && $GLOBALS['curUser']['uid'] !== $post['author']['uid']) {
-  exit("Insufficient Permissions");
+  api_write(0, $GLOBALS['lang']["permission-denied"]);
 }
 
 $result = EditPost($post['pid'], $post['content'], $_GET['content']);
 
-echo api_write($result);
+api_write($result);

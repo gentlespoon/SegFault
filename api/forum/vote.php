@@ -42,4 +42,4 @@
 
   $newScore = DB::query("SELECT upvote, downvote FROM ".$table." WHERE ".$cond."= %i", $_GET['tid']+$_GET['pid'])[0];
 
-  echo api_write(1, $newScore);
+  api_write(1, $newScore);

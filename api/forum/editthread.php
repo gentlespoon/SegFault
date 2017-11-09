@@ -23,25 +23,25 @@ function EditThread($tid, $oldContent, $newContent) {
 $result = 0;
 
 if (!array_key_exists('tid', $_GET) || !is_numeric($_GET['tid'])) {
-  exit("? tid");
+  api_write(0, "Invalid tid");
 }
 
 if (!array_key_exists('content', $_GET) || empty($_GET['content'])) {
-  exit("? content");
+  api_write(0, "Invalid content");
 }
 
 $getThreadResult = forum::getThread($_GET['tid']);
 
 if ($getThreadResult['success'] !== 1) {
-    exit("Could not get thread info");
+    api_write(0, "Cannot get thread");
 }
 
 $thread = $getThreadResult['message'];
 
 if ($GLOBALS['curUser']['gid'] < 2 && $GLOBALS['curUser']['uid'] !== $thread['author']['uid']) {
-  exit("Insufficient Permissions");
+  api_write(0, $GLOBALS['lang']["permission-denied"]);
 }
 
 $result = EditThread($thread['tid'], $thread['content'], $_GET['content']);
 
-echo api_write($result);
+api_write($result);

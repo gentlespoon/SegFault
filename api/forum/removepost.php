@@ -8,28 +8,28 @@ function RemovePost($pid) {
   $cond = "pid=%i";
 
   DB::update($table, $set, $cond, $pid);
-
+  
   return DB::affectedRows(); //if no rows changed, already removed
 }
 
 $result = 0;
 
 if (!array_key_exists('pid', $_GET) || !is_numeric($_GET['pid'])) {
-  exit("? pid");
+  api_write(0, "Invalid pid");
 }
 
 $getPostResult = forum::getPost($_GET['pid']);
 
 if ($getPostResult['success'] !== 1) {
-  exit("Could not get post info");
+  api_write(0, "Cannot get post");
 }
 
 $post = $getPostResult['message'];
 
 if ($GLOBALS['curUser']['gid'] < 2 && $GLOBALS['curUser']['uid'] !== $post['author']['uid']) {
-  exit("Insufficient Permissions");
+  api_write(0, $GLOBALS['lang']["permission-denied"]);
 }
 
 $result = RemovePost($post['pid']);
 
-echo api_write($result);
+api_write($result);
