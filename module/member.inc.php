@@ -30,6 +30,7 @@ switch ($action) {
         $context  = stream_context_create($options);
         $result = file_get_contents($url, false, $context);
         $result = json_decode($result);
+        $result = (array)$result;
         if (!$result['success']) {
           alert("Failed to verify reCAPTCHA", "alert-danger");
           redirect(60, "/member/register");
