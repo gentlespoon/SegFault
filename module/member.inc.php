@@ -9,19 +9,6 @@ if (!array_key_exists("redirect", $_GET)) {
 switch ($action) {
   case "register":
 
-    $url = 'https://www.google.com/recaptcha/api/siteverify';
-    $data = array('secret' => '6LfcUTcUAAAAAPNcLotrUqCgm2G0nqen1hNS3ACt', 'response' => $_POST['g-recaptcha-response']);
-    $options = array(
-          'http' => array(
-          'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-          'method'  => 'POST',
-          'content' => http_build_query($data),
-      )
-    );
-
-    $context  = stream_context_create($options);
-    $result = file_get_contents($url, false, $context);
-    printv($result);
 
     if ($_SESSION['uid'] != 0) {
       redirect(0, "/member/profile");
@@ -30,6 +17,24 @@ switch ($action) {
     if (array_key_exists("username", $_POST)) {
       // when user submits a reg, username will not be empty, so we know it is submitting, instead of requesting for a reg form
       if (array_key_exists("password", $_POST)) {
+
+        $url = 'https://www.google.com/recaptcha/api/siteverify';
+        $data = array('secret' => '6LfcUTcUAAAAAPNcLotrUqCgm2G0nqen1hNS3ACt', 'response' => $_POST['g-recaptcha-response']);
+        $options = array(
+          'http' => array(
+            'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+            'method'  => 'POST',
+            'content' => http_build_query($data),
+          )
+        );
+        $context  = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        $result = json_decode($result);
+        if (!$result['success']) {
+          alert("Failed to verify reCAPTCHA", "alert-danger");
+          redirect(60, "/member/register");
+        }
+
         // if both field exists
         $result = member::register($_POST['username'], $_POST['password'], $_POST['email']);
         if (!$result['success']) {
