@@ -52,12 +52,12 @@
           </div>
           <div class="row col-lg-4 col-md-5 col-sm-12 questions-author">
             <div class="col-lg-12 col-md-12 col-sm-6">
-              Asked by <a href="/member/profile/<?=$v['author']['uid']?>"><?= $v['author']['username'] ?></a><br />
+              Asked by <a href="/member/profile?uid=<?=$v['author']['uid']?>"><?= $v['author']['username'] ?></a><br />
               at <?= $v['sendtime'] ?>
             </div>
 <?php if (!empty($v['lastreply'])) : ?>
             <div class="col-lg-12 col-md-12 col-sm-6">
-              Last response by <a href="/member/profile/<?=$v['lastreply']['uid']?>"><?=$v['lastreply']['username']?></a><br />
+              Last response by <a href="/member/profile?uid=<?=$v['lastreply']['uid']?>"><?=$v['lastreply']['username']?></a><br />
               at <?=$v['lastreply']['sendtime']?>
             </div>
 <?php endif ?>
@@ -103,16 +103,24 @@
           <?=$GLOBALS['output']['thread']['content']?>
         </div>
         <div class="question-content-author">
-          <a class="vote"  onclick="vote('upvote', <?=$GLOBALS['output']['thread']['tid']?>, 0)">
-            <div class="voteBtn badge badge-success">👍 <span id="upvote-<?=$GLOBALS['output']['thread']['tid']?>-0"><?=$GLOBALS['output']['thread']['upvote']?></span></div>
-          </a>
-          <a class="vote" onclick="vote('downvote', <?=$GLOBALS['output']['thread']['tid']?>, 0)">
-            <div class="voteBtn badge badge-danger">👎 <span id="downvote-<?=$GLOBALS['output']['thread']['tid']?>-0"><?=$GLOBALS['output']['thread']['downvote']?></span></div>
-          </a>
-          <a href="/member/profile/<?=$GLOBALS['output']['thread']['author']['uid']?>">
-            <img class="avatar-32" src="<?=$GLOBALS['output']['thread']['author']['avatar']?>">
-            <?=$GLOBALS['output']['thread']['author']['username']?>
-          </a> at <?=$GLOBALS['output']['thread']['sendtime']?>
+          <div class="voteBar">
+            <a class="vote"  onclick="vote('upvote', <?=$GLOBALS['output']['thread']['tid']?>, 0)">
+              <div class="voteBtn badge badge-success">👍 <span id="upvote-<?=$GLOBALS['output']['thread']['tid']?>-0"><?=$GLOBALS['output']['thread']['upvote']?></span></div>
+            </a>
+            <a class="vote" onclick="vote('downvote', <?=$GLOBALS['output']['thread']['tid']?>, 0)">
+              <div class="voteBtn badge badge-danger">👎 <span id="downvote-<?=$GLOBALS['output']['thread']['tid']?>-0"><?=$GLOBALS['output']['thread']['downvote']?></span></div>
+            </a>
+          </div>
+          <div class="authorBar">
+            <div class="avatar">
+              <img class="avatar-40" src="<?=$GLOBALS['output']['thread']['author']['avatar']?>">
+            </div>
+            <div class="author">
+              <a href="/member/profile?uid=<?=$GLOBALS['output']['thread']['author']['uid']?>">
+                <?=$GLOBALS['output']['thread']['author']['username']?>
+              </a><br><?=$GLOBALS['output']['thread']['sendtime']?>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -124,16 +132,24 @@
             <?=$post['content']?>
           </div>
           <div class="question-content-author">
-            <a class="vote" onclick="vote('upvote', 0, <?=$post['pid']?>)">
-              <div class="voteBtn badge badge-success">👍 <span id="upvote-0-<?=$post['pid']?>"><?=$post['upvote']?></span></div>
-            </a>
-            <a class="vote" onclick="vote('downvote', 0, <?=$post['pid']?>)">
-              <div class="voteBtn badge badge-danger">👎 <span id="downvote-0-<?=$post['pid']?>"><?=$post['downvote']?></span></div>
-            </a>
-            <a href="/member/profile/<?=$post['author']['uid']?>">
-              <img class="avatar-32" src="<?=$post['author']['avatar']?>">
-              <?=$post['author']['username']?>
-            </a> at <?=$post['sendtime']?>
+            <div class="voteBar">
+              <a class="vote" onclick="vote('upvote', 0, <?=$post['pid']?>)">
+                <div class="voteBtn badge badge-success">👍 <span id="upvote-0-<?=$post['pid']?>"><?=$post['upvote']?></span></div>
+              </a>
+              <a class="vote" onclick="vote('downvote', 0, <?=$post['pid']?>)">
+                <div class="voteBtn badge badge-danger">👎 <span id="downvote-0-<?=$post['pid']?>"><?=$post['downvote']?></span></div>
+              </a>
+            </div>
+            <div class="authorBar">
+              <div class="avatar">
+                <img class="avatar-40" src="<?=$post['author']['avatar']?>">
+              </div>
+              <div class="author">
+                <a href="/member/profile?uid=<?=$post['author']['uid']?>">
+                  <?=$post['author']['username']?>
+                </a><br><?=$post['sendtime']?>
+              </div>
+            </div>
           </div>
         </div>
 <?php endforeach ?>

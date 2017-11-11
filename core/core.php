@@ -21,6 +21,7 @@ if (file_exists(ROOT."config/config.php")) {
 // load language file, not necessary for this project, but always a good practice to separate code and translations
 // import functions
 require_once(ROOT."core/function.inc.php");
+require_once(ROOT."core/constant.php");
 foreach (scandir(ROOT.'core/class') as $filename) {
   $path = ROOT.'core/class/'.$filename;
   if (is_file($path)) require_once $path;

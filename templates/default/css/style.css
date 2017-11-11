@@ -64,8 +64,40 @@ a {
 }
 
 
+.voteBar {
+  display: inline-block;
+}
+
 .voteBtn {
   min-width: 5em;
+  max-width: 8em;
+  line-height: 2em;
+}
+.voteBtn:hover {
+  opacity: 0.6;
+  transition: opacity 0.5s;
+}
+.voteBtn:active {
+  background-color: black;
+  transition: background-color 0.5s;
+}
+
+.authorBar {
+  display: inline-block;
+  float: right;
+  /*border: 1px solid #e4e6e8;*/
+}
+
+.authorBar > .avatar {
+  float: left;
+  display: inline-block;
+  /*border: 1px solid #e4e6e8;*/
+}
+.authorBar > .author {
+  float: left;
+  padding-left: 0.5em;
+  display: inline-block;
+  /*border: 1px solid #e4e6e8;*/
 }
 
 .badge {
@@ -83,6 +115,7 @@ a {
 }
 
 .question-content-author {
+  width: 100%;
   position: absolute;
   padding: 12px 0;
   bottom: 0;
@@ -106,12 +139,6 @@ a {
   /*color: white !important;*/
 }
 
-.avatar-32 {
-  border-radius: .25rem;
-  border: 1px solid black;
-  width: 32px;
-  height: 32px;
-}
 
 
 .sidebarItem {
@@ -127,4 +154,18 @@ a {
 
 .askBtn {
   margin-left: 0 !important;
+}
+
+.avatar-32 {
+  border-radius: .25rem;
+  border: 1px solid black;
+  width: 32px;
+  height: 32px;
+}
+
+.avatar-40 {
+  border-radius: .25rem;
+  border: 1px solid black;
+  width: 40px;
+  height: 40px;
 }
