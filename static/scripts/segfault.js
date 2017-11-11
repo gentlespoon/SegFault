@@ -215,16 +215,24 @@ $(document).ready(function() {
                 `+item.content+`
               </div>
               <div class="question-content-author">
-                <a class="vote" onclick="vote('upvote', 0, `+item.pid+`)">
-                  <div class="voteBtn badge badge-success">👍 <span id="upvote-0-`+item.pid+`">`+item.upvote+`</span></div>
-                </a>
-                <a class="vote" onclick="vote('downvote', 0, `+item.pid+`)">
-                  <div class="voteBtn badge badge-danger">👎 <span id="downvote-0-`+item.pid+`">`+item.downvote+`</span></div>
-                </a>
-                <a href="/member/profile/`+item.author.uid+`">
-                  <img class="avatar-32" src="`+item.author.avatar+`">
-                  `+item.author.username+`
-                </a> at `+item.sendtime+`
+                <div class="voteBar">
+                  <a class="vote" onclick="vote('upvote', 0, `+item.pid+`)">
+                    <div class="voteBtn badge badge-success">👍 <span id="upvote-0-`+item.pid+`">`+item.upvote+`</span></div>
+                  </a>
+                  <a class="vote" onclick="vote('downvote', 0, `+item.pid+`)">
+                    <div class="voteBtn badge badge-danger">👎 <span id="downvote-0-`+item.pid+`">`+item.downvote+`</span></div>
+                  </a>
+                </div>
+                <div class="authorBar">
+                  <div class="avatar">
+                    <img class="avatar-40" src="`+item.avatar+`">
+                  </div>
+                  <div class="author">
+                    <a href="/member/profile/`+item.uid+`">
+                      `+item.username+`
+                    </a><br>`+item.sendtime+`
+                  </div>
+                </div>
               </div>
             </div>
             `;

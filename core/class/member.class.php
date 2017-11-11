@@ -220,6 +220,8 @@ class member {
   public static function getUserInfo($uid=NULL) {
     if ($uid == NULL) $uid = $_SESSION['uid'];
     $userInfo = DB::query("SELECT member_groups.*, member.* FROM member_groups LEFT JOIN member ON member_groups.gid = member.gid WHERE member.uid=%i", $uid)[0];
+    unset($userInfo['password']);
+    unset($userInfo['salt']);
     return $userInfo;
   }
 

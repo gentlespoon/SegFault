@@ -25,24 +25,23 @@ switch ($action) {
     break;
 
 
+
   case "asked":
-    if (!$GLOBALS['curUser']['newthread']) {
-      error($GLOBALS['lang']['permission-denied'], 403);
-    }
-    DB::query("INSERT INTO forum_threads (title, content, tags, sendtime, uid) VALUES (%s, %s, %s, %i, %i)", $_POST['title'], $_POST['editedHTML'], $_POST['tags'], $GLOBALS['now'], $_SESSION['uid']);
-    // do not get the last inserted id
-    // since in high concurrency the last inserted id may be different
-    // use last tid from the uid instead
-    $tid = DB::query("SELECT tid FROM forum_threads WHERE uid=%i ORDER BY sendtime DESC", $_SESSION['uid'])[0]['tid'];
-    $GLOBALS['output']['title'] = "Asked Successfully";
-    alert($GLOBALS['lang']['new-thread-success'], GREEN);
-    redirect(5, "/questions/viewthread/".$tid);
+    $result = forum::newThread($_POST['title'], $_POST['editedHTML'], $_POST['tags']);
+    if ($result['success']) {
+      $GLOBALS['output']['title'] = "Asked Successfully";
+      alert($GLOBALS['lang']['new-thread-success'], GREEN);
+      redirect(5, "/questions/viewthread/".$result['message']);
+    } else {
+      $GLOBALS['output']['title'] = "Error";
+      error($result['message'], RED);
+    }    
     break;
 
 
 
   case "answer":
-    $result = forum::post($_POST['tid'], $_POST['editedHTML']);
+    $result = forum::newPost($_POST['tid'], $_POST['editedHTML']);
     if ($result['success']) {
       $GLOBALS['output']['title'] = "Answered";
       alert($result['message'], GREEN);
@@ -52,7 +51,6 @@ switch ($action) {
       error($result['message'], RED);
     }
     break;
-
 
 
 
@@ -73,14 +71,6 @@ switch ($action) {
 
 
 
-
-
-
-
-
-
-
-
   case "search":
     if (array_key_exists("keyword", $_GET)) {
       $additionalSearchCondition .= "AND ((".makeLikeCond("title", $_GET['keyword'], " ", true).") OR (".makeLikeCond("content", $_GET['keyword'], " ", true)."))";
@@ -98,6 +88,7 @@ switch ($action) {
     // do not break here!!! let it go to default branch and search!
 
 
+
   default:
   // no action = list newest questions
     $action = "search";
@@ -106,7 +97,7 @@ switch ($action) {
 
     $offset = 0;
     // this SQL can be unsafe!!
-    $sql = "SELECT forum_threads.* FROM forum_threads WHERE visible<=%i ".$additionalSearchCondition." ORDER BY sendtime DESC LIMIT 20 OFFSET %i";
+    $sql = "SELECT forum_threads.*, member.username, member.uid FROM forum_threads LEFT JOIN member ON member.uid=forum_threads.uid WHERE visible<=%i ".$additionalSearchCondition." ORDER BY sendtime DESC LIMIT 20 OFFSET %i";
     // echo $sql."<br />";
     $threads = DB::query($sql, $GLOBALS['curUser']['gid'], $offset);
     if (empty($threads)) {
@@ -114,7 +105,6 @@ switch ($action) {
       alert("No Records", BLUE);
       break;
     }
-
     foreach ($threads as $k => $v) {
       $threads[$k]['tags'] = explode(",", $threads[$k]['tags']);
       // if Question description is longer than $summaryCharLimit, cut it at the nearest whitespace and append ...
@@ -123,7 +113,7 @@ switch ($action) {
         $threads[$k]['content'] = substr($threads[$k]['content'], 0, strpos($threads[$k]['content'], " ", $summaryCharLimit-10))." ...";
       }
       $threads[$k]['content'] = strip_tags($threads[$k]['content']);
-      $threads[$k]['author'] = member::getUserInfo($threads[$k]['uid']);
+      // $threads[$k]['author'] = member::getUserInfo($threads[$k]['uid']);
       $threads[$k]['sendtime'] = toUserTime($v['sendtime']);
       // get last response info
       $threads[$k]['lastreply'] = DB::query("SELECT member.username, forum_posts.sendtime, forum_posts.uid FROM forum_posts LEFT JOIN member ON member.uid=forum_posts.uid WHERE tid=%i ORDER BY sendtime DESC LIMIT 1", $threads[$k]['tid']);
@@ -133,6 +123,7 @@ switch ($action) {
       }
     }
 
+    // printv($threads);
     $GLOBALS['output']['threads'] = $threads;
     break;
 
