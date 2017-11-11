@@ -35,7 +35,7 @@ switch ($action) {
     // use last tid from the uid instead
     $tid = DB::query("SELECT tid FROM forum_threads WHERE uid=%i ORDER BY sendtime DESC", $_SESSION['uid'])[0]['tid'];
     $GLOBALS['output']['title'] = "Asked Successfully";
-    alert($GLOBALS['lang']['new-thread-success'], "alert-success");
+    alert($GLOBALS['lang']['new-thread-success'], GREEN);
     redirect(5, "/questions/viewthread/".$tid);
     break;
 
@@ -43,14 +43,13 @@ switch ($action) {
 
   case "answer":
     $result = forum::post($_POST['tid'], $_POST['editedHTML']);
-    printv($_POST);
     if ($result['success']) {
       $GLOBALS['output']['title'] = "Answered";
-      alert($result['message'], "alert-success");
+      alert($result['message'], GREEN);
       redirect(5, "/questions/viewthread/".$_POST['tid']);
     } else {
       $GLOBALS['output']['title'] = "Error";
-      error($result['message'], "alert-danger");
+      error($result['message'], RED);
     }
     break;
 
@@ -64,7 +63,7 @@ switch ($action) {
       if ($result['success']) {
         $GLOBALS['output']['thread'] = $result['message'];
       } else {
-        error($result['message'], "alert-danger");
+        error($result['message'], RED);
       }
 
       // fetch posts
@@ -112,7 +111,7 @@ switch ($action) {
     $threads = DB::query($sql, $GLOBALS['curUser']['gid'], $offset);
     if (empty($threads)) {
       $GLOBALS['output']['threads'] = [];
-      alert("No Records", "alert-info");
+      alert("No Records", BLUE);
       break;
     }
 
