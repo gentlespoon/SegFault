@@ -2,6 +2,12 @@
 
 class member {
 
+  /**
+   * @param  username
+   * @param  password
+   * @param  email
+   * @return [success, message]
+   */
   public static function register($username, $password, $email) {
     // validate username;
     if ($username=="") {
@@ -29,13 +35,19 @@ class member {
     $salt = randomStr(6);
     $encryptedPassword = md5($password.$salt);
 
-    DB::query("INSERT INTO member (username, email, password, salt, regdate, regip) VALUES ( %s , %s , %s, %s, %s, %s)", $username, $email, $encryptedPassword, $salt, $GLOBALS['now'], $_SERVER['REMOTE_ADDR']);
+    if (DB::query("INSERT INTO member (username, email, password, salt, regdate, regip) VALUES ( %s , %s , %s, %s, %s, %s)", $username, $email, $encryptedPassword, $salt, $GLOBALS['now'], $_SERVER['REMOTE_ADDR'])) {
+      return ["success" => 1, "message" => ""];
+    } else {
+      return ["success" => 0, "message" => "Registration failed"];
+    }
 
-    return ["success" => 1, "message" => ""];
   }
 
 
-
+  /**
+   * @param  username string
+   * @return false / allergic string
+   */
   public static function usernameCensor($string) {
     $list = str_split("!@#$%^&*{[(<>)]};'\" `~?/\\|=+");
     $restrictedNames = DB::query("SELECT word FROM member_restrictname");
@@ -47,7 +59,10 @@ class member {
   }
 
 
-
+  /**
+   * @param  username string
+   * @return [success, message]
+   */
   public static function validUsername($username) {
     // check if username contains illegal characters
     $illegalChar = member::usernameCensor($username);
@@ -63,7 +78,10 @@ class member {
   }
 
 
-
+  /**
+   * @param  email string
+   * @return [success, message]
+   */
   public static function validEmail($email) {
     // check to see if this is an email address
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -78,7 +96,11 @@ class member {
   }
 
 
-
+  /**
+   * @param  username string
+   * @param  password string
+   * @return [success, message]
+   */
   public static function login($username, $password) {
     if ($username == "") {
       return ["success" => 0, "message" => $GLOBALS['lang']["blank-username"]];
@@ -124,7 +146,9 @@ class member {
   }
 
 
-
+  /**
+   * @return [success, message]
+   */
   public static function logout() {
     $_SESSION['username'] = "";
     $_SESSION['uid'] = 0;
@@ -134,7 +158,10 @@ class member {
 
 
 
-  // modify user profile
+  /**
+   * @param  array user profile data
+   * @return [success, message]
+   */
   public static function modProfile($data) {
     $uid = $data['uid'];
     unset($data['uid']);
@@ -151,7 +178,10 @@ class member {
   }
 
 
-
+  /**
+   * @param  user uid
+   * @return [success, message]
+   */
   public static function getFields($uid) {
     $fields = member::getAvailableFields($uid);
     if (!empty($fields)) {
@@ -176,7 +206,10 @@ class member {
   }
 
 
-
+  /**
+   * @param  user uid
+   * @return $fields[]
+   */
   private static function getAvailableFields($uid) {
     // default permission for viewing curUser's own profile
     // -1:--   0:r-   1:rw
@@ -216,9 +249,12 @@ class member {
 
 
 
-  // fetch userinfo
+  /**
+   * @param  user id, default = curUser
+   * @return userInfo
+   */
   public static function getUserInfo($uid=NULL) {
-    if ($uid == NULL) $uid = $_SESSION['uid'];
+    if ($uid == NULL) $uid = $GLOBALS['curUser'];
     $userInfo = DB::query("SELECT member_groups.*, member.* FROM member_groups LEFT JOIN member ON member_groups.gid = member.gid WHERE member.uid=%i", $uid)[0];
     unset($userInfo['password']);
     unset($userInfo['salt']);
@@ -226,7 +262,9 @@ class member {
   }
 
 
-
+  /**
+   * @return $groupInfo[]
+   */
   public static function getUGroupInfo() {
     $groups = DB::query("SELECT * FROM member_groups");
     foreach ($groups as $row) {

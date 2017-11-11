@@ -1,7 +1,11 @@
 <?php
 
 class forum {
-
+  
+  /**
+   * @param  thread id
+   * @return [success, thread content]
+   */
   public static function getThread($tid) {
     if (!$GLOBALS['curUser']['viewthread']) error($GLOBALS['lang']['permission-denied']);
     $result = DB::query("SELECT forum_threads.*, member.username, member.avatar, member.uid FROM forum_threads LEFT JOIN member ON member.uid=forum_threads.uid WHERE tid=%i", $tid);
@@ -22,15 +26,23 @@ class forum {
   }
 
 
-
+  /**
+   * @param  thread id
+   * @return [success, post count in this thread]
+   */
   public static function getPostCount($tid) {
     $posts = DB::query("SELECT count(*) FROM forum_posts WHERE tid=%i", $tid)[0]["count(*)"];
     return ["success" => 1, "message" => $posts];
   }
 
 
-
-  public static function getPosts($tid, $count, $offset) {
+  /**
+   * @param  thread id
+   * @param  how many posts to get? default = 5
+   * @param  offset
+   * @return [success, $posts[]]
+   */
+  public static function getPosts($tid, $count=5, $offset) {
     $posts = DB::query("SELECT forum_posts.*, member.username, member.avatar, member.uid FROM forum_posts LEFT JOIN member ON member.uid=forum_posts.uid WHERE tid=%i ORDER BY sendtime ASC LIMIT %i OFFSET %i", $tid, $count, $offset);
     foreach($posts as $k => $post) {
       // $posts[$k]['author'] = member::getUserInfo($post['uid']);
@@ -44,7 +56,10 @@ class forum {
   }
 
 
-
+  /**
+   * @param  post id
+   * @return [success, post content]
+   */
   public static function getPost($pid) {
     if (!$GLOBALS['curUser']['viewthread']) error($GLOBALS['lang']['permission-denied']);
     $result = DB::query("SELECT forum_posts.*, member.username, member.avatar, member.uid FROM forum_posts LEFT JOIN member ON member.uid=forum_posts.uid WHERE pid=%i", $pid);
@@ -59,7 +74,11 @@ class forum {
   }
 
 
-
+  /**
+   * @param  thread id
+   * @param  thread content
+   * @return [success, message]
+   */
   public static function newPost($tid, $content) {
     if (!$GLOBALS['curUser']['newpost']) {
       return ["success" => 0, "message" => $GLOBALS['lang']['permission-denied']];
@@ -72,7 +91,12 @@ class forum {
   }
 
 
-
+  /**
+   * @param  title
+   * @param  content
+   * @param  tags[]
+   * @return [success, thread id]
+   */
   public static function newThread($title, $content, $tags) {
     if (!$GLOBALS['curUser']['newthread']) {
       return ["success" => 0, "message" => $GLOBALS['lang']['permission-denied']];
