@@ -89,6 +89,7 @@
     <!-- THREAD -->
     <div class="question-summary">
       <a href="/questions/viewthread/<?=$GLOBALS['output']['thread']['tid']?>"><h3><?=$GLOBALS['output']['thread']['title']?></h3></a>
+      <?php if($GLOBALS['output']['thread']['open'] > $GLOBALS['curUser']['gid']) echo "[LOCKED]"; ?> 
     </div>
     <div class="question-summary">
       Tags:
@@ -119,6 +120,15 @@
               <a href="/member/profile?uid=<?=$GLOBALS['output']['thread']['uid']?>">
                 <?=$GLOBALS['output']['thread']['username']?>
               </a><br><?=$GLOBALS['output']['thread']['sendtime']?>
+	      <?php if($GLOBALS['output']['thread']['author']['uid'] == $GLOBALS['curUser']['uid'] || $GLOBALS['curUser']['gid'] >= 2) { ?>
+	        <button class="btn btn-default" onclick="RemoveThread(<?=$GLOBALS['output']['thread']['tid']?>)">Remove</button>
+	      <?php } ?>
+	      <?php if($GLOBALS['output']['thread']['author']['uid'] == $GLOBALS['curUser']['uid'] || $GLOBALS['curUser']['gid'] >= 2) { ?>
+	        <button class="btn btn-default" onclick="edit()">Edit</button>
+	      <?php } ?>
+	      <?php if($GLOBALS['curUser']['gid'] >= 2) { ?>
+	        <button class="btn btn-default" onclick="LockThread(<?=$GLOBALS['output']['thread']['tid']?>)">Lock</button>
+	      <?php } ?>
             </div>
           </div>
         </div>
@@ -148,6 +158,12 @@
                 <a href="/member/profile?uid=<?=$post['uid']?>">
                   <?=$post['username']?>
                 </a><br><?=$post['sendtime']?>
+		<?php if($post['author']['uid'] == $GLOBALS['curUser']['uid'] || $GLOBALS['curUser']['gid'] >= 2) { ?>
+	          <button class="btn btn-default" onclick="RemovePost(<?=$post['pid']?>)">Remove</button>
+	        <?php } ?>
+		<?php if($GLOBALS['output']['thread']['author']['uid'] == $GLOBALS['curUser']['uid'] || $GLOBALS['curUser']['gid'] >= 2) { ?>
+	          <button class="btn btn-default" onclick="edit()">Edit</button>
+	        <?php } ?>
               </div>
             </div>
           </div>
@@ -166,11 +182,16 @@
 <?php endif ?>
     </div>
 
+    <div id="editpost" style="display:none;">
+      Text editor will go here
+    </div>
+    
     <hr />
 
     <div class="question-reply">
 <?php if ($GLOBALS['curUser']['uid']) : ?>
   <?php if ($GLOBALS['curUser']['newpost']) : ?>
+    <?php if ($GLOBALS['output']['thread']['open'] <= $GLOBALS['curUser']['gid']) : ?>
       <form id="newPostForm" method="post" action="/questions/answer">
         <div class="form-group">
           <div id="summernote"></div>
@@ -181,6 +202,7 @@
           <input class="btn btn-primary" type="submit" value="<?=$GLOBALS['lang']['new-post-send']?>">
         </div>
       </form>
+    <?php endif ?>
   <?php else : ?>
       You do not have permission to answer question.
   <?php endif ?>

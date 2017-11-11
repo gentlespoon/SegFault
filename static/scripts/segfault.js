@@ -281,3 +281,36 @@ function vote(ud, tid, pid) {
       // alert( "complete\n" + data );
     });
 };
+
+function RemovePost(pid){
+    $.ajax({ url: "/api/forum/removepost", data: { pid: pid }, method: "get"})
+	.done(function(data) {
+	    window.location.reload();
+	})
+};
+
+function RemoveThread(tid){
+    $.ajax({ url: "/api/forum/removethread", data: { tid: tid }, method: "get"})
+	.done(function(data) {
+	    window.location = "/";
+	})
+};
+
+function LockThread(tid){
+    $.ajax({ url: "/api/forum/lockthread", data: { tid: tid }, method: "get"})
+      .done(function(data) {
+	  window.location.reload();
+      })
+      .fail(function(data){
+      })
+      .always(function(data) {
+      });
+};
+
+function EditPost(pid, oldContent, newContent){
+    $.ajax({ url: "/api/forum/editpost", data: { pid: pid, oldContent: oldContent, newContent: newContent}, method: "get"})
+};
+
+function edit(){
+    document.getElementById('editpost').style.display = "block";
+};
