@@ -84,7 +84,7 @@ a
 
 
 
-.voteBar
+.operationBar
 {
     display: inline-block;
 }
@@ -93,18 +93,18 @@ a
 {
     line-height: 2em;
 
+    transition: opacity, 0.5s;
     min-width: 5em;
     max-width: 8em;
 }
 .voteBtn:hover
 {
     transition: opacity .5s;
-
     opacity: .6;
 }
 .voteBtn:active
 {
-    transition: background-color .5s;
+    transition: background-color 0.5s;
 
     background-color: black;
 }
@@ -189,7 +189,13 @@ a
     margin-top: 1em;
     padding: .5em;
 
+    border-radius: .25rem;
+    transition: background-color, 0.5s;
     background-color: #f8f9fa;
+}
+.sidebarItem:hover {
+    background-color: #e8e9ea;
+    transition: background-color, 0.5s;
 }
 
 .favTag
@@ -200,6 +206,7 @@ a
 
 .askBtn
 {
+    width: 100%;
     margin-left: 0 !important;
 }
 

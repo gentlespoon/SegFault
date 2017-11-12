@@ -277,9 +277,6 @@ function vote(ud, tid, pid) {
     .fail(function(data) {
       alert("Vote Failed!");
     })
-    .always(function(data) {
-      // alert( "complete\n" + data );
-    });
 };
 
 function RemovePost(pid){
@@ -301,10 +298,6 @@ function LockThread(tid){
       .done(function(data) {
 	  window.location.reload();
       })
-      .fail(function(data){
-      })
-      .always(function(data) {
-      });
 };
 
 function EditPost(pid, oldContent, newContent){

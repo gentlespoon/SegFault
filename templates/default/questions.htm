@@ -9,6 +9,7 @@
     <button class="btn btn-primary ml-sm-2 loginBtn askBtn">Ask Question</button>
 <?php endif ?>
     <!-- </div> -->
+<?php if ($_SESSION['uid']) : ?>
     <div class="sidebarItem">
       <b>Your FavTags</b>
       <div class="" id="favTags">
@@ -18,6 +19,11 @@
         <a href="/tags/manage">Manage FavTags</a>
       </div>
     </div>
+<?php else : ?>
+    <div class="sidebarItem">
+      <a href="javascript:void();" class="loginBtn">Sign In</a> to see your favorite tags.
+    </div>
+<?php endif ?>
   </div>
 
 
@@ -104,13 +110,22 @@
           <?=$GLOBALS['output']['thread']['content']?>
         </div>
         <div class="question-content-author">
-          <div class="voteBar">
+          <div class="operationBar">
             <a class="vote"  onclick="vote('upvote', <?=$GLOBALS['output']['thread']['tid']?>, 0)">
               <div class="voteBtn badge badge-success">👍 <span id="upvote-<?=$GLOBALS['output']['thread']['tid']?>-0"><?=$GLOBALS['output']['thread']['upvote']?></span></div>
             </a>
             <a class="vote" onclick="vote('downvote', <?=$GLOBALS['output']['thread']['tid']?>, 0)">
               <div class="voteBtn badge badge-danger">👎 <span id="downvote-<?=$GLOBALS['output']['thread']['tid']?>-0"><?=$GLOBALS['output']['thread']['downvote']?></span></div>
             </a>
+<?php if($GLOBALS['output']['thread']['uid'] == $GLOBALS['curUser']['uid'] || $GLOBALS['curUser']['gid'] >= 2) { ?>
+            <button class="btn btn-light" onclick="RemoveThread(<?=$GLOBALS['output']['thread']['tid']?>)">Remove</button>
+<?php } ?>
+<?php if($GLOBALS['output']['thread']['uid'] == $GLOBALS['curUser']['uid'] || $GLOBALS['curUser']['gid'] >= 2) { ?>
+            <button class="btn btn-light" onclick="edit()">Edit</button>
+<?php } ?>
+<?php if($GLOBALS['curUser']['gid'] >= 2) { ?>
+            <button class="btn btn-light" onclick="LockThread(<?=$GLOBALS['output']['thread']['tid']?>)">Lock</button>
+<?php } ?>
           </div>
           <div class="authorBar">
             <div class="avatar">
@@ -120,15 +135,6 @@
               <a href="/member/profile?uid=<?=$GLOBALS['output']['thread']['uid']?>">
                 <?=$GLOBALS['output']['thread']['username']?>
               </a><br><?=$GLOBALS['output']['thread']['sendtime']?>
-	      <?php if($GLOBALS['output']['thread']['uid'] == $GLOBALS['curUser']['uid'] || $GLOBALS['curUser']['gid'] >= 2) { ?>
-	        <button class="btn btn-default" onclick="RemoveThread(<?=$GLOBALS['output']['thread']['tid']?>)">Remove</button>
-	      <?php } ?>
-	      <?php if($GLOBALS['output']['thread']['uid'] == $GLOBALS['curUser']['uid'] || $GLOBALS['curUser']['gid'] >= 2) { ?>
-	        <button class="btn btn-default" onclick="edit()">Edit</button>
-	      <?php } ?>
-	      <?php if($GLOBALS['curUser']['gid'] >= 2) { ?>
-	        <button class="btn btn-default" onclick="LockThread(<?=$GLOBALS['output']['thread']['tid']?>)">Lock</button>
-	      <?php } ?>
             </div>
           </div>
         </div>
@@ -142,13 +148,19 @@
             <?=$post['content']?>
           </div>
           <div class="question-content-author">
-            <div class="voteBar">
+            <div class="operationBar">
               <a class="vote" onclick="vote('upvote', 0, <?=$post['pid']?>)">
                 <div class="voteBtn badge badge-success">👍 <span id="upvote-0-<?=$post['pid']?>"><?=$post['upvote']?></span></div>
               </a>
               <a class="vote" onclick="vote('downvote', 0, <?=$post['pid']?>)">
                 <div class="voteBtn badge badge-danger">👎 <span id="downvote-0-<?=$post['pid']?>"><?=$post['downvote']?></span></div>
               </a>
+<?php if($post['uid'] == $GLOBALS['curUser']['uid'] || $GLOBALS['curUser']['gid'] >= 2) { ?>
+              <button class="btn btn-light" onclick="RemovePost(<?=$post['pid']?>)">Remove</button>
+<?php } ?>
+<?php if($post['uid'] == $GLOBALS['curUser']['uid'] || $GLOBALS['curUser']['gid'] >= 2) { ?>
+              <button class="btn btn-light" onclick="edit()">Edit</button>
+<?php } ?>
             </div>
             <div class="authorBar">
               <div class="avatar">
@@ -158,12 +170,6 @@
                 <a href="/member/profile?uid=<?=$post['uid']?>">
                   <?=$post['username']?>
                 </a><br><?=$post['sendtime']?>
-		<?php if($post['uid'] == $GLOBALS['curUser']['uid'] || $GLOBALS['curUser']['gid'] >= 2) { ?>
-	          <button class="btn btn-default" onclick="RemovePost(<?=$post['pid']?>)">Remove</button>
-	        <?php } ?>
-		<?php if($post['uid'] == $GLOBALS['curUser']['uid'] || $GLOBALS['curUser']['gid'] >= 2) { ?>
-	          <button class="btn btn-default" onclick="edit()">Edit</button>
-	        <?php } ?>
               </div>
             </div>
           </div>
