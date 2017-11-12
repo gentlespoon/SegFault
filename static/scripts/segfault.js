@@ -215,13 +215,21 @@ $(document).ready(function() {
                 `+item.content+`
               </div>
               <div class="question-content-author">
-                <div class="voteBar">
+                <div class="operationBar">
                   <a class="vote" onclick="vote('upvote', 0, `+item.pid+`)">
                     <div class="voteBtn badge badge-success">👍 <span id="upvote-0-`+item.pid+`">`+item.upvote+`</span></div>
                   </a>
                   <a class="vote" onclick="vote('downvote', 0, `+item.pid+`)">
                     <div class="voteBtn badge badge-danger">👎 <span id="downvote-0-`+item.pid+`">`+item.downvote+`</span></div>
                   </a>
+                  <div class="modOperationBar">`;
+            if (result.isModerator) {
+              obj = obj+`
+                    <button class="btn btn-secondary" onclick="RemovePost(`+item.pid+`)">Remove</button>
+                    <button class="btn btn-secondary" onclick="edit()">Edit</button>`;
+            }   
+            obj = obj+`
+                  </div>
                 </div>
                 <div class="authorBar">
                   <div class="avatar">
@@ -255,6 +263,8 @@ $(document).ready(function() {
   $("#loadMoreQuestions").click(function() {
   });
 
+
+  $("#loadMoreAnswers").click();
 
 });
 

@@ -65,7 +65,6 @@ switch ($action) {
       }
 
       // fetch posts
-      $GLOBALS['output']['posts'] = forum::getPosts($tid, 5, 0)['message'];
       $GLOBALS['output']['postCount'] = forum::getPostCount($tid)['message'];
     break;
 
