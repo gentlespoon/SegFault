@@ -181,7 +181,7 @@ $(document).ready(function() {
         var tagid = obj.attr('tagid');
         tagName = obj.val();
         if ($("#newThreadTag-"+tagid).length == 0) {
-          var $newTag = $("<span id='newThreadTag-" + tagid + "' tagid='" + tagid + "' class='badge badge-dark'>" + tagName +"<div class='removeTag' onclick='removeTag(" + tagid + ");'>×</div></span>");
+          var $newTag = $("<span id='newThreadTag-" + tagid + "' tagid='" + tagid + "' class='badge badge-dark'>" + tagName +"<div class='removeTag' onclick='removeTag(" + tagid + ");'>&times;</div></span>");
           $("#tagsList").append($newTag);
           $("#newThreadTagSearchbox").val("");
           $("#newThreadTagSearchbox").removeClass("is-invalid");
@@ -256,9 +256,18 @@ $(document).ready(function() {
   });
 
 
-
-
 });
+
+
+function modalalert(title, content) {
+  if (title === undefined) {title = ""; content = "";}
+  if (content === undefined) {content = title; title="Alert";}
+  $("#modalalert-title").html(title);
+  $("#modalalert-content").html(content);
+  $("#modalalert").click();
+  $("#modalalert").blur();
+}
+
 
 function removeTag(tagid) {
   var tag = document.getElementById("newThreadTag-"+tagid);

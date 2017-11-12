@@ -1,3 +1,4 @@
+    <button id="modalalert" class="btn btn-info btn-lg hidden" data-toggle="modal" data-target="#modalAlertDiv">Open Modal</button>
   </div><!-- end of canvas -->
 
 
@@ -5,6 +6,29 @@
     <div class="container">
       <div class="left" style="font-size: 1.4em;"><a href="http://github.com/gentlespoon/SegFault"><?=$config['sitename']?></a><br> 2017 &copy; SegFault@UCR</div>
       <div class="right"><?=$GLOBALS['queryCount']?> queries processed in <?=$_runtime?> second(s)<br><?=$_SERVER['SERVER_SOFTWARE']?><br><?=$_SERVER['HTTP_USER_AGENT']?></div>
+    </div>
+  </div>
+
+
+
+<!-- Modal -->
+  <div class="modal fade" id="modalAlertDiv" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 id="modalalert-title" class="modal-title">[TITLE]</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div id="modalalert-content" class="modal-body">
+          [CONTENT]
+        </div>
+        <!-- 
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+        -->
+      </div>
     </div>
   </div>
 
@@ -25,7 +49,17 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote-bs4.js"></script>
 
 
+<?php if (!$_SESSION['visitCounter']) : ?>
+  <script>
+    $(document).ready(function() {
+      modalalert("Welcome to sFault.net", `
+  <p>This is your first visit to sFault.net. This alert will only show once. You can see this alert again by signing out or start a new session.</p>
+  <p>sFault.net is the project of UCR CS180 team NULL. sFault.net is still in development.</p>
+    `);
+    });
+  </script>
+<?php endif ?>
 
 
-  </body>
-  </html>
+</body>
+</html>
