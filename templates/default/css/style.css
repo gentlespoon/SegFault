@@ -119,6 +119,8 @@ a
 {
     display: inline-block;
     float: right;
+
+    margin-top: 5px;
     /*border: 1px solid #e4e6e8;*/
 }
 
@@ -133,6 +135,17 @@ a
     display: inline-block;
     float: left;
 
+    padding-left: .5em;
+    /*border: 1px solid #e4e6e8;*/
+}
+.authorBar > .title
+{
+    line-height: 40px;
+
+    display: inline-block;
+    float: left;
+
+    width: 2em;
     padding-left: .5em;
     /*border: 1px solid #e4e6e8;*/
 }

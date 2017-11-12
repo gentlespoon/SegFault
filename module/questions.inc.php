@@ -96,7 +96,7 @@ switch ($action) {
 
     $offset = 0;
     // this SQL can be unsafe!!
-    $sql = "SELECT forum_threads.*, member.username, member.uid FROM forum_threads LEFT JOIN member ON member.uid=forum_threads.uid WHERE visible<=%i ".$additionalSearchCondition." ORDER BY sendtime DESC LIMIT 20 OFFSET %i";
+    $sql = "SELECT forum_threads.*, member.avatar, member.username, member.uid FROM forum_threads LEFT JOIN member ON member.uid=forum_threads.uid WHERE visible<=%i ".$additionalSearchCondition." ORDER BY sendtime DESC LIMIT 20 OFFSET %i";
     // echo $sql."<br />";
     $threads = DB::query($sql, $GLOBALS['curUser']['gid'], $offset);
     if (empty($threads)) {
@@ -107,7 +107,7 @@ switch ($action) {
     foreach ($threads as $k => $v) {
       $threads[$k]['tags'] = explode(",", $threads[$k]['tags']);
       // if Question description is longer than $summaryCharLimit, cut it at the nearest whitespace and append ...
-      $summaryCharLimit = 300;
+      $summaryCharLimit = 500;
       if (strlen($threads[$k]['content'])>$summaryCharLimit) {
         $threads[$k]['content'] = substr($threads[$k]['content'], 0, strpos($threads[$k]['content'], " ", $summaryCharLimit-10))." ...";
       }
@@ -115,7 +115,7 @@ switch ($action) {
       // $threads[$k]['author'] = member::getUserInfo($threads[$k]['uid']);
       $threads[$k]['sendtime'] = toUserTime($v['sendtime']);
       // get last response info
-      $threads[$k]['lastreply'] = DB::query("SELECT member.username, forum_posts.sendtime, forum_posts.uid FROM forum_posts LEFT JOIN member ON member.uid=forum_posts.uid WHERE tid=%i ORDER BY sendtime DESC LIMIT 1", $threads[$k]['tid']);
+      $threads[$k]['lastreply'] = DB::query("SELECT member.avatar, member.username, forum_posts.sendtime, forum_posts.uid FROM forum_posts LEFT JOIN member ON member.uid=forum_posts.uid WHERE tid=%i ORDER BY sendtime DESC LIMIT 1", $threads[$k]['tid']);
       if (!empty($threads[$k]['lastreply'])) {
         $threads[$k]['lastreply'] = $threads[$k]['lastreply'][0];
         $threads[$k]['lastreply']['sendtime'] = toUserTime($threads[$k]['lastreply']['sendtime']);
