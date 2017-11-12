@@ -64,12 +64,12 @@
               <ul class="dropdown-menu dropdown-menu-sw">
                 <li class="dropdown-item">Signed in as:<br /><b><?= $GLOBALS['curUser']['username'] ?></b></li>
                 <li class="dropdown-divider"></li>
-                <li class="dropdown-item"><a href="/member/profile?uid=<?=$GLOBALS['curUser']['uid']?>">Your Profile</a></li>
-                <li class="dropdown-item"><a href="/questions/search/?uid=<?=$GLOBALS['curUser']['uid']?>">Your Questions</a></li>
-                <li class="dropdown-item"><a href="/questions/search/?uid=<?=$GLOBALS['curUser']['uid']?>">Your Answers</a></li>
-                <li class="dropdown-item"><a href="/faq">Help</a></li>
+                <a href="/member/profile?uid=<?=$GLOBALS['curUser']['uid']?>"><li class="dropdown-item">Your Profile</li></a>
+                <a href="/questions/search/?uid=<?=$GLOBALS['curUser']['uid']?>"><li class="dropdown-item">Your Questions</li></a>
+                <a href="/questions/search/?uid=<?=$GLOBALS['curUser']['uid']?>"><li class="dropdown-item">Your Answers</li></a>
+                <a href="/faq"><li class="dropdown-item">Help</li></a>
                 <li class="dropdown-divider"></li>
-                <li class="dropdown-item"><a href="/member/logout">Log Out</a></li>
+                <a href="/member/logout"><li class="dropdown-item">Log Out</li></a>
               </ul>
             <!-- </div> -->
           </li>
