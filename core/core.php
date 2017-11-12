@@ -42,7 +42,12 @@ DB::$encoding = $config['db']['charset'];
 if (!isset($GLOBALS['output'])) $GLOBALS['output'] = [ "alert" => [], "title" => ""];
 
 // initialize user session if first time visitor
-if (!array_key_exists("uid", $_SESSION)) $_SESSION['uid'] = 0;
+if (!array_key_exists("uid", $_SESSION)) {
+  $_SESSION['uid'] = 0;
+  $_SESSION['visitCounter']=-1;
+}
+
+$_SESSION['visitCounter']++;
 
 // fetch current userinfo
 $GLOBALS['curUser'] = member::getUserInfo();

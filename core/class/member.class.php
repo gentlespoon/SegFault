@@ -150,8 +150,8 @@ class member {
    * @return [success, message]
    */
   public static function logout() {
-    $_SESSION['username'] = "";
     $_SESSION['uid'] = 0;
+    $_SESSION['visitCounter'] = -1;
     $GLOBALS['curUser'] = member::getUserInfo();
     return ["success" => 1, "message" => $GLOBALS['lang']["logged-out"]];
   }
