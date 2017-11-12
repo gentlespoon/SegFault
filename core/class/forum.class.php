@@ -43,7 +43,7 @@ class forum {
    * @return [success, $posts[]]
    */
   public static function getPosts($tid, $count=5, $offset) {
-    $posts = DB::query("SELECT forum_posts.*, member.username, member.avatar, member.uid FROM forum_posts LEFT JOIN member ON member.uid=forum_posts.uid WHERE tid=%i ORDER BY sendtime ASC LIMIT %i OFFSET %i", $tid, $count, $offset);
+    $posts = DB::query("SELECT forum_posts.*, member.username, member.avatar, member.uid FROM forum_posts LEFT JOIN member ON member.uid=forum_posts.uid WHERE tid=%i ORDER BY upvote DESC LIMIT %i OFFSET %i", $tid, $count, $offset);
     foreach($posts as $k => $post) {
       // $posts[$k]['author'] = member::getUserInfo($post['uid']);
       // $posts[$k]['author'] = ["username" => $post['username'], "avatar" => $post['avatar']];
