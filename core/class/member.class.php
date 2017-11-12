@@ -113,7 +113,7 @@ class member {
     }
     // Record this login attempt
     DB::query("INSERT INTO member_loginhistory (username, login_date, ip) VALUES (%s, %i, %s)", $username, $GLOBALS['now'], $_SERVER['REMOTE_ADDR']);
-    $historyId = DB::query("SELECT id FROM member_loginhistory WHERE username=%s AND ip=%s", $username, $_SERVER['REMOTE_ADDR'])[0]['id'];
+    $historyId = DB::query("SELECT id FROM member_loginhistory WHERE username=%s AND ip=%s ORDER BY login_date DESC", $username, $_SERVER['REMOTE_ADDR'])[0]['id'];
     // Fetch userinfo
     $attemptedUser = DB::query("SELECT uid, password, salt, failcount, lastattempt FROM member WHERE username=%s", $username);
     if (empty($attemptedUser)) {
