@@ -64,7 +64,11 @@ switch ($action) {
         $result = member::login($_POST['username'], $_POST['password']);
         if ($result['success']) {
           alert($GLOBALS['lang']['logged-in'], GREEN);
-          redirect(60, $_GET['redirect']);
+          if ($_GET['redirect'] != "/member/logout") {
+            redirect(3, $_GET['redirect']);
+          } else {
+            redirect(3, "/");
+          }
         } else {
           alert($result['message'], RED);
           break;
