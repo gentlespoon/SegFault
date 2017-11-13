@@ -178,8 +178,8 @@ class forum {
       return ["success" => 0, "message" => $GLOBALS['lang']['permission-denied']];
     }
     if (DB::query("INSERT INTO forum_posts (tid, content, sendtime, uid) VALUES (%i, %s, %i, %i)", $tid, $content, $GLOBALS['now'], $_SESSION['uid'])) {
-      return ["success" => 1, "message" => $GLOBALS['lang']["new-post-success"]];
       DB::query("UPDATE member SET threads=threads+1 WHERE uid=%i", $GLOBALS['curUser']['uid']);
+      return ["success" => 1, "message" => $GLOBALS['lang']["new-post-success"]];
     } else {
       return ["success" => 0, "message" => "newPost failed"];
     }
@@ -201,8 +201,8 @@ class forum {
       // since in high concurrency the last inserted id may be different
       // use last tid from the uid instead
       $tid = DB::query("SELECT tid FROM forum_threads WHERE uid=%i ORDER BY sendtime DESC", $_SESSION['uid'])[0]['tid'];
-      return ["success" => 1, "message" => $tid];
       DB::query("UPDATE member SET threads=threads+1 WHERE uid=%i", $GLOBALS['curUser']['uid']);
+      return ["success" => 1, "message" => $tid];
     } else {
       return ["success" => 0, "message" => "newThread failed"];
     }
