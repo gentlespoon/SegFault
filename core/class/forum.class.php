@@ -1,18 +1,111 @@
 <?php
 
 class forum {
-  
+
+  //Wrapper around real_escape_string
+  //Taken from DB class in MeekroDB
+  //Used by forum to escape user-supplied data before
+  //passing to sqleval to prevent SQL injection
+  protected static function sqlEscape($str) {
+    return "'" . DB::get()->real_escape_string(strval($str)) . "'";
+  }
+
+  protected static function validIDArray($idArr) {
+    return array_key_exists('type', $idArr) && ($idArr['type'] === "post" || $idArr['type'] === "thread") && 
+           array_key_exists('id', $idArr) && is_numeric($idArr['id']);
+  }
+
+  protected static function postType($idArr) {
+    if (!forum::validIDArray($idArr)) {
+      return "error";
+    }
+    return $idArr['type'];
+  }
+
+  protected static function validPost($idArr) {
+    if (!forum::validIDArray($idArr)) {
+      return FALSE;
+    }
+
+    if (forum::postType($idArr) === "thread") {
+      return forum::getThread($idArr['id'])['success'] === 1;
+    }
+    else {
+      return forum::getPost($idArr['id'])['success'] === 1;
+    }
+  }
+
+  protected static function userCanEdit($idArr) {
+    if (!forum::validIDArray($idArr)) {
+      return FALSE;
+    }
+
+    if ($GLOBALS['curUser']['gid'] > 1) {
+      return TRUE;
+    }
+
+    $post = forum::postType($idArr) === "thread" ? forum::getThread($idArr['id']) : forum::getPost($idArr['id']);
+
+    if ($post['success'] === 0) {
+      return FALSE;
+    }
+
+    $post = $post['message'];
+
+    $timeSinceCreation = time() - $post['unixtime'];
+    $timeSinceCreation /= 60; //number of minutes since edit
+
+    if ($post['author']['uid'] === $GLOBALS['curUser']['uid'] && $timeSinceCreation < 15) {
+      return TRUE;
+    }
+  }
+
+  //@param 'idArr' {'type' => "thread/post", 'id' => id}
+  public static function edit($idArr, $content) {
+    if (!forum::validIDArray($idArr))
+    {
+      return array('success' => 0, 'message' => "improper 'idArr' parameter");
+    }
+    if (empty($content)) {
+      return array('success' => 0, 'message' => "'content' parameter cannot be empty");
+    }
+
+    if (!forum::validPost($idArr)) {
+      return array('success' => 0, 'message' => "invalid thread/post");
+    }
+
+    if (!forum::userCanEdit($idArr)) {
+      return array('success' => 0, 'message' => "insufficient permissions");
+    }
+
+    //Escape user-submitted data so that we can use sqleval
+    //allowing for an atomic update to avoid race conditions
+    $toAppend = forum::sqlEscape("<p>".$content."<br />- <i>Added by ".$GLOBALS['curUser']['username']." at ".toUserTime(time())."</i></p>");
+    
+    $set = array("content" => DB::sqleval("CONCAT(content, ".$toAppend.")")); //what we are setting with this update
+    $table = forum::postType($idArr) === "thread" ? "forum_threads" : "forum_posts";
+    $cond = forum::postType($idArr) === "thread" ? "tid=%i" : "pid=%i";
+    DB::update($table, $set, $cond, $idArr['id']);
+    
+    if (DB::affectedRows() === 0) {
+      return array('success' => 0, 'message' => "database error");
+    }
+
+    return array('success' => 1, 'message' => "updated successfully");
+  }
+
   /**
    * @param  thread id
    * @return [success, thread content]
    */
   public static function getThread($tid) {
     if (!$GLOBALS['curUser']['viewthread']) error($GLOBALS['lang']['permission-denied']);
-    $result = DB::query("SELECT forum_threads.*, member.username, member.avatar, member.uid FROM forum_threads LEFT JOIN member ON member.uid=forum_threads.uid WHERE tid=%i", $tid);
+    $result = DB::query("SELECT * FROM forum_threads WHERE tid=%i", $tid);
     if (!empty($result)) {
       $thread = $result[0];
       $thread['tags'] = explode(",", $thread['tags']);
-      // $thread['author'] = member::getUserInfo($thread['uid']);
+      $thread['author'] = member::getUserInfo($thread['uid']);
+      $thread['unixtime'] = $thread['sendtime'];
       $thread['sendtime'] = toUserTime($thread['sendtime']);
       return ["success" => 1, "message" => $thread];
     } else {
@@ -62,10 +155,11 @@ class forum {
    */
   public static function getPost($pid) {
     if (!$GLOBALS['curUser']['viewthread']) error($GLOBALS['lang']['permission-denied']);
-    $result = DB::query("SELECT forum_posts.*, member.username, member.avatar, member.uid FROM forum_posts LEFT JOIN member ON member.uid=forum_posts.uid WHERE pid=%i", $pid);
+    $result = DB::query("SELECT * FROM forum_posts WHERE pid=%i", $pid);
     if (!empty($result)) {
       $post = $result[0];
-      // $post['author'] = member::getUserInfo($post['uid']);
+      $post['author'] = member::getUserInfo($post['uid']);
+      $post['unixtime'] = $post['sendtime'];
       $post['sendtime'] = toUserTime($post['sendtime']);
       return ["success" => 1, "message" => $post];
     } else {
