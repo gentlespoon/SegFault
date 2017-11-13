@@ -88,6 +88,7 @@ class forum {
     } else {
       return ["success" => 0, "message" => "newPost failed"];
     }
+    DB::query("UPDATE member SET threads=threads+1 WHERE uid=%i", $GLOBALS['curUser']['uid']);
   }
 
 
@@ -110,6 +111,7 @@ class forum {
     } else {
       return ["success" => 0, "message" => "newThread failed"];
     }
+    DB::query("UPDATE member SET threads=threads+1 WHERE uid=%i", $GLOBALS['curUser']['uid']);
   }
 
 
