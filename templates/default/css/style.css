@@ -178,7 +178,6 @@ a
     padding: 12px 0;
 }
 
-
 .removeTag
 {
     display: inline-block;
@@ -248,4 +247,13 @@ a
 
     border: 1px solid black;
     border-radius: .25rem;
+}
+
+.notification
+{
+    width: 20px;
+    height: 20px;
+
+    margin-right: 0;
+
 }

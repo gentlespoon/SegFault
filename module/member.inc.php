@@ -117,7 +117,7 @@ switch ($action) {
   case "logout":
     member::logout();
     alert($GLOBALS['lang']['logged-out'], GREEN);
-    redirect(5, $_GET['redirect']);
+    redirect(60, $_GET['redirect']);
     break;
 
 
