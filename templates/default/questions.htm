@@ -105,7 +105,7 @@
     <!-- THREAD -->
     <div class="question-summary">
       <a href="/questions/viewthread/<?=$GLOBALS['output']['thread']['tid']?>"><h3><?=$GLOBALS['output']['thread']['title']?></h3></a>
-      <?php if($GLOBALS['output']['thread']['open'] > $GLOBALS['curUser']['gid']) echo "[LOCKED]"; ?> 
+      <?php if($GLOBALS['output']['thread']['open'] > 1) echo "[LOCKED]"; ?> 
     </div>
     <div class="question-summary">
       Tags:
@@ -156,11 +156,11 @@
   var currentAnswers = 0;
   var tid = <?=$GLOBALS['output']['thread']['tid']?>;
 </script>
-<?php if ($GLOBALS['output']['postCount'] > 5) : ?>
+<!-- <?php if ($GLOBALS['output']['postCount'] > 0) : ?> -->
       <div>
-        <button id="loadMoreAnswers" type="button" class="col-md-12 btn btn-light">Load more answers (<span id="currentAnswers">5</span> of <?=$GLOBALS['output']['postCount']?>)</button>
+        <button id="loadMoreAnswers" type="button" class="col-md-12 btn btn-light">Load more answers (<span id="currentAnswers">0</span> of <?=$GLOBALS['output']['postCount']?>)</button>
       </div>
-<?php endif ?>
+<!-- <?php endif ?> -->
     </div>
 
     <div id="editpost" style="display:none;">
