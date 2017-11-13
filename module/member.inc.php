@@ -32,19 +32,19 @@ switch ($action) {
         $result = json_decode($result);
         $result = (array)$result;
         if (!$result['success']) {
-          alert("Failed to verify reCAPTCHA", "alert-danger");
+          alert("Failed to verify reCAPTCHA", RED);
           redirect(60, "/member/register");
         }
 
         // if both field exists
         $result = member::register($_POST['username'], $_POST['password'], $_POST['email']);
         if (!$result['success']) {
-          alert($result['message'], "alert-danger");
+          alert($result['message'], RED);
           break;
         }
         member::login($_POST['username'], $_POST['password']);
         $GLOBALS['lang']['registered-welcome'] = str_replace("[USERNAME]", $GLOBALS['curUser']['username'], $GLOBALS['lang']['registered-welcome']);
-        alert($GLOBALS['lang']['registered-welcome'], "alert-success");
+        alert($GLOBALS['lang']['registered-welcome'], GREEN);
         // redirect user to previous page
         redirect(5, $_GET['redirect']);
       }
@@ -63,10 +63,14 @@ switch ($action) {
       if (array_key_exists("password", $_POST)) {
         $result = member::login($_POST['username'], $_POST['password']);
         if ($result['success']) {
-          alert($GLOBALS['lang']['logged-in'], "alert-success");
-          redirect(3, $_GET['redirect']);
+          alert($GLOBALS['lang']['logged-in'], GREEN);
+          if ($_GET['redirect'] != "/member/logout") {
+            redirect(3, $_GET['redirect']);
+          } else {
+            redirect(3, "/");
+          }
         } else {
-          alert($result['message'], "alert-danger");
+          alert($result['message'], RED);
           break;
         }
       }
@@ -90,9 +94,9 @@ switch ($action) {
         unset($_POST['submitmod']);
         $result = member::modProfile($_POST);
         if ($result['success']) {
-          alert($result['message'], "alert-success");
+          alert($result['message'], GREEN);
         } else {
-          alert($result['message'], "alert-danger");
+          alert($result['message'], RED);
         }
       }
       // select columns that are allowed to modify
@@ -100,10 +104,10 @@ switch ($action) {
       if ($result['success']) {
         $GLOBALS['output']['fields'] = $result['message'];
       } else {
-        alert($result['message'], "alert-danger");
+        alert($result['message'], RED);
       }
       if (empty($GLOBALS['output']['fields'])) {
-        alert("You do not have the permission to view other member's profile.", "alert-danger");
+        alert("You do not have the permission to view other member's profile.", RED);
       }
       break;
 
@@ -116,7 +120,7 @@ switch ($action) {
 
   case "logout":
     member::logout();
-    alert($GLOBALS['lang']['logged-out'], "alert-success");
+    alert($GLOBALS['lang']['logged-out'], GREEN);
     redirect(5, $_GET['redirect']);
     break;
 

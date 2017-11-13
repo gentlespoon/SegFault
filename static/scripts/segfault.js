@@ -181,7 +181,7 @@ $(document).ready(function() {
         var tagid = obj.attr('tagid');
         tagName = obj.val();
         if ($("#newThreadTag-"+tagid).length == 0) {
-          var $newTag = $("<span id='newThreadTag-" + tagid + "' tagid='" + tagid + "' class='badge badge-dark'>" + tagName +"<div class='removeTag' onclick='removeTag(" + tagid + ");'>×</div></span>");
+          var $newTag = $("<span id='newThreadTag-" + tagid + "' tagid='" + tagid + "' class='badge badge-dark'>" + tagName +"<div class='removeTag' onclick='removeTag(" + tagid + ");'>&times;</div></span>");
           $("#tagsList").append($newTag);
           $("#newThreadTagSearchbox").val("");
           $("#newThreadTagSearchbox").removeClass("is-invalid");
@@ -215,16 +215,32 @@ $(document).ready(function() {
                 `+item.content+`
               </div>
               <div class="question-content-author">
-                <a class="vote" onclick="vote('upvote', 0, `+item.pid+`)">
-                  <div class="voteBtn badge badge-success">👍 <span id="upvote-0-`+item.pid+`">`+item.upvote+`</span></div>
-                </a>
-                <a class="vote" onclick="vote('downvote', 0, `+item.pid+`)">
-                  <div class="voteBtn badge badge-danger">👎 <span id="downvote-0-`+item.pid+`">`+item.downvote+`</span></div>
-                </a>
-                <a href="/member/profile/`+item.author.uid+`">
-                  <img class="avatar-32" src="`+item.author.avatar+`">
-                  `+item.author.username+`
-                </a> at `+item.sendtime+`
+                <div class="operationBar">
+                  <a class="vote" onclick="vote('upvote', 0, `+item.pid+`)">
+                    <div class="voteBtn badge badge-success">👍 <span id="upvote-0-`+item.pid+`">`+item.upvote+`</span></div>
+                  </a>
+                  <a class="vote" onclick="vote('downvote', 0, `+item.pid+`)">
+                    <div class="voteBtn badge badge-danger">👎 <span id="downvote-0-`+item.pid+`">`+item.downvote+`</span></div>
+                  </a>
+                  <div class="modOperationBar">`;
+            if (result.isModerator) {
+              obj = obj+`
+                    <button class="btn btn-secondary" onclick="RemovePost(`+item.pid+`)">Remove</button>
+                    <button class="btn btn-secondary" onclick="edit()">Edit</button>`;
+            }   
+            obj = obj+`
+                  </div>
+                </div>
+                <div class="authorBar">
+                  <div class="avatar">
+                    <img class="avatar-40" src="`+item.avatar+`">
+                  </div>
+                  <div class="author">
+                    <a href="/member/profile/`+item.uid+`">
+                      `+item.username+`
+                    </a><br>`+item.sendtime+`
+                  </div>
+                </div>
               </div>
             </div>
             `;
@@ -248,9 +264,20 @@ $(document).ready(function() {
   });
 
 
-
+  $("#loadMoreAnswers").click();
 
 });
+
+
+function modalalert(title, content) {
+  if (title === undefined) {title = ""; content = "";}
+  if (content === undefined) {content = title; title="Alert";}
+  $("#modalalert-title").html(title);
+  $("#modalalert-content").html(content);
+  $("#modalalert").click();
+  $("#modalalert").blur();
+}
+
 
 function removeTag(tagid) {
   var tag = document.getElementById("newThreadTag-"+tagid);
@@ -269,7 +296,33 @@ function vote(ud, tid, pid) {
     .fail(function(data) {
       alert("Vote Failed!");
     })
-    .always(function(data) {
-      // alert( "complete\n" + data );
-    });
+};
+
+function RemovePost(pid){
+    $.ajax({ url: "/api/forum/removepost", data: { pid: pid }, method: "get"})
+	.done(function(data) {
+	    window.location.reload();
+	})
+};
+
+function RemoveThread(tid){
+    $.ajax({ url: "/api/forum/removethread", data: { tid: tid }, method: "get"})
+	.done(function(data) {
+	    window.location = "/";
+	})
+};
+
+function LockThread(tid){
+    $.ajax({ url: "/api/forum/lockthread", data: { tid: tid }, method: "get"})
+      .done(function(data) {
+	  window.location.reload();
+      })
+};
+
+function EditPost(pid, oldContent, newContent){
+    $.ajax({ url: "/api/forum/editpost", data: { pid: pid, oldContent: oldContent, newContent: newContent}, method: "get"})
+};
+
+function edit(){
+    document.getElementById('editpost').style.display = "block";
 };
