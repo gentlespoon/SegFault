@@ -1,7 +1,11 @@
 <?php
 
 
-// print_r wrapper
+/**
+ * @param  array
+ * @param  boolean, true = return as string, false = echo
+ * @return return string or echo
+ */
 function printv($arr, $ret=false) {
   $buf = "";
   if (is_array($arr)) {
@@ -25,6 +29,10 @@ function printv($arr, $ret=false) {
 
 // render the HTML template
 // **** this function WILL TERMINATE the PHP EXECUTION ****
+/**
+ * @param  template files
+ * @return EXIT
+ */
 function template(...$files) {
   global $_SESSION;
   global $_GET;
@@ -47,6 +55,11 @@ function template(...$files) {
 
 // redirect the user to another URL
 // **** this function WILL TERMINATE the PHP EXECUTION ****
+/**
+ * @param  how many seconds before redirection
+ * @param  URL
+ * @return EXIT
+ */
 function redirect($sec, $url) {
   global $redirect;
   $redirect = "<meta http-equiv='refresh' content='".$sec."; URL=".$url."'>";
@@ -57,6 +70,10 @@ function redirect($sec, $url) {
 
 // Generate a random string
 // used for password salt
+/**
+ * @param  length of random string
+ * @return random string
+ */
 function randomStr($length) {
     $keyspace = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
     $str = '';
@@ -71,7 +88,12 @@ function randomStr($length) {
 
 // convert timestamp to human readable time
 // default time format is ISO
-function toUserTime($time, $format=false) {
+/**
+ * @param  UNIX timestamp
+ * @param  NULL if use default format; otherwise provide a format string 
+ * @return human readable time in string
+ */
+function toUserTime($time, $format=NULL) {
   global $config;
   if (!$format) {
     // $format = $config['datetime']['iso'];
@@ -101,13 +123,21 @@ function makeLikeCond($fieldname, $condition, $delim, $allowConcatenate=false) {
 }
 
 
-
-function alert($text, $type="alert-info") {
+/**
+ * @param  string alert text
+ * @param  constant alert type (see /core/constant.php)
+ * @return none. alert pushed into $GLOBALS['output']['alert']
+ */
+function alert($text, $type=BLUE) {
   array_push($GLOBALS['output']['alert'], [$text, $type]);
 }
 
 
-
+/**
+ * @param  string error text
+ * @param  HTML error code
+ * @return EXIT
+ */
 function error($text, $htmlcode=NULL) {
   if ($htmlcode!=NULL) {
     header("HTTP/1.1 ".$htmlcode);
@@ -118,7 +148,11 @@ function error($text, $htmlcode=NULL) {
 }
 
 
-
+/**
+ * @param  $result[] from class OR 0/1 as success
+ * @param  string or array as message
+ * @return EXIT with json_encode
+ */
 function api_write($result, $message=NULL) {
   if (is_array($result)) {
     exit(json_encode($result));

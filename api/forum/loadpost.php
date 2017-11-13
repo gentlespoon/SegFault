@@ -6,4 +6,6 @@
     api_write(0, "Insufficient arguments");
   }
 
-  api_write(forum::getPosts($_GET['tid'], 5, $_GET['offset']));
+  $result = forum::getPosts($_GET['tid'], 5, $_GET['offset']);
+  $result['isModerator'] = $GLOBALS['curUser']['gid']>=2 ? true : false;
+  api_write($result);

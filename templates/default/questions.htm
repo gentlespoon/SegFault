@@ -9,6 +9,7 @@
     <button class="btn btn-primary ml-sm-2 loginBtn askBtn">Ask Question</button>
 <?php endif ?>
     <!-- </div> -->
+<?php if ($_SESSION['uid']) : ?>
     <div class="sidebarItem">
       <b>Your FavTags</b>
       <div class="" id="favTags">
@@ -18,6 +19,11 @@
         <a href="/tags/manage">Manage FavTags</a>
       </div>
     </div>
+<?php else : ?>
+    <div class="sidebarItem">
+      <a href="javascript:void();" class="loginBtn">Sign In</a> to see your favorite tags.
+    </div>
+<?php endif ?>
   </div>
 
 
@@ -51,14 +57,24 @@
             </p>
           </div>
           <div class="row col-lg-4 col-md-5 col-sm-12 questions-author">
-            <div class="col-lg-12 col-md-12 col-sm-6">
-              Asked by <a href="/member/profile/<?=$v['author']['uid']?>"><?= $v['author']['username'] ?></a><br />
-              at <?= $v['sendtime'] ?>
+            <div class="authorBar">
+              <div class="title">Q</div>
+              <div class="avatar"><img class="avatar-40" src="<?=$v['avatar']?>"></div>
+              <div class="author">
+                <a href="/member/profile?uid=<?=$v['uid']?>">
+                  <?= $v['username'] ?>
+                </a><br><?= $v['sendtime'] ?>
+              </div>
             </div>
 <?php if (!empty($v['lastreply'])) : ?>
-            <div class="col-lg-12 col-md-12 col-sm-6">
-              Last response by <a href="/member/profile/<?=$v['lastreply']['uid']?>"><?=$v['lastreply']['username']?></a><br />
-              at <?=$v['lastreply']['sendtime']?>
+            <div class="authorBar">
+              <div class="title">A</div>
+              <div class="avatar"><img class="avatar-40" src="<?=$v['lastreply']['avatar']?>"></div>
+              <div class="author">
+                <a href="/member/profile?uid=<?=$v['lastreply']['uid']?>">
+                  <?=$v['lastreply']['username']?>
+                </a><br><?=$v['lastreply']['sendtime']?>
+              </div>
             </div>
 <?php endif ?>
           </div>
@@ -89,6 +105,7 @@
     <!-- THREAD -->
     <div class="question-summary">
       <a href="/questions/viewthread/<?=$GLOBALS['output']['thread']['tid']?>"><h3><?=$GLOBALS['output']['thread']['title']?></h3></a>
+      <?php if($GLOBALS['output']['thread']['open'] > $GLOBALS['curUser']['gid']) echo "[LOCKED]"; ?> 
     </div>
     <div class="question-summary">
       Tags:
@@ -103,44 +120,40 @@
           <?=$GLOBALS['output']['thread']['content']?>
         </div>
         <div class="question-content-author">
-          <a class="vote"  onclick="vote('upvote', <?=$GLOBALS['output']['thread']['tid']?>, 0)">
-            <div class="voteBtn badge badge-success">👍 <span id="upvote-<?=$GLOBALS['output']['thread']['tid']?>-0"><?=$GLOBALS['output']['thread']['upvote']?></span></div>
-          </a>
-          <a class="vote" onclick="vote('downvote', <?=$GLOBALS['output']['thread']['tid']?>, 0)">
-            <div class="voteBtn badge badge-danger">👎 <span id="downvote-<?=$GLOBALS['output']['thread']['tid']?>-0"><?=$GLOBALS['output']['thread']['downvote']?></span></div>
-          </a>
-          <a href="/member/profile/<?=$GLOBALS['output']['thread']['author']['uid']?>">
-            <img class="avatar-32" src="<?=$GLOBALS['output']['thread']['author']['avatar']?>">
-            <?=$GLOBALS['output']['thread']['author']['username']?>
-          </a> at <?=$GLOBALS['output']['thread']['sendtime']?>
+          <div class="operationBar">
+            <a class="vote"  onclick="vote('upvote', <?=$GLOBALS['output']['thread']['tid']?>, 0)">
+              <div class="voteBtn badge badge-success">👍 <span id="upvote-<?=$GLOBALS['output']['thread']['tid']?>-0"><?=$GLOBALS['output']['thread']['upvote']?></span></div>
+            </a>
+            <a class="vote" onclick="vote('downvote', <?=$GLOBALS['output']['thread']['tid']?>, 0)">
+              <div class="voteBtn badge badge-danger">👎 <span id="downvote-<?=$GLOBALS['output']['thread']['tid']?>-0"><?=$GLOBALS['output']['thread']['downvote']?></span></div>
+            </a>
+<?php if($GLOBALS['output']['thread']['uid'] == $GLOBALS['curUser']['uid'] || $GLOBALS['curUser']['gid'] >= 2) { ?>
+            <button class="btn btn-secondary" onclick="RemoveThread(<?=$GLOBALS['output']['thread']['tid']?>)">Remove</button>
+            <button class="btn btn-secondary" onclick="edit()">Edit</button>
+<?php } ?>
+<?php if($GLOBALS['curUser']['gid'] >= 2) { ?>
+            <button class="btn btn-secondary" onclick="LockThread(<?=$GLOBALS['output']['thread']['tid']?>)">Lock</button>
+<?php } ?>
+          </div>
+          <div class="authorBar">
+            <div class="avatar">
+              <img class="avatar-40" src="<?=$GLOBALS['output']['thread']['avatar']?>">
+            </div>
+            <div class="author">
+              <a href="/member/profile?uid=<?=$GLOBALS['output']['thread']['uid']?>">
+                <?=$GLOBALS['output']['thread']['username']?>
+              </a><br><?=$GLOBALS['output']['thread']['sendtime']?>
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- POSTS content-->
       <div id="question-answers">
-<?php foreach ($GLOBALS['output']['posts'] as $k => $post) : ?>
-        <div class="question-content">
-          <div>
-            <?=$post['content']?>
-          </div>
-          <div class="question-content-author">
-            <a class="vote" onclick="vote('upvote', 0, <?=$post['pid']?>)">
-              <div class="voteBtn badge badge-success">👍 <span id="upvote-0-<?=$post['pid']?>"><?=$post['upvote']?></span></div>
-            </a>
-            <a class="vote" onclick="vote('downvote', 0, <?=$post['pid']?>)">
-              <div class="voteBtn badge badge-danger">👎 <span id="downvote-0-<?=$post['pid']?>"><?=$post['downvote']?></span></div>
-            </a>
-            <a href="/member/profile/<?=$post['author']['uid']?>">
-              <img class="avatar-32" src="<?=$post['author']['avatar']?>">
-              <?=$post['author']['username']?>
-            </a> at <?=$post['sendtime']?>
-          </div>
-        </div>
-<?php endforeach ?>
       </div>
 <script>
   var totalAnswers = <?=$GLOBALS['output']['postCount']?>;
-  var currentAnswers = 5;
+  var currentAnswers = 0;
   var tid = <?=$GLOBALS['output']['thread']['tid']?>;
 </script>
 <?php if ($GLOBALS['output']['postCount'] > 5) : ?>
@@ -150,11 +163,16 @@
 <?php endif ?>
     </div>
 
+    <div id="editpost" style="display:none;">
+      Text editor will go here
+    </div>
+    
     <hr />
 
     <div class="question-reply">
 <?php if ($GLOBALS['curUser']['uid']) : ?>
   <?php if ($GLOBALS['curUser']['newpost']) : ?>
+    <?php if ($GLOBALS['output']['thread']['open'] <= $GLOBALS['curUser']['gid']) : ?>
       <form id="newPostForm" method="post" action="/questions/answer">
         <div class="form-group">
           <div id="summernote"></div>
@@ -165,6 +183,7 @@
           <input class="btn btn-primary" type="submit" value="<?=$GLOBALS['lang']['new-post-send']?>">
         </div>
       </form>
+    <?php endif ?>
   <?php else : ?>
       You do not have permission to answer question.
   <?php endif ?>

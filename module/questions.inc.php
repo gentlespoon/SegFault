@@ -25,35 +25,32 @@ switch ($action) {
     break;
 
 
+
   case "asked":
-    if (!$GLOBALS['curUser']['newthread']) {
-      error($GLOBALS['lang']['permission-denied'], 403);
-    }
-    DB::query("INSERT INTO forum_threads (title, content, tags, sendtime, uid) VALUES (%s, %s, %s, %i, %i)", $_POST['title'], $_POST['editedHTML'], $_POST['tags'], $GLOBALS['now'], $_SESSION['uid']);
-    // do not get the last inserted id
-    // since in high concurrency the last inserted id may be different
-    // use last tid from the uid instead
-    $tid = DB::query("SELECT tid FROM forum_threads WHERE uid=%i ORDER BY sendtime DESC", $_SESSION['uid'])[0]['tid'];
-    $GLOBALS['output']['title'] = "Asked Successfully";
-    alert($GLOBALS['lang']['new-thread-success'], "alert-success");
-    redirect(5, "/questions/viewthread/".$tid);
+    $result = forum::newThread($_POST['title'], $_POST['editedHTML'], $_POST['tags']);
+    if ($result['success']) {
+      $GLOBALS['output']['title'] = "Asked Successfully";
+      alert($GLOBALS['lang']['new-thread-success'], GREEN);
+      redirect(5, "/questions/viewthread/".$result['message']);
+    } else {
+      $GLOBALS['output']['title'] = "Error";
+      error($result['message'], RED);
+    }    
     break;
 
 
 
   case "answer":
-    $result = forum::post($_POST['tid'], $_POST['editedHTML']);
-    printv($_POST);
+    $result = forum::newPost($_POST['tid'], $_POST['editedHTML']);
     if ($result['success']) {
       $GLOBALS['output']['title'] = "Answered";
-      alert($result['message'], "alert-success");
+      alert($result['message'], GREEN);
       redirect(5, "/questions/viewthread/".$_POST['tid']);
     } else {
       $GLOBALS['output']['title'] = "Error";
-      error($result['message'], "alert-danger");
+      error($result['message'], RED);
     }
     break;
-
 
 
 
@@ -64,21 +61,12 @@ switch ($action) {
       if ($result['success']) {
         $GLOBALS['output']['thread'] = $result['message'];
       } else {
-        error($result['message'], "alert-danger");
+        error($result['message'], RED);
       }
 
       // fetch posts
-      $GLOBALS['output']['posts'] = forum::getPosts($tid, 5, 0)['message'];
       $GLOBALS['output']['postCount'] = forum::getPostCount($tid)['message'];
     break;
-
-
-
-
-
-
-
-
 
 
 
@@ -99,6 +87,7 @@ switch ($action) {
     // do not break here!!! let it go to default branch and search!
 
 
+
   default:
   // no action = list newest questions
     $action = "search";
@@ -107,33 +96,33 @@ switch ($action) {
 
     $offset = 0;
     // this SQL can be unsafe!!
-    $sql = "SELECT forum_threads.* FROM forum_threads WHERE visible<=%i ".$additionalSearchCondition." ORDER BY sendtime DESC LIMIT 20 OFFSET %i";
+    $sql = "SELECT forum_threads.*, member.avatar, member.username, member.uid FROM forum_threads LEFT JOIN member ON member.uid=forum_threads.uid WHERE visible<=%i ".$additionalSearchCondition." ORDER BY sendtime DESC LIMIT 20 OFFSET %i";
     // echo $sql."<br />";
     $threads = DB::query($sql, $GLOBALS['curUser']['gid'], $offset);
     if (empty($threads)) {
       $GLOBALS['output']['threads'] = [];
-      alert("No Records", "alert-info");
+      alert("No Records", BLUE);
       break;
     }
-
     foreach ($threads as $k => $v) {
       $threads[$k]['tags'] = explode(",", $threads[$k]['tags']);
       // if Question description is longer than $summaryCharLimit, cut it at the nearest whitespace and append ...
-      $summaryCharLimit = 300;
+      $summaryCharLimit = 500;
       if (strlen($threads[$k]['content'])>$summaryCharLimit) {
         $threads[$k]['content'] = substr($threads[$k]['content'], 0, strpos($threads[$k]['content'], " ", $summaryCharLimit-10))." ...";
       }
       $threads[$k]['content'] = strip_tags($threads[$k]['content']);
-      $threads[$k]['author'] = member::getUserInfo($threads[$k]['uid']);
+      // $threads[$k]['author'] = member::getUserInfo($threads[$k]['uid']);
       $threads[$k]['sendtime'] = toUserTime($v['sendtime']);
       // get last response info
-      $threads[$k]['lastreply'] = DB::query("SELECT member.username, forum_posts.sendtime, forum_posts.uid FROM forum_posts LEFT JOIN member ON member.uid=forum_posts.uid WHERE tid=%i ORDER BY sendtime DESC LIMIT 1", $threads[$k]['tid']);
+      $threads[$k]['lastreply'] = DB::query("SELECT member.avatar, member.username, forum_posts.sendtime, forum_posts.uid FROM forum_posts LEFT JOIN member ON member.uid=forum_posts.uid WHERE tid=%i ORDER BY sendtime DESC LIMIT 1", $threads[$k]['tid']);
       if (!empty($threads[$k]['lastreply'])) {
         $threads[$k]['lastreply'] = $threads[$k]['lastreply'][0];
         $threads[$k]['lastreply']['sendtime'] = toUserTime($threads[$k]['lastreply']['sendtime']);
       }
     }
 
+    // printv($threads);
     $GLOBALS['output']['threads'] = $threads;
     break;
 
