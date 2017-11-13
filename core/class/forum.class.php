@@ -179,10 +179,10 @@ class forum {
     }
     if (DB::query("INSERT INTO forum_posts (tid, content, sendtime, uid) VALUES (%i, %s, %i, %i)", $tid, $content, $GLOBALS['now'], $_SESSION['uid'])) {
       return ["success" => 1, "message" => $GLOBALS['lang']["new-post-success"]];
+      DB::query("UPDATE member SET threads=threads+1 WHERE uid=%i", $GLOBALS['curUser']['uid']);
     } else {
       return ["success" => 0, "message" => "newPost failed"];
     }
-    DB::query("UPDATE member SET threads=threads+1 WHERE uid=%i", $GLOBALS['curUser']['uid']);
   }
 
 
@@ -202,17 +202,11 @@ class forum {
       // use last tid from the uid instead
       $tid = DB::query("SELECT tid FROM forum_threads WHERE uid=%i ORDER BY sendtime DESC", $_SESSION['uid'])[0]['tid'];
       return ["success" => 1, "message" => $tid];
+      DB::query("UPDATE member SET threads=threads+1 WHERE uid=%i", $GLOBALS['curUser']['uid']);
     } else {
       return ["success" => 0, "message" => "newThread failed"];
     }
-    DB::query("UPDATE member SET threads=threads+1 WHERE uid=%i", $GLOBALS['curUser']['uid']);
   }
-
-
-
-
-
-
 
 
 };
