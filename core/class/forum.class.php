@@ -28,10 +28,10 @@ class forum {
     }
 
     if (forum::postType($idArr) === "thread") {
-      return forum::getThread($idArr['id'])['success'] === 1;
+      return forum::getThreadInfo($idArr['id'])['success'] === 1;
     }
     else {
-      return forum::getPost($idArr['id'])['success'] === 1;
+      return forum::getPostInfo($idArr['id'])['success'] === 1;
     }
   }
 
@@ -44,7 +44,7 @@ class forum {
       return TRUE;
     }
 
-    $post = forum::postType($idArr) === "thread" ? forum::getThread($idArr['id']) : forum::getPost($idArr['id']);
+    $post = forum::postType($idArr) === "thread" ? forum::getThreadInfo($idArr['id']) : forum::getPostInfo($idArr['id']);
 
     if ($post['success'] === 0) {
       return FALSE;
@@ -52,11 +52,44 @@ class forum {
 
     $post = $post['message'];
 
-    $timeSinceCreation = time() - $post['unixtime'];
+    $timeSinceCreation = time() - $post['sendtime'];
     $timeSinceCreation /= 60; //number of minutes since edit
 
     if ($post['author']['uid'] === $GLOBALS['curUser']['uid'] && $timeSinceCreation < 15) {
       return TRUE;
+    }
+  }
+
+  /**
+   * @param  thread id
+   * @return [success, thread content]
+   */
+  protected static function getThreadInfo($tid) {
+    if (!$GLOBALS['curUser']['viewthread']) error($GLOBALS['lang']['permission-denied']);
+    $result = DB::query("SELECT * FROM forum_threads WHERE tid=%i", $tid);
+    if (!empty($result)) {
+      $thread = $result[0];
+      $thread['tags'] = explode(",", $thread['tags']);
+      $thread['author'] = member::getUserInfo($thread['uid']);
+      return ["success" => 1, "message" => $thread];
+    } else {
+      return ["success" => 0, "message" => $GLOBALS['lang']["invalid-thread-id"]];
+    }
+  }
+
+  /**
+   * @param  post id
+   * @return [success, post content]
+   */
+  protected static function getPostInfo($pid) {
+    if (!$GLOBALS['curUser']['viewthread']) error($GLOBALS['lang']['permission-denied']);
+    $result = DB::query("SELECT * FROM forum_posts WHERE pid=%i", $pid);
+    if (!empty($result)) {
+      $post = $result[0];
+      $post['author'] = member::getUserInfo($post['uid']);
+      return ["success" => 1, "message" => $post];
+    } else {
+      return ["success" => 0, "message" => $GLOBALS['lang']["invalid-thread-id"]];
     }
   }
 
@@ -94,18 +127,19 @@ class forum {
     return array('success' => 1, 'message' => "updated successfully");
   }
 
+
+
   /**
    * @param  thread id
    * @return [success, thread content]
    */
   public static function getThread($tid) {
     if (!$GLOBALS['curUser']['viewthread']) error($GLOBALS['lang']['permission-denied']);
-    $result = DB::query("SELECT * FROM forum_threads WHERE tid=%i", $tid);
+    $result = DB::query("SELECT forum_threads.*, member.username, member.avatar, member.uid FROM forum_threads LEFT JOIN member ON member.uid=forum_threads.uid WHERE tid=%i", $tid);
     if (!empty($result)) {
       $thread = $result[0];
       $thread['tags'] = explode(",", $thread['tags']);
-      $thread['author'] = member::getUserInfo($thread['uid']);
-      $thread['unixtime'] = $thread['sendtime'];
+      //$thread['author'] = member::getUserInfo($thread['uid']);
       $thread['sendtime'] = toUserTime($thread['sendtime']);
       return ["success" => 1, "message" => $thread];
     } else {
@@ -155,11 +189,10 @@ class forum {
    */
   public static function getPost($pid) {
     if (!$GLOBALS['curUser']['viewthread']) error($GLOBALS['lang']['permission-denied']);
-    $result = DB::query("SELECT * FROM forum_posts WHERE pid=%i", $pid);
+    $result = DB::query("SELECT forum_posts.*, member.username, member.avatar, member.uid FROM forum_posts LEFT JOIN member ON member.uid=forum_posts.uid WHERE pid=%i", $pid);    
     if (!empty($result)) {
       $post = $result[0];
-      $post['author'] = member::getUserInfo($post['uid']);
-      $post['unixtime'] = $post['sendtime'];
+      //$post['author'] = member::getUserInfo($post['uid']);
       $post['sendtime'] = toUserTime($post['sendtime']);
       return ["success" => 1, "message" => $post];
     } else {
