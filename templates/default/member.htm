@@ -150,8 +150,6 @@ endif;
 <?php foreach ($v as $k=>$c) :?>
 <?php if ($k == "avatar") : ?>
           <td><img class="avatar-32" src="<?=$c?>"></td>
-<?php if($k == "hasNotification"): ?>
-          <td><img class="notification"></td>
 <?php elseif ($k == "username") : ?>
           <td><a href="/member/profile?uid=<?=$v['uid']?>"><?=$c?></a></td>
 <?php else : ?>
