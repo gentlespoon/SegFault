@@ -91,6 +91,7 @@ $GLOBALS['lang'] = [
   "status" => "Status",
   "submit" => "Submit",
   "success" => "Success",
+  "syntaxhlpref" => "Syntax Highlighing Preference",
   "template" => "Template",
   "threads" => "Threads",
   "thread-author" => "Thread-Author",

@@ -161,16 +161,10 @@ $(document).ready(function() {
       return false;
     }
     $("#hiddenTags").val(tags.join(","));
-    $("#hiddenEditedHTML").val($('#summernote').summernote('code'));
   });
 
   $("#newPostForm").submit(function() {
     $("#hiddenEditedHTML").val($('#summernote').summernote('code'));
-  });
-
-  $('#summernote').summernote({
-    height: 200,
-    tabsize: 2
   });
 
 

@@ -228,6 +228,7 @@ class member {
       'lastattempt' => 0,
       'failcount' => 0,
       'regip' => 0,
+      'syntaxhlpref' => 1,
     ];
     if ($uid != $_SESSION['uid'] || $uid<1) {
       if (!$GLOBALS['curUser']['viewprofile']) {

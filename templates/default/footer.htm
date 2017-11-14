@@ -43,16 +43,11 @@
   <script src="/static/scripts/segfault.js"></script>
   <script src='https://www.google.com/recaptcha/api.js'></script>
 
-
-  <!-- include summernote css/js-->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote-bs4.css" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote-bs4.js"></script>
-
   <!-- include TinyMCE cloud deployment -->
   <script src="https://cdn.tinymce.com/4/tinymce.min.js"></script>
 
   <!-- highlightjs for code syntax highlighting -->
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/<?=$GLOBALS['curUser']['syntaxhlpref']?>.min.css">
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
   <script>
     $('pre > code').each(function() {
