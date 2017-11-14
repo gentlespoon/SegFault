@@ -158,7 +158,7 @@ class forum {
    * @return [success, post count in this thread]
    */
   public static function getPostCount($tid) {
-    $posts = DB::query("SELECT count(*) FROM forum_posts WHERE tid=%i", $tid)[0]["count(*)"];
+    $posts = DB::query("SELECT count(*) FROM forum_posts WHERE tid=%i AND visible<%i", $tid, $GLOBALS['curUser']['gid'])[0]["count(*)"];
     return ["success" => 1, "message" => $posts];
   }
 
@@ -170,7 +170,7 @@ class forum {
    * @return [success, $posts[]]
    */
   public static function getPosts($tid, $count=5, $offset) {
-    $posts = DB::query("SELECT forum_posts.*, member.username, member.avatar, member.uid FROM forum_posts LEFT JOIN member ON member.uid=forum_posts.uid WHERE tid=%i ORDER BY upvote DESC LIMIT %i OFFSET %i", $tid, $count, $offset);
+    $posts = DB::query("SELECT forum_posts.*, member.username, member.avatar, member.uid FROM forum_posts LEFT JOIN member ON member.uid=forum_posts.uid WHERE tid=%i AND visible<%i ORDER BY upvote DESC LIMIT %i OFFSET %i", $tid, $GLOBALS['curUser']['gid'], $count, $offset);
     foreach($posts as $k => $post) {
       // $posts[$k]['author'] = member::getUserInfo($post['uid']);
       // $posts[$k]['author'] = ["username" => $post['username'], "avatar" => $post['avatar']];
