@@ -175,8 +175,9 @@
     <?php if ($GLOBALS['output']['thread']['open'] <= $GLOBALS['curUser']['gid']) : ?>
       <form id="newPostForm" method="post" action="/questions/answer">
         <div class="form-group">
-          <div id="summernote"></div>
-          <input id="hiddenEditedHTML" type="hidden" name="editedHTML" value="" />
+          <!-- <div id="summernote"></div>
+          <input id="hiddenEditedHTML" type="hidden" name="editedHTML" value="" /> -->
+          <textarea id="tinyMCE" name="editedHTML"></textarea>
         </div>
         <div class="form-group">
           <input type="hidden" name="tid" value="<?=$GLOBALS['output']['thread']['tid']?>">
@@ -280,8 +281,9 @@
 
     </div>
     <div class="form-group">
-      <div id="summernote"></div>
-      <input id="hiddenEditedHTML" type="hidden" name="editedHTML" value="" required/>
+      <!-- <div id="summernote"></div>
+      <input id="hiddenEditedHTML" type="hidden" name="editedHTML" value="" required/> -->
+      <textarea id="tinyMCE" name="editedHTML"></textarea>
     </div>
     <div class="form-group">
       <button class="btn btn-primary" type="submit"><?=$GLOBALS['lang']['new-thread-send']?></button>

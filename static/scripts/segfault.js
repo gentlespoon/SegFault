@@ -246,6 +246,9 @@ $(document).ready(function() {
             `;
             $("#question-answers").append(obj);
           });
+          $('pre code').each(function(i, block) {
+            hljs.highlightBlock(block);
+          });
           currentAnswers += newPosts;
           $("#currentAnswers").text(currentAnswers);
           if (currentAnswers >= totalAnswers) {
@@ -265,6 +268,8 @@ $(document).ready(function() {
 
 
   $("#loadMoreAnswers").click();
+
+  initTinyMCE("tinyMCE");
 
 });
 
@@ -326,3 +331,11 @@ function EditPost(pid, oldContent, newContent){
 function edit(){
     document.getElementById('editpost').style.display = "block";
 };
+
+function initTinyMCE(textAreaID) {
+  tinymce.init({
+    selector: 'textarea#' + textAreaID,
+    plugins: 'codesample',
+    toolbar: 'undo redo | styleselect | bold italic underline strikethrough superscript subscript | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | codesample'
+  });
+}
