@@ -6,19 +6,16 @@ foreach ($GLOBALS['output']['tags'] as $tagid => $taginfo) :
 ?>
   <div class="card-group">
 <?php endif ?>
-  <div class="col-sm-4">
+  <div class="col-sm-12 col-md-6 col-lg-4 tagcard">
     <div class="card">
-      <!--<div class="card-block">-->
         <div class="card-body">
           <div class="card-title">
             <a href="/questions/search?tag=<?=$tagid?>"><span class="badge badge-dark"><?=$taginfo['tagname']?></span></a> × <?=$taginfo['count']?>
-          
-            <p class="card-text">
-              <?=$taginfo['description']?>
-            </p>
-        </div>
+          </div>
+          <div class="card-text">
+            <?=$taginfo['description']?>
+          </div>
       </div>
-      <!--</div>-->
       </div>
     </div>
 <?php if ($row == 3) : $row = 0; ?>

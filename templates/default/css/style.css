@@ -254,3 +254,11 @@ a
     width: 20px;
     height: 20px;
 }
+
+.tagcard {
+    padding: 5px;
+}
+
+.card-text {
+    height: 4em;
+}
