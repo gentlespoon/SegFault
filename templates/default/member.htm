@@ -95,13 +95,103 @@ if (!empty($GLOBALS['output']['fields'])) :
   <div>
     <form method="POST" action="/member/profile?uid=<?=$_GET['uid']?>" id="modprofileForm">
       <div class="form-row">
-
 <?php foreach($GLOBALS['output']['fields'] as $k => $v) : ?>
 <?php if ($k != "editable") : ?>
         <div class="form-group col-md-6 col-sm-12">
           <label for="modprofile<?=$k?>" class="col-form-label"><?=$GLOBALS['lang'][$k]?></label>
 <?php if ($v['editable']) : ?>
+<?php if ($k == "syntaxhlpref") : ?>
+          <input id="modprofile<?=$k?>" type="text" class="form-control" name="<?=$k?>" placeholder="Search for color scheme" value="<?=$v['value']?>" list="schemeList">
+          <datalist id="schemeList">
+          </datalist>
+          <script>
+            var schemeList = [
+              "agate",
+              "androidstudio",
+              "arduino-light",
+              "arta",
+              "ascetic",
+              "atelier-cave-dark",
+              "atelier-cave-light",
+              "atelier-dune-dark",
+              "atelier-dune-light",
+              "atelier-estuary-dark",
+              "atelier-estuary-light",
+              "atelier-forest-dark",
+              "atelier-forest-light",
+              "atelier-heath-dark",
+              "atelier-heath-light",
+              "atelier-lakeside-dark",
+              "atelier-lakeside-light",
+              "atelier-plateau-dark",
+              "atelier-plateau-light",
+              "atelier-savanna-dark",
+              "atelier-savanna-light",
+              "atelier-seaside-dark",
+              "atelier-seaside-light",
+              "atelier-sulphurpool-dark",
+              "atelier-sulphurpool-light",
+              "atom-one-dark",
+              "atom-one-light",
+              "brown-paper",
+              "codepen-embed",
+              "color-brewer",
+              "darcula",
+              "dark",
+              "darkula",
+              "default",
+              "dir.bat",
+              "docco",
+              "dracula",
+              "far",
+              "foundation",
+              "github-gist",
+              "github",
+              "googlecode",
+              "grayscale",
+              "gruvbox-dark",
+              "gruvbox-light",
+              "hopscotch",
+              "hybrid",
+              "idea",
+              "ir-black",
+              "kimbie.dark",
+              "kimbie.light",
+              "magula",
+              "mono-blue",
+              "monokai-sublime",
+              "monokai",
+              "obsidian",
+              "ocean",
+              "paraiso-dark",
+              "paraiso-light",
+              "pojoaque",
+              "purebasic",
+              "qtcreator_dark",
+              "qtcreator_light",
+              "railscasts",
+              "rainbow",
+              "routeros",
+              "school-book",
+              "solarized-dark",
+              "solarized-light",
+              "sunburst",
+              "tomorrow-night-blue",
+              "tomorrow-night-bright",
+              "tomorrow-night-eighties",
+              "tomorrow-night",
+              "tomorrow",
+              "vs",
+              "vs2015",
+              "xcode",
+              "xt256",
+              "zenburn",
+            ];
+            schemeList.sort();
+          </script>
+<?php else : ?>
           <input id="modprofile<?=$k?>" type="text" class="form-control" name="<?=$k?>" placeholder="<?=$GLOBALS['lang'][$k]?>" value="<?=$v['value']?>">
+<?php endif ?>
 <?php else : ?>
           <div id="modprofile<?=$k?>" class="form-control"><?=$v['value']?></div>
 <?php endif ?>

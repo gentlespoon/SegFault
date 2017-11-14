@@ -269,6 +269,11 @@ $(document).ready(function() {
 
   initTinyMCE("tinyMCE");
 
+  
+  $.each(schemeList, function(index, value) {
+    $('#schemeList').append( $('<option/>').attr("value", value) );
+  });
+
 });
 
 
@@ -303,23 +308,23 @@ function vote(ud, tid, pid) {
 
 function RemovePost(pid){
     $.ajax({ url: "/api/forum/removepost", data: { pid: pid }, method: "get"})
-	.done(function(data) {
-	    window.location.reload();
-	})
+  .done(function(data) {
+      window.location.reload();
+  })
 };
 
 function RemoveThread(tid){
-    $.ajax({ url: "/api/forum/removethread", data: { tid: tid }, method: "get"})
-	.done(function(data) {
-	    window.location = "/";
-	})
+  $.ajax({ url: "/api/forum/removethread", data: { tid: tid }, method: "get"})
+  .done(function(data) {
+      window.location = "/";
+  })
 };
 
 function LockThread(tid){
-    $.ajax({ url: "/api/forum/lockthread", data: { tid: tid }, method: "get"})
-      .done(function(data) {
-	  window.location.reload();
-      })
+  $.ajax({ url: "/api/forum/lockthread", data: { tid: tid }, method: "get"})
+    .done(function(data) {
+  window.location.reload();
+    })
 };
 
 function EditPost(pid, oldContent, newContent){
