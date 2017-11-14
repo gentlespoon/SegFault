@@ -199,7 +199,7 @@ $(document).ready(function() {
 
   $("#loadMoreAnswers").click(function() {
     if (currentAnswers < totalAnswers) {
-      var url = "/api/forum/loadpost?tid="+tid+"&offset="+Number(currentAnswers);
+      var url = "/api/forum/loadpost?tid="+tid+"&offset="+Number(currentAnswers)+"&count="+Number(answersEachLoad);
       // alert(url);
       $.ajax({ url: url, method: "get"})
       .done(function(data) {
@@ -246,15 +246,15 @@ $(document).ready(function() {
             `;
             $("#question-answers").append(obj);
           });
-          
+          currentAnswers += newPosts;
+          $("#currentAnswers").text(currentAnswers);
+
           $('pre > code').each(function(i, block) { //Syntax highlighting
             $(this).removeClass();
             $(this).addClass($(this).parent().attr("class"));
             hljs.highlightBlock(block);
           });
-
-          currentAnswers += newPosts;
-          $("#currentAnswers").text(currentAnswers);
+          
           if (currentAnswers >= totalAnswers) {
             $("#loadMoreAnswers").text("All answers are displayed");
           }
