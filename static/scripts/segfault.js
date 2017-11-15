@@ -220,7 +220,7 @@ $(document).ready(function() {
             if (result.isModerator) {
               obj = obj+`
                     <button class="btn btn-secondary" onclick="RemovePost(`+item.pid+`)">Remove</button>
-                    <button class="btn btn-secondary" onclick="edit()">Edit</button>`;
+                    <button class="btn btn-secondary" onclick="edit(`+item.pid+`)">Edit</button>`;
             }   
             obj = obj+`
                   </div>
@@ -237,8 +237,15 @@ $(document).ready(function() {
                 </div>
               </div>
             </div>
+            <!-- text editor here -->
+            <div id="editpost`+item.pid+`" style="display:none;">
+               <textarea id="textedit`+item.pid+`"></textarea>
+               <button class="btn btn-primary" onclick="EditPost(`+item.pid+`)">Edit</button>
+               <hr />
+            </div>
             `;
             $("#question-answers").append(obj);
+	    initTinyMCE("textedit"+item.pid);  
           });
           currentAnswers += newPosts;
           $("#currentAnswers").text(currentAnswers);
@@ -327,12 +334,16 @@ function LockThread(tid){
     })
 };
 
-function EditPost(pid, oldContent, newContent){
-    $.ajax({ url: "/api/forum/editpost", data: { pid: pid, oldContent: oldContent, newContent: newContent}, method: "get"})
+function EditPost(pid){
+    var content = tinyMCE.get('textedit'+pid).getContent();
+    $.ajax({ url: "/api/forum/editpost", data: { pid: pid, content: content}, method: "get"})
+	.done(function(data){
+	    window.location.reload();
+	})
 };
 
-function edit(){
-    document.getElementById('editpost').style.display = "block";
+function edit(pid){
+    document.getElementById('editpost'+pid).style.display = "block";
 };
 
 function initTinyMCE(textAreaID) {
