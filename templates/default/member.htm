@@ -1,4 +1,5 @@
-<?php if ($action=="register") : ?>
+<?php switch($action) : ?>
+<?php case "register":?>
   <div>
     <form method="post" id="regForm" action="/member/register?redirect=<?=$_GET['redirect']?>" autocomplete="off">
       <div class="form-row">
@@ -47,14 +48,14 @@
       </span>
     </form>
   </div>
-<?php endif ?>
+<?php break ?>
 
 
 
 
 
 
-<?php if ($action=="login") : ?>
+<?php case "login": ?>
   <div>
     <form method="post" id="loginForm" action="/member/login?redirect=<?=$_GET['redirect']?>">
       <div class="form-row">
@@ -79,7 +80,7 @@
       </span>
     </form>
   </div>
-<?php endif ?>
+<?php break ?>
 
 
 
@@ -89,7 +90,7 @@
 
 
 <?php
-if ($action=="profile") :
+case "profile" :
 if (!empty($GLOBALS['output']['fields'])) :
 ?>
   <div>
@@ -210,7 +211,7 @@ if (!empty($GLOBALS['output']['fields'])) :
   </div>
 <?php
 endif;
-endif;
+break;
 ?>
 
 
@@ -226,7 +227,7 @@ endif;
 
 
 
-<?php if ($action=="") : ?>
+<?php default: ?>
   <div>
     <table class="table table-responsive">
       <thead>
@@ -251,4 +252,4 @@ endif;
       </tbody>
     </table>
   </div>
-<?php endif ?>
+<?php endswitch ?>
