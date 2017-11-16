@@ -291,6 +291,23 @@ $(document).ready(function() {
       $('#notification').text(count.message);
   });
 
+  //
+
+  $('#notification').click(function () {
+    $.ajax({ url: "/api/forum/getnotification", data: {}, method: "get"})
+    .done(function (data) {
+      var count = $.parseJSON(data);
+      if(count.success === 1){ 
+        var thread ="";
+        $.each(count.message, function(index, value){
+          // alert(typeof value);
+          thread = thread + "<a href = '/questions/viewthread/"+ value[0] + "'>"+ value[1]+ "</a><br/>";
+        });
+        modalalert("New threads", thread);
+      }
+    });
+  });
+
 });
 
 
