@@ -367,3 +367,24 @@ function initTinyMCE(textAreaID) {
     toolbar: 'undo redo | styleselect | bold italic underline strikethrough superscript subscript | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | codesample'
   });
 }
+
+function initInlineTinyMCE(divID) {
+  tinymce.init({
+    selector: 'div#' + textAreaID,
+    inline: true;
+    plugins: 'codesample',
+    codesample_languages: [
+      {text: 'HTML/XML', value: 'html'},
+      {text: 'JavaScript', value: 'javascript'},
+      {text: 'CSS', value: 'css'},
+      {text: 'PHP', value: 'php'},
+      {text: 'Ruby', value: 'ruby'},
+      {text: 'Python', value: 'python'},
+      {text: 'Java', value: 'java'},
+      {text: 'C', value: 'c'},
+      {text: 'C#', value: 'csharp'},
+      {text: 'C++', value: 'cpp'}
+    ],
+    toolbar: 'undo redo | styleselect | bold italic underline strikethrough superscript subscript | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | codesample'
+  });
+}
