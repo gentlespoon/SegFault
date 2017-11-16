@@ -371,7 +371,7 @@ function initTinyMCE(textAreaID) {
 function initInlineTinyMCE(divID) {
   tinymce.init({
     selector: 'div#' + textAreaID,
-    inline: true;
+    inline: true,
     plugins: 'codesample',
     codesample_languages: [
       {text: 'HTML/XML', value: 'html'},
