@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
   $(".disabled").click(function() {
-    alert("Still Developing");
+    modalalert("Still Developing");
     return false;
   });
 
@@ -123,11 +123,11 @@ $(document).ready(function() {
 
   $("#loginForm").submit(function() {
     if ($("#loginUsername").val() === "") {
-      alert("Username cannot be blank");
+      modalalert("Username cannot be blank");
       return false;
     }
     if ($("#loginPassword").val() === "") {
-      alert("Password cannot be blank");
+      modalalert("Password cannot be blank");
       return false;
     }
     $("#loginPassword").val($.md5($("#loginPassword").val()));
@@ -185,7 +185,7 @@ $(document).ready(function() {
         return false;
       }
       else {
-        alert("No maching tag");
+        modalalert("No maching tag");
         return false;
       }
   });
@@ -194,10 +194,10 @@ $(document).ready(function() {
   $("#loadMoreAnswers").click(function() {
     if (currentAnswers < totalAnswers) {
       var url = "/api/forum/loadpost?tid="+tid+"&offset="+Number(currentAnswers)+"&count="+Number(answersEachLoad);
-      // alert(url);
+      // modalalert(url);
       $.ajax({ url: url, method: "get"})
       .done(function(data) {
-        // alert(data);
+        // modalalert(data);
         var result = $.parseJSON(data);
         if (result.success=="1") {
           var newPosts = 0;
@@ -260,7 +260,7 @@ $(document).ready(function() {
             $("#loadMoreAnswers").text("All answers are displayed");
           }
         } else {
-          alert("Load answers failed: "+result.message);
+          modalalert("Load answers failed: "+result.message);
         }
       });
     }
@@ -277,7 +277,6 @@ $(document).ready(function() {
   initTinyMCE("tinyMCE");
 
   if (typeof schemeList != 'undefined') {
-    alert(1);
     $.each(schemeList, function(index, value) {
       $('#schemeList').append( $('<option/>').attr("value", value) );
     });
@@ -300,7 +299,7 @@ $(document).ready(function() {
       if(count.success === 1){ 
         var thread ="";
         $.each(count.message, function(index, value){
-          // alert(typeof value);
+          // modalalert(typeof value);
           thread = thread + "<a href = '/questions/viewthread/"+ value[0] + "'>"+ value[1]+ "</a><br/>";
         });
         modalalert("New threads", thread);
@@ -370,7 +369,7 @@ function vote(ud, tid, pid) {
       $("#downvote-"+tid+"-"+pid).text(score.message.downvote);
     })
     .fail(function(data) {
-      alert("Vote Failed!");
+      modalalert("Vote Failed!");
     })
 };
 
