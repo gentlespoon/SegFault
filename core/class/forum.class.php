@@ -111,11 +111,9 @@ class forum {
       return array('success' => 0, 'message' => "insufficient permissions");
     }
 
-    //Escape user-submitted data so that we can use sqleval
-    //allowing for an atomic update to avoid race conditions
-    $toAppend = forum::sqlEscape("<p>".$content."<br />- <i>Added by ".$GLOBALS['curUser']['username']." at ".toUserTime(time())."</i></p>");
+    $newContent = $content."<br /><p>- <i>Edited by ".$GLOBALS['curUser']['username']." at ".toUserTime(time())."</i></p>";
     
-    $set = array("content" => DB::sqleval("CONCAT(content, ".$toAppend.")")); //what we are setting with this update
+    $set = array("content" => $newContent); //what we are setting with this update
     $table = forum::postType($idArr) === "thread" ? "forum_threads" : "forum_posts";
     $cond = forum::postType($idArr) === "thread" ? "tid=%i" : "pid=%i";
     DB::update($table, $set, $cond, $idArr['id']);
