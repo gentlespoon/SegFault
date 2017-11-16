@@ -64,7 +64,7 @@ function redirect($sec, $url) {
   global $redirect;
   $redirect = "<meta http-equiv='refresh' content='".$sec."; URL=".$url."'>
   ";
-  alert("<a href='".$url."'>Welcome to segfault</a>" );
+  alert("<a href='".$url."'>Click here to continue if your browser does not automatically redirect.</a>" );
   template();
 }
 

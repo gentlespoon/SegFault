@@ -365,7 +365,7 @@ function removeTag(tagid) {
 function vote(ud, tid, pid) {
   $.ajax({ url: "/api/forum/vote", data: { ud: ud, tid: tid, pid: pid}, method: "get"})
     .done(function(data) {
-      var score = jQuery.parseJSON(data);
+      var score = $.parseJSON(data);
       $("#upvote-"+tid+"-"+pid).text(score.message.upvote);
       $("#downvote-"+tid+"-"+pid).text(score.message.downvote);
     })
