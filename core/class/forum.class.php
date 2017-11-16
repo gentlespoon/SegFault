@@ -135,7 +135,7 @@ class forum {
    */
   public static function getThread($tid) {
     if (!$GLOBALS['curUser']['viewthread']) error($GLOBALS['lang']['permission-denied']);
-    $result = DB::query("SELECT forum_threads.*, member.username, member.avatar, member.uid FROM forum_threads LEFT JOIN member ON member.uid=forum_threads.uid WHERE tid=%i", $tid);
+    $result = DB::query("SELECT forum_threads.*, member.username, member.avatar, member.uid FROM forum_threads LEFT JOIN member ON member.uid=forum_threads.uid WHERE tid=%i AND visible<=%i", $tid, $GLOBALS['curUser']['gid']);
     if (!empty($result)) {
       $thread = $result[0];
       $thread['tags'] = explode(",", $thread['tags']);
