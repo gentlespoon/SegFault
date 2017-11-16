@@ -68,8 +68,6 @@ switch ($action) {
       $GLOBALS['output']['postCount'] = forum::getPostCount($tid)['message'];
     break;
 
-
-
   case "search":
     if (array_key_exists("keyword", $_GET)) {
       $additionalSearchCondition .= "AND ((".makeLikeCond("title", $_GET['keyword'], " ", true).") OR (".makeLikeCond("content", $_GET['keyword'], " ", true)."))";
@@ -85,8 +83,6 @@ switch ($action) {
       $additionalSearchCondition .= "AND uid=".$uid;
     }
     // do not break here!!! let it go to default branch and search!
-
-
 
   default:
   // no action = list newest questions

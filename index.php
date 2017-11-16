@@ -9,8 +9,7 @@ require(ROOT."core/core.php");
 $route = [
   "member",
   "questions",
-  "tags",
-  "update"
+  "tags"
 ];
 
 $GLOBALS['output']['activeNav'] = [];
