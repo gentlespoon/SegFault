@@ -158,7 +158,7 @@ class forum {
    * @return [success, post count in this thread]
    */
   public static function getPostCount($tid) {
-    $posts = DB::query("SELECT count(*) FROM forum_posts WHERE tid=%i AND visible<%i", $tid, $GLOBALS['curUser']['gid'])[0]["count(*)"];
+    $posts = DB::query("SELECT count(*) FROM forum_posts WHERE tid=%i AND visible<=%i", $tid, $GLOBALS['curUser']['gid'])[0]["count(*)"];
     return ["success" => 1, "message" => $posts];
   }
 

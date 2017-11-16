@@ -276,10 +276,12 @@ $(document).ready(function() {
 
   initTinyMCE("tinyMCE");
 
-  
-  $.each(schemeList, function(index, value) {
-    $('#schemeList').append( $('<option/>').attr("value", value) );
-  });
+  if (typeof schemeList != 'undefined') {
+    alert(1);
+    $.each(schemeList, function(index, value) {
+      $('#schemeList').append( $('<option/>').attr("value", value) );
+    });
+  }
 
 });
 
