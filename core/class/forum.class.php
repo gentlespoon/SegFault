@@ -235,6 +235,11 @@ class forum {
       // use last tid from the uid instead
       $tid = DB::query("SELECT tid FROM forum_threads WHERE uid=%i ORDER BY sendtime DESC", $_SESSION['uid'])[0]['tid'];
       DB::query("UPDATE member SET threads=threads+1 WHERE uid=%i", $GLOBALS['curUser']['uid']);
+      $tags = explode(',', $tags);
+      foreach ($tags as $key => $value) {
+        DB::query("INSERT INTO forum_update (tagid, uid, tid) VALUES (%i, %i, %i)", $value, $_SESSION['uid'], $tid);
+      }
+
       return ["success" => 1, "message" => $tid];
     } else {
       return ["success" => 0, "message" => "newThread failed"];

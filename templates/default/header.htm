@@ -59,7 +59,7 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <img class="avatar-32" src="<?=$GLOBALS['curUser']['avatar']?>" title="<?=$GLOBALS['curUser']['username']?>" alt="<?=$GLOBALS['curUser']['username']?>">
-              <img class="notification" src="/static/images/notification.png">
+              
             </a>
             <!-- <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink"> -->
               <ul class="dropdown-menu dropdown-menu-sw">
@@ -73,6 +73,9 @@
                 <a href="/member/logout"><li class="dropdown-item">Log Out</li></a>
               </ul>
             <!-- </div> -->
+          </li>
+          <li class="nav-item dropdown">
+            <button id="notification" type="button" class="btn btn-default">-</button>
           </li>
         </ul>
 <?php endif ?>

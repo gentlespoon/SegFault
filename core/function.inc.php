@@ -62,7 +62,9 @@ function template(...$files) {
  */
 function redirect($sec, $url) {
   global $redirect;
-  $redirect = "<meta http-equiv='refresh' content='".$sec."; URL=".$url."'>";
+  $redirect = "<meta http-equiv='refresh' content='".$sec."; URL=".$url."'>
+  ";
+  alert("<a href='".$url."'>Welcome to segfault</a>" );
   template();
 }
 

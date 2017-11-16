@@ -283,7 +283,49 @@ $(document).ready(function() {
     });
   }
 
+//give update to threads
+  $.ajax({ url: "/api/forum/getnotificationcount", data: {}, method: "get"})
+  .done(function (data) {
+    var count = $.parseJSON(data);
+    if(count.success === 1)
+      $('#notification').text(count.message);
+  });
+
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 function modalalert(title, content) {
@@ -387,4 +429,8 @@ function initInlineTinyMCE(divID) {
     ],
     toolbar: 'undo redo | styleselect | bold italic underline strikethrough superscript subscript | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | codesample'
   });
+}
+
+function update() {
+
 }
