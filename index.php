@@ -10,6 +10,7 @@ $route = [
   "member",
   "questions",
   "tags",
+  "update"
 ];
 
 $GLOBALS['output']['activeNav'] = [];
