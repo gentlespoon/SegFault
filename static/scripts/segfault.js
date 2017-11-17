@@ -239,7 +239,7 @@ $(document).ready(function() {
             </div>
             <!-- text editor here -->
             <div id="editpost`+item.pid+`" style="display:none;">
-               <textarea id="textedit`+item.pid+`"></textarea>
+               <textarea id="textedit`+item.pid+`">`+item.content+`</textarea>
                <button class="btn btn-primary" onclick="EditPost(`+item.pid+`)">Edit</button>
                <hr />
             </div>
