@@ -129,7 +129,7 @@
             </a>
 <?php if($GLOBALS['output']['thread']['uid'] == $GLOBALS['curUser']['uid'] || $GLOBALS['curUser']['gid'] >= 2) { ?>
             <button class="btn btn-secondary" onclick="RemoveThread(<?=$GLOBALS['output']['thread']['tid']?>)">Remove</button>
-            <button class="btn btn-secondary">Edit</button>
+            <button class="btn btn-secondary" onclick="edit('thread')">Edit</button>
 <?php } ?>
 <?php if($GLOBALS['curUser']['gid'] >= 2) { ?>
             <button class="btn btn-secondary" onclick="LockThread(<?=$GLOBALS['output']['thread']['tid']?>)">Lock</button>
@@ -147,7 +147,12 @@
           </div>
         </div>
       </div>
-
+      <div id="editthread" style="display:none;">
+        <textarea id="threadedit"><?=$GLOBALS['output']['thread']['content']?></textarea>
+        <button class="btn btn-primary" onclick="EditThread(<?=$GLOBALS['output']['thread']['tid']?>)">Edit</button>
+        <hr />
+      </div>
+      
       <!-- POSTS content-->
       <div id="question-answers">
       </div>
