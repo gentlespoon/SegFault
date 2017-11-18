@@ -150,7 +150,7 @@ $(document).ready(function() {
 
 
 
-  $("#newThreadForm").submit(function() {
+  $("#newThreadForm").submit(function(ev) { 
     var tags = [];
     $('#tagsList').children('span').each(function () {
       tags.push(this.getAttribute("tagid"));
@@ -160,11 +160,19 @@ $(document).ready(function() {
       $("#newThreadTagSearchbox").addClass("is-invalid");
       return false;
     }
+    var content = tinyMCE.get("tinyMCE").getContent();
+    if(content == ""){
+	ev.preventDefault();
+    }
     $("#hiddenTags").val(tags.join(","));
   });
 
-  $("#newPostForm").submit(function() {
-    $("#hiddenEditedHTML").val($('#summernote').summernote('code'));
+  $("#newPostForm").submit(function(ev) {
+      var content = tinyMCE.get("tinyMCE").getContent();
+      if(content == ""){
+	  ev.preventDefault();
+      }
+      //$("#hiddenEditedHTML").val($('#summernote').summernote('code'));
   });
 
 
