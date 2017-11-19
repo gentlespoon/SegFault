@@ -108,20 +108,39 @@ function toUserTime($time, $format=NULL) {
   return $is;
 }
 
+function makeSearchStrings($fieldname, $condition, $delim, $allowConcatenate) {
+  $searchStrings = array($condition.$delim.'%', 
+                         '%'.$delim.$condition.$delim.'%', 
+                         '%'.$delim.$condition, 
+                         $condition);
 
-
-// SQL, comma separated LIKE condition constructor
-// risk of SQL injection here !!!
-// find better solutions !!!
-function makeLikeCond($fieldname, $condition, $delim, $allowConcatenate=false) {
-  $conditionString =  $fieldname." LIKE '".$condition.$delim."%' OR ".          // as first value
-                $fieldname." LIKE '%".$delim.$condition.$delim."%' OR ".  // as middle value
-                $fieldname." LIKE '%".$delim.$condition."' OR ".          // as last value
-                $fieldname." LIKE '".$condition."'";                      // as only value
   if ($allowConcatenate) {
-    $conditionString .= " OR ".$fieldname." LIKE '%".$condition."%'";                  // as part of a word, also next to a punctuation like "testing."
+    array_push($searchStrings, '%'.$condition.'%');
   }
-  return $conditionString;
+
+  return $searchStrings;
+}
+
+function addWhereLikeCond($fieldname, $condition, $delim, &$where, $allowConcatenate=false) {
+  $searchStrings = makeSearchStrings($fieldname, $condition, $delim, $allowConcatenate);
+
+  $subClause = $where->addClause('or');
+  
+  foreach ($searchStrings as $searchString) {
+    $subClause->add('%l LIKE %ss', $fieldname, $searchString);
+  }
+}
+
+function makeWhereLikeCond($fieldname, $condition, $delim, $allowConcatenate=false) {
+  $searchStrings = makeSearchStrings($fieldname, $condition, $delim, $allowConcatenate);
+
+  $where = new WhereClause('or');
+
+  foreach ($searchStrings as $searchString) {
+    $where->add('%l LIKE %ss', $fieldname, $searchString);
+  }
+
+  return $where;
 }
 
 

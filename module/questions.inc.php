@@ -7,7 +7,8 @@ $GLOBALS['output']['title'] = "Questions";
 $GLOBALS['output']['tags'] = tags::getTags();
 $GLOBALS['output']['favTags'] = tags::getFavTags($_SESSION['uid']);
 
-$additionalSearchCondition = "";
+$searchWhereCondition = new WhereClause('and');
+$searchWhereCondition->add("visible<=%i", $GLOBALS['curUser']['gid']);
 
 switch ($action) {
 
@@ -70,17 +71,19 @@ switch ($action) {
 
   case "search":
     if (array_key_exists("keyword", $_GET)) {
-      $additionalSearchCondition .= "AND ((".makeLikeCond("title", $_GET['keyword'], " ", true).") OR (".makeLikeCond("content", $_GET['keyword'], " ", true)."))";
+      $subClause = $searchWhereCondition->addClause('or');
+      addWhereLikeCond("title", $_GET['keyword'], " ", $subClause, true);
+      addWhereLikeCond("content", $_GET['keyword'], " ", $subClause, true);
     } elseif (array_key_exists("tag", $_GET)) {
-      $additionalSearchCondition .= "AND (".makeLikeCond("tags", $_GET['tag'], ",").")";
+      addWhereLikeCond("tags", $_GET['tag'], ",", $searchWhereCondition);
     } elseif (array_key_exists("uid", $_GET)) {
-      $additionalSearchCondition .= "AND uid=".$_GET['uid'];
+      $searchWhereCondition->add("member.uid = %i", $_GET['uid']);
     } elseif (array_key_exists("username", $_GET)) {
       $uid = DB::query("SELECT uid FROM member WHERE username=%s", $_GET['username']);
       if (!empty($uid)) {
         $uid = $uid[0]['uid'];
       }
-      $additionalSearchCondition .= "AND uid=".$uid;
+      $searchWhereCondition->add("member.uid = %i", $uid);
     }
     // do not break here!!! let it go to default branch and search!
 
@@ -88,13 +91,14 @@ switch ($action) {
   // no action = list newest questions
     $action = "search";
 
-    $GLOBALS['output']['threadCount'] = DB::query("SELECT count(*) FROM forum_threads WHERE visible<=%i ".$additionalSearchCondition, $GLOBALS['curUser']['gid'])[0]["count(*)"];
+    $GLOBALS['output']['threadCount'] = DB::query("SELECT count(*) FROM forum_threads LEFT JOIN member ON member.uid=forum_threads.uid WHERE %l", $searchWhereCondition)[0]["count(*)"];
 
     $offset = 0;
-    // this SQL can be unsafe!!
-    $sql = "SELECT forum_threads.*, member.avatar, member.username, member.uid FROM forum_threads LEFT JOIN member ON member.uid=forum_threads.uid WHERE visible<=%i ".$additionalSearchCondition." ORDER BY sendtime DESC LIMIT 20 OFFSET %i";
+
+    $sql = "SELECT forum_threads.*, member.avatar, member.username, member.uid FROM forum_threads LEFT JOIN member ON member.uid=forum_threads.uid WHERE %l ORDER BY sendtime DESC LIMIT 20 OFFSET %i";
     // echo $sql."<br />";
-    $threads = DB::query($sql, $GLOBALS['curUser']['gid'], $offset);
+
+    $threads = DB::query($sql, $searchWhereCondition, $offset);
     if (empty($threads)) {
       $GLOBALS['output']['threads'] = [];
       alert("No Records", BLUE);
