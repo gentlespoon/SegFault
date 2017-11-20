@@ -7,8 +7,8 @@ $GLOBALS['output']['title'] = "Questions";
 $GLOBALS['output']['tags'] = tags::getTags();
 $GLOBALS['output']['favTags'] = tags::getFavTags($_SESSION['uid']);
 
-$searchWhereCondition = new WhereClause('and');
-$searchWhereCondition->add("visible<=%i", $GLOBALS['curUser']['gid']);
+$search = new search();
+$search->addCond("visible<=%i", $GLOBALS['curUser']['gid']);
 
 switch ($action) {
 
@@ -70,35 +70,21 @@ switch ($action) {
     break;
 
   case "search":
-    if (array_key_exists("keyword", $_GET)) {
-      $subClause = $searchWhereCondition->addClause('or');
-      addWhereLikeCond("title", $_GET['keyword'], " ", $subClause, true);
-      addWhereLikeCond("content", $_GET['keyword'], " ", $subClause, true);
-    } elseif (array_key_exists("tag", $_GET)) {
-      addWhereLikeCond("tags", $_GET['tag'], ",", $searchWhereCondition);
-    } elseif (array_key_exists("uid", $_GET)) {
-      $searchWhereCondition->add("member.uid = %i", $_GET['uid']);
-    } elseif (array_key_exists("username", $_GET)) {
-      $uid = DB::query("SELECT uid FROM member WHERE username=%s", $_GET['username']);
-      if (!empty($uid)) {
-        $uid = $uid[0]['uid'];
-      }
-      $searchWhereCondition->add("member.uid = %i", $uid);
-    }
+    $search->addSearchConditions();
     // do not break here!!! let it go to default branch and search!
 
   default:
   // no action = list newest questions
     $action = "search";
 
-    $GLOBALS['output']['threadCount'] = DB::query("SELECT count(*) FROM forum_threads LEFT JOIN member ON member.uid=forum_threads.uid WHERE %l", $searchWhereCondition)[0]["count(*)"];
+    $GLOBALS['output']['threadCount'] = DB::query("SELECT count(*) FROM forum_threads LEFT JOIN member ON member.uid=forum_threads.uid WHERE %l", $search->getWhereCond())[0]["count(*)"];
 
     $offset = 0;
 
     $sql = "SELECT forum_threads.*, member.avatar, member.username, member.uid FROM forum_threads LEFT JOIN member ON member.uid=forum_threads.uid WHERE %l ORDER BY sendtime DESC LIMIT 20 OFFSET %i";
     // echo $sql."<br />";
 
-    $threads = DB::query($sql, $searchWhereCondition, $offset);
+    $threads = DB::query($sql, $search->getWhereCond(), $offset);
     if (empty($threads)) {
       $GLOBALS['output']['threads'] = [];
       alert("No Records", BLUE);

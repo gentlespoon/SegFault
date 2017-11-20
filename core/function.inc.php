@@ -108,42 +108,6 @@ function toUserTime($time, $format=NULL) {
   return $is;
 }
 
-function makeSearchStrings($fieldname, $condition, $delim, $allowConcatenate) {
-  $searchStrings = array($condition.$delim.'%', 
-                         '%'.$delim.$condition.$delim.'%', 
-                         '%'.$delim.$condition, 
-                         $condition);
-
-  if ($allowConcatenate) {
-    array_push($searchStrings, '%'.$condition.'%');
-  }
-
-  return $searchStrings;
-}
-
-function addWhereLikeCond($fieldname, $condition, $delim, &$where, $allowConcatenate=false) {
-  $searchStrings = makeSearchStrings($fieldname, $condition, $delim, $allowConcatenate);
-
-  $subClause = $where->addClause('or');
-  
-  foreach ($searchStrings as $searchString) {
-    $subClause->add('%l LIKE %ss', $fieldname, $searchString);
-  }
-}
-
-function makeWhereLikeCond($fieldname, $condition, $delim, $allowConcatenate=false) {
-  $searchStrings = makeSearchStrings($fieldname, $condition, $delim, $allowConcatenate);
-
-  $where = new WhereClause('or');
-
-  foreach ($searchStrings as $searchString) {
-    $where->add('%l LIKE %ss', $fieldname, $searchString);
-  }
-
-  return $where;
-}
-
-
 /**
  * @param  string alert text
  * @param  constant alert type (see /core/constant.php)
