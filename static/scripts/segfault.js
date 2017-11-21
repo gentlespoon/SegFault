@@ -1,7 +1,8 @@
 $(document).ready(function() {  
 
   $("#advSearchUsernames").change(function() {
-    var usernames=$("#advSearchUsernames").val().split(" ");
+    var regex = /[\w]+/g //allows capture of strings that contain only word characters
+    var usernames=$("#advSearchUsernames").val().match(regex);
     usernames.forEach(function (item, index) {
       if (item !== null && item.length > 0 && $("#newUsername-"+item).length == 0) {
         var $newUsername = $("<span id='newUsername-" + item + "' username='" + item + "' class='badge badge-dark'>" + item +"<div class='removeTag' onclick='removeUsername(\"" + item + "\");'>&times;</div></span>");
