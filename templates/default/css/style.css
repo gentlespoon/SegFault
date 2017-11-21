@@ -190,7 +190,7 @@ a
     background-color: #ff0000;
 }
 
-#tagsList > .badge
+#tagsList > .badge, #usernamesList > .badge, #keywordsList > .badge
 {
     margin-right: 5px;
 }
