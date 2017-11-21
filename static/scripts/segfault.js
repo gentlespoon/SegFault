@@ -12,10 +12,14 @@ $(document).ready(function() {
   });
 
   $("#advSearchKeywords").change(function() {
-    var usernames=$("#advSearchKeywords").val().split(" ");
+    var regex = /"([\w ]*?)"|([\w]+)/g; //allows capture of strings surrounded by quotes as single string
+    var match = ""; //for use in regex.exec() loop
+    var usernames = [];  
+    while ((match = regex.exec($("#advSearchKeywords").val())) != null) {
+      usernames.push(match[1] != null ? match[1] : match[2]);
+    }
     usernames.forEach(function (item, index) {
       if (item !== null && item.length > 0 && $("#newKeyword-"+item).length == 0) {
-        item = item.replace(/_/g, " ");
         var $newKeyword = $("<span id='newKeyword-" + item + "' keyword='" + item + "' class='badge badge-dark'>" + item +"<div class='removeTag' onclick='removeKeyword(\"" + item + "\");'>&times;</div></span>");
         $("#keywordsList").append($newKeyword);
       }
