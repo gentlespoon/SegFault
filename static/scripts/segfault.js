@@ -1,4 +1,59 @@
-$(document).ready(function() {
+$(document).ready(function() {  
+
+  $("#advSearchUsernames").change(function() {
+    var usernames=$("#advSearchUsernames").val().split(" ");
+    usernames.forEach(function (item, index) {
+      if (item !== null && item.length > 0 && $("#newUsername-"+item).length == 0) {
+        var $newUsername = $("<span id='newUsername-" + item + "' username='" + item + "' class='badge badge-dark'>" + item +"<div class='removeTag' onclick='removeUsername(\"" + item + "\");'>&times;</div></span>");
+        $("#usernamesList").append($newUsername);
+      }
+    });
+    $("#advSearchUsernames").val("");
+  });
+
+  $("#advSearchKeywords").change(function() {
+    var usernames=$("#advSearchKeywords").val().split(" ");
+    usernames.forEach(function (item, index) {
+      if (item !== null && item.length > 0 && $("#newKeyword-"+item).length == 0) {
+        item = item.replace(/_/g, " ");
+        var $newKeyword = $("<span id='newKeyword-" + item + "' keyword='" + item + "' class='badge badge-dark'>" + item +"<div class='removeTag' onclick='removeKeyword(\"" + item + "\");'>&times;</div></span>");
+        $("#keywordsList").append($newKeyword);
+      }
+    });
+    $("#advSearchKeywords").val("");
+  });
+
+  $("#advSearchForm").submit(function(event) {
+    var query = {
+      "all":[],
+      "keywords":[],
+      "usernames":[],
+      "tags":[]
+    };
+    if ($('#advSearchAll').is(':checked')) {
+      query["all"].push("all");
+    }
+    if ($('#advSearchKeywordsAll').is(':checked')) {
+      query["all"].push("keywords");
+    }
+    if ($('#advSearchTagsAll').is(':checked')) {
+      query["all"].push("tags");
+    }
+    $('#keywordsList').children('span').each(function() {
+      query["keywords"].push(this.getAttribute("keyword"));
+    })
+    $('#usernamesList').children('span').each(function() {
+      query["usernames"].push(this.getAttribute("username"));
+    })
+    $('#tagsList').children('span').each(function () {
+      query["tags"].push(this.getAttribute("tagid"));
+    });
+    //console.log(query);
+    var queryJSON = JSON.stringify(query);
+    //console.log(queryJSON);
+    $("#advSearchQuery").val(queryJSON);
+    return true;
+  });
 
   $(".disabled").click(function() {
     modalalert("Still Developing");
@@ -193,7 +248,7 @@ $(document).ready(function() {
         return false;
       }
       else {
-        modalalert("No maching tag");
+        modalalert("No matching tag");
         return false;
       }
   });
@@ -333,6 +388,19 @@ function removeTag(tagid) {
   delete tag;
 }
 
+
+function removeUsername(user) {
+  var username = document.getElementById("newUsername-"+user);
+  username.outerHTML = "";
+  delete username;
+}
+
+
+function removeKeyword(key) {
+  var keyword = document.getElementById("newKeyword-"+key);
+  keyword.outerHTML = "";
+  delete keyword;
+}
 
 function vote(ud, tid, pid) {
   $.ajax({ url: "/api/forum/vote", data: { ud: ud, tid: tid, pid: pid}, method: "get"})

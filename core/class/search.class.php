@@ -5,6 +5,12 @@ class search {
     protected $clause = null;
     protected $storedClauses = array();
 
+    protected $all = array();
+    protected $keywords = array();
+    protected $usernames = array();
+    protected $uids = array();
+    protected $tagIDs = array();
+
     function __construct(string $boolOp = "and") {
         $this->clause = new WhereClause($boolOp);
         $this->storedClauses = array();
@@ -101,16 +107,11 @@ class search {
     }
 
     protected function keywordHandler() {
-        if (is_array($_GET['keyword'])) {
-            $this->startSubClause($_GET['keyword']['all'] === "1" ? 'and' : 'or');
-            foreach ($_GET['keyword']['keywords'] as $keyword) {
-                $this->keywordAddCondition($keyword);
-            }
-            $this->endSubClause();
+        $this->startSubClause(in_array("keywords", $this->all) ? 'and' : 'or');
+        foreach ($this->keywords as $keyword) {
+            $this->keywordAddCondition($keyword);
         }
-        else {
-            $this->keywordAddCondition($_GET['keyword']);
-        }
+        $this->endSubClause();
     }
 
     protected function tagAddCondition($tagID) {
@@ -118,16 +119,11 @@ class search {
     }
 
     protected function tagHandler() {
-        if (is_array($_GET['tag'])) {
-            $this->startSubClause($_GET['tag']['all'] === "1" ? 'and' : 'or');
-            foreach ($_GET['tag']['ids'] as $tag) {
-                $this->tagAddCondition($tag);
-            }
-            $this->endSubClause();
+        $this->startSubClause(in_array("tags", $this->all) ? 'and' : 'or');
+        foreach ($this->tagIDs as $tagID) {
+            $this->tagAddCondition($tagID);
         }
-        else {
-            $this->tagAddCondition($_GET['tag']);
-        }
+        $this->endSubClause();
     }
 
     protected function uidAddCondition($uid) {
@@ -135,16 +131,11 @@ class search {
     }
 
     protected function uidHandler() {
-        if (is_array($_GET['uid'])) {
-            $this->startSubClause($_GET['uid']['all'] === "1" ? 'and' : 'or');
-            foreach ($_GET['uid']['ids'] as $uid) {
-                $this->uidAddCondition($uid);
-            }
-            $this->endSubClause();
+        $this->startSubClause(in_array("uids", $this->all) ? 'and' : 'or');
+        foreach ($this->uids as $uid) {
+            $this->uidAddCondition($uid);
         }
-        else {
-            $this->uidAddCondition($_GET['uid']);
-        }
+        $this->endSubClause();
     }
 
     protected function getUIDs($usernames) {
@@ -171,33 +162,62 @@ class search {
     }
 
     protected function usernameHandler() {
-        if (is_array($_GET['username'])) {
-            $this->startSubClause($_GET['username']['all'] === "1" ? 'and' : 'or');
-            $this->usernameAddCondition($_GET['username']['usernames']);
-            $this->endSubClause();
-        }
-        else {
-            $this->usernameAddcondition(array($_GET['username']));
-        }
+        $this->startSubClause(in_array("usernames", $this->all) ? 'and' : 'or');
+        $this->usernameAddCondition($this->usernames);
+        $this->endSubClause();
     }
 
     protected function parseConditions() {
-        if (array_key_exists("keyword", $_GET)) {
+        if (!empty($this->keywords)) {
             $this->keywordHandler();
         }
-        if (array_key_exists("tag", $_GET)) {
+        if (!empty($this->tagIDs)) {
             $this->tagHandler();
         }
-        if (array_key_exists("uid", $_GET)) {
+        if (!empty($this->uids)) {
             $this->uidHandler();
         }
-        elseif (array_key_exists("username", $_GET)) {
+        elseif (!empty($this->usernames)) {
             $this->usernameHandler();
         }
     }
 
+    protected function fetchFromGet() {
+        if (array_key_exists("keyword", $_GET)) {
+            array_push($this->keywords, $_GET['keyword']);
+        }
+        if (array_key_exists("tag", $_GET)) {
+            array_push($this->tagIDs, $_GET['tag']);
+        }
+        if (array_key_exists("uid", $_GET)) {
+            array_push($this->uids, $_GET['uid']);
+        }
+        elseif (array_key_exists("username", $_GET)) {
+            array_push($this->usernames, $_GET['username']);
+        }
+    }
+
+    protected function fetchFromPost() {
+        $conditions = json_decode($_POST['search'], true);
+
+        $this->all = $conditions['all'];
+        $this->keywords = $conditions['keywords'];
+        $this->usernames = $conditions['usernames'];
+        $this->tagIDs = $conditions['tags'];
+    }
+
+    protected function fetchConditions() {
+        if (array_key_exists("search", $_POST)) {
+            $this->fetchFromPost();
+        }
+        else {
+            $this->fetchFromGet();
+        }
+    }
+
     public function addSearchConditions() {
-        $this->startSubClause(array_key_exists("all", $_GET) ? 'and' : 'or');
+        $this->fetchConditions();
+        $this->startSubClause(in_array("all", $this->all) ? 'and' : 'or');
         $this->parseConditions();
         $this->endSubClause();
     }

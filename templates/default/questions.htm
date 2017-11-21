@@ -1,14 +1,78 @@
 <div class="row">
 
+<?php if ($action != "advice" && $action != "asking") : ?>
+  <!-- Begin adv. search modal -->
 
+  <div class="modal fade" id="advSearchModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Advanced Search</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="advSearchForm" action="/questions/search" method="post">
+            <input id="advSearchQuery" type="hidden" name="search" />
+          </form>
+          <div class="form-group">
+            <label for="keywords">Keywords
+                <span id="keywordsList">
+                </span>
+            </label>
+            <br />
+            <input id="advSearchKeywordsAll" type="checkbox" autocomplete="off" /> Require All
+            <input type="text" class="form-control" id="advSearchKeywords" name="keywords" />
+          </div>
+          <div class="form-group">
+            <label for="advSearchUsernames">Usernames
+              <span id="usernamesList">
+              </span>
+            </label>
+            <input type="text" class="form-control" id="advSearchUsernames" name="usernames" />
+          </div>
+          <div class="form-group">
+            <label for="newThreadTagSearchbox">Tags
+              <span id="tagsList">
+              </span>
+            </label>
+            <br />
+            <input id="advSearchTagsAll" type="checkbox" autocomplete="off" /> Require All
+            <input type="text" class="form-control" id="newThreadTagSearchbox" aria-describedby="newThreadTagSearchbox" placeholder="Search for tags" list="tagList">
+            <datalist id="tagList">
+    <?php foreach ($GLOBALS['output']['tags'] as $tagid => $taginfo) : ?>
+              <option value="<?=$taginfo['tagname']?>" tagid="<?=$tagid?>" />
+    <?php endforeach ?>
+            </datalist>
+          </div>
+          <div class="form-group">
+            <label for="advSearchAll">Require All?</label>
+            <br />
+            <input id="advSearchAll" type="checkbox" autocomplete="off" /> Require All
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <input type="submit" class="btn btn-primary" form="advSearchForm" value="Search" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- End adv. search modal -->
+<?php endif ?>
   <div class="col-sm-12 col-md-3 col-lg-2" id="sidebar">
     <!-- <div class="sidebarItem"> -->
+<?php if ($action != "advice" && $action != "asking") : ?>
 <?php if ($_SESSION['uid']) : ?>
-    <a href="/questions/advice" class="btn btn-primary ml-sm-2 askBtn">Ask Question</a>
+    <a href="/questions/advice" class="btn btn-primary btn-block">Ask Question</a>
 <?php else : ?>
-    <button class="btn btn-primary ml-sm-2 loginBtn askBtn">Ask Question</button>
+    <button class="btn btn-primary loginBtn btn-block">Ask Question</button>
 <?php endif ?>
     <!-- </div> -->
+    <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#advSearchModal">Adv. Search</button>
+<?php endif ?>
 <?php if ($_SESSION['uid']) : ?>
     <div class="sidebarItem">
       <b>Your FavTags</b>
