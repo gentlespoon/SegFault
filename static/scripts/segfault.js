@@ -548,9 +548,16 @@ function edit(pid){
     }
 };
 
-//ADD LISTENER FOR THREAD CREATION
+function addfavtag(tagid){
+	$.ajax({ url: "/api/tag/addfavtag", data: { tagid: tagid }, method: "get"})
+	.done(function(data){ window.location.reload(); })
+};
 
-//ADD LISTENER FOR REPLY CREATION
+function remfavtag(tagid){
+	$.ajax({ url: "/api/tag/removefavtag", data: { tagid: tagid }, method: "get"})
+	.done(function(data){ window.location.reload(); })
+};
+
 
 function initTinyMCE(textAreaID) {
   tinymce.init({
