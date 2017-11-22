@@ -45,7 +45,7 @@
             </label>
             <br />
             <input id="advSearchTagsAll" type="checkbox" autocomplete="off" /> Require All
-            <input type="text" class="form-control" id="advSearchTags" aria-describedby="advSearchTag" placeholder="Search for tags" list="tagList">
+            <input type="text" class="form-control" id="advSearchTags" aria-describedby="advSearchTag" placeholder="Search for tags" list="advTagList">
             <datalist id="advTagList">
     <?php foreach ($GLOBALS['output']['tags'] as $tagid => $taginfo) : ?>
               <option value="<?=$taginfo['tagname']?>" tagid="<?=$tagid?>" />
