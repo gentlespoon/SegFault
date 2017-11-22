@@ -1,34 +1,70 @@
 $(document).ready(function() {  
 
   $("#advSearchUsernames").change(function() {
-    var regex = /[\w]+/g //allows capture of strings that contain only word characters
-    var usernames=$("#advSearchUsernames").val().match(regex);
+    var regex = /^([\w]+)(?=$)|^([\w]+)(?= )| ([\w]+)(?= )| ([\w]+)(?=$)/g;
+    var match = ""; //for use in regex.exec() loop
+    var searchUsernames = $("#advSearchUsernames").val();
+    var newSearchUsernames = $("#advSearchUsernames").val().replace(regex, "");
+    newSearchUsernames = newSearchUsernames.replace(/(^ *)|( *$)/g, "")
+    var usernames = [];
+    while ((match = regex.exec(searchUsernames)) != null) {
+      if (match[1]) {
+        usernames.push(match[1]);
+      }
+      else if (match[2]) {
+        usernames.push(match[2]);
+      }
+      else if (match[3]) {
+        usernames.push(match[3]);
+      }
+      else if (match[4]) {
+        usernames.push(match[4]);
+      }
+    }
     usernames.forEach(function (item, index) {
       if (item !== null && item.length > 0 && $("#newUsername-"+item).length == 0) {
         var $newUsername = $("<span id='newUsername-" + item + "' username='" + item + "' class='badge badge-dark'>" + item +"<div class='removeTag' onclick='removeUsername(\"" + item + "\");'>&times;</div></span>");
         $("#usernamesList").append($newUsername);
       }
     });
-    $("#advSearchUsernames").val("");
+    $("#advSearchUsernames").val(newSearchUsernames);
   });
 
   $("#advSearchKeywords").change(function() {
-    var regex = /"([\w ]*?)"|([\w]+)/g; //allows capture of strings surrounded by quotes as single string
+    var regex = /"([\w ]*?)"|^([\w]+)(?=$)|^([\w]+)(?= )| ([\w]+)(?= )| ([\w]+)(?=$)/g
     var match = ""; //for use in regex.exec() loop
-    var usernames = [];  
+    var searchKeywords = $("#advSearchKeywords").val();
+    var newSearchKeywords = $("#advSearchKeywords").val().replace(regex, "");
+    newSearchKeywords = newSearchKeywords.replace(/(^ *)|( *$)/g, "");
+    var keywords = [];  
     while ((match = regex.exec($("#advSearchKeywords").val())) != null) {
-      usernames.push(match[1] != null ? match[1] : match[2]);
+      if (match[1]) {
+        keywords.push(match[1]);
+      }
+      if (match[2]) {
+        keywords.push(match[2]);
+      }
+      if (match[3]) {
+        keywords.push(match[3]);
+      }
+      if (match[4]) {
+        keywords.push(match[4]);
+      }
+      if (match[5]) {
+        keywords.push(match[5]);
+      }
     }
-    usernames.forEach(function (item, index) {
+    keywords.forEach(function (item, index) {
       if (item !== null && item.length > 0 && $("#newKeyword-"+item).length == 0) {
         var $newKeyword = $("<span id='newKeyword-" + item + "' keyword='" + item + "' class='badge badge-dark'>" + item +"<div class='removeTag' onclick='removeKeyword(\"" + item + "\");'>&times;</div></span>");
         $("#keywordsList").append($newKeyword);
       }
     });
-    $("#advSearchKeywords").val("");
+    $("#advSearchKeywords").val(newSearchKeywords);
   });
 
   $("#advSearchForm").submit(function(event) {
+    event.preventDefault();
     var query = {
       "all":[],
       "keywords":[],
