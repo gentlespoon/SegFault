@@ -23,28 +23,37 @@
             </label>
             <br />
             <input id="advSearchKeywordsAll" type="checkbox" autocomplete="off" /> Require All
-            <input type="text" class="form-control" id="advSearchKeywords" name="keywords" />
+            <input type="text" class="form-control" id="advSearchKeywords" name="keywords" autocomplete="off" />
+            <div class="invalid-feedback">
+                It looks like there was a problem with some of your keywords.
+            </div>
           </div>
           <div class="form-group">
             <label for="advSearchUsernames">Usernames
               <span id="usernamesList">
               </span>
             </label>
-            <input type="text" class="form-control" id="advSearchUsernames" name="usernames" />
+            <input type="text" class="form-control" id="advSearchUsernames" name="usernames" autocomplete="off" />
+            <div class="invalid-feedback">
+              It looks like there was a problem with some of your usernames.
+            </div>
           </div>
           <div class="form-group">
-            <label for="newThreadTagSearchbox">Tags
-              <span id="tagsList">
+            <label for="advSearchTag">Tags
+              <span id="advTagsList">
               </span>
             </label>
             <br />
             <input id="advSearchTagsAll" type="checkbox" autocomplete="off" /> Require All
-            <input type="text" class="form-control" id="newThreadTagSearchbox" aria-describedby="newThreadTagSearchbox" placeholder="Search for tags" list="tagList">
-            <datalist id="tagList">
+            <input type="text" class="form-control" id="advSearchTags" aria-describedby="advSearchTag" placeholder="Search for tags" list="tagList">
+            <datalist id="advTagList">
     <?php foreach ($GLOBALS['output']['tags'] as $tagid => $taginfo) : ?>
               <option value="<?=$taginfo['tagname']?>" tagid="<?=$tagid?>" />
     <?php endforeach ?>
             </datalist>
+            <div class="invalid-feedback">
+              That tag does not exist.
+            </div>
           </div>
           <div class="form-group">
             <label for="advSearchAll">Require All?</label>

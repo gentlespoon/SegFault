@@ -1,5 +1,34 @@
 $(document).ready(function() {  
 
+  $("#advSearchTags").change(function() {
+    var tagName=escapeRegExp($(this).val()); //escape to convert to case insensitive regex
+    tagName=RegExp('^'+tagName+'$', 'i'); //match only if value is same as whole string
+    var obj=$("#advTagList > option").filter(function (index) {
+      if ($(this)[0].value.match(tagName)) {
+        return $(this);
+      }
+    });
+    if (obj !== null && obj.length>0) {
+      var tagid = obj.attr('tagid');
+      tagName = obj.val();
+      if ($("#advNewTag-"+tagid).length == 0) {
+        var $newTag = $("<span id='advNewTag-" + tagid + "' tagid='" + tagid + "' class='badge badge-dark'>" + tagName +"<div class='removeTag' onclick='removeAdvSearchTag(" + tagid + ");'>&times;</div></span>");
+        $("#advTagsList").append($newTag);
+        $(this).val("");
+        $(this).removeClass("is-invalid");
+        return true;
+      }
+      $(this).val("");
+      return false;
+    }
+    else {
+      if (!$(this).hasClass("is-invalid")) {
+        $(this).addClass("is-invalid");
+      }
+      return false;
+    }
+  });
+
   $("#advSearchUsernames").change(function() {
     var regex = /^([\w\u0080-\uFFFF]+)(?= |$)| ([\w\u0080-\uFFFF]+)(?= |$)/g;
     var match = ""; //for use in regex.exec() loop
@@ -27,6 +56,12 @@ $(document).ready(function() {
         $("#usernamesList").append($newUsername);
       }
     });
+    if (newSearchUsernames && !$(this).hasClass('is-invalid')) {
+      $(this).addClass('is-invalid');
+    }
+    else if (!newSearchUsernames && $(this).hasClass('is-invalid')) {
+      $(this).removeClass('is-invalid');
+    }
     $("#advSearchUsernames").val(newSearchUsernames);
   });
 
@@ -60,6 +95,12 @@ $(document).ready(function() {
         $("#keywordsList").append($newKeyword);
       }
     });
+    if (newSearchKeywords && !$(this).hasClass('is-invalid')) {
+      $(this).addClass('is-invalid');
+    }
+    else if (!newSearchKeywords && $(this).hasClass('is-invalid')) {
+      $(this).removeClass('is-invalid');
+    }
     $("#advSearchKeywords").val(newSearchKeywords);
   });
 
@@ -85,12 +126,10 @@ $(document).ready(function() {
     $('#usernamesList').children('span').each(function() {
       query["usernames"].push(this.getAttribute("username"));
     })
-    $('#tagsList').children('span').each(function () {
+    $('#advTagsList').children('span').each(function () {
       query["tags"].push(this.getAttribute("tagid"));
     });
-    //console.log(query);
     var queryJSON = JSON.stringify(query);
-    //console.log(queryJSON);
     $("#advSearchQuery").val(queryJSON);
     return true;
   });
@@ -433,6 +472,11 @@ function removeTag(tagid) {
   delete tag;
 }
 
+function removeAdvSearchTag(tagid) {
+  var tag = document.getElementById("advNewTag-"+tagid);
+  tag.outerHTML = "";
+  delete tag;
+}
 
 function removeUsername(user) {
   var username = document.getElementById("newUsername-"+user);
