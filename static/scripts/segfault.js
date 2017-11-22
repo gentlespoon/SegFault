@@ -1,7 +1,7 @@
 $(document).ready(function() {  
 
   $("#advSearchUsernames").change(function() {
-    var regex = /^([\w]+)(?= |$)| ([\w]+)(?= |$)/g;
+    var regex = /^([\w]+|[^\x00-\x7F]+)(?= |$)| ([\w]+|[^\x00-\x7F]+)(?= |$)/g;
     var match = ""; //for use in regex.exec() loop
     var searchUsernames = $("#advSearchUsernames").val();
     var newSearchUsernames = $("#advSearchUsernames").val().replace(regex, "");
@@ -31,7 +31,7 @@ $(document).ready(function() {
   });
 
   $("#advSearchKeywords").change(function() {
-    var regex = /"([\w ]*?)"|^([\w]+)(?= |$)| ([\w]+)(?= |$)/g
+    var regex = /"([\w ]*?|[\u0080-\uFFFF ]*?)"|^([\w]+|[^\x00-\x7F]+)(?= |$)| ([\w]+|[^\x00-\x7F]+)(?= |$)/g
     var match = ""; //for use in regex.exec() loop
     var searchKeywords = $("#advSearchKeywords").val();
     var newSearchKeywords = $("#advSearchKeywords").val().replace(regex, "");
