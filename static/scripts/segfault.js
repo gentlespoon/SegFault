@@ -272,8 +272,13 @@ $(document).ready(function() {
 
 
   $("#newThreadTagSearchbox").change(function() {
-      var tagName=$("#newThreadTagSearchbox").val();
-      var obj=$("#tagList").find("option[value='"+tagName+"']");
+      var tagName=escapeRegExp($("#newThreadTagSearchbox").val()); //escape to convert to case insensitive regex
+      tagName=RegExp('^'+tagName+'$', 'i'); //match only if value is same as whole string
+      var obj=$("#tagList > option").filter(function (index) {
+        if ($(this)[0].value.match(tagName)) {
+          return $(this);
+        }
+      });
       if (obj !== null && obj.length>0) {
         var tagid = obj.attr('tagid');
         tagName = obj.val();
@@ -542,4 +547,9 @@ function initInlineTinyMCE(divID) {
     ],
     toolbar: 'undo redo | styleselect | bold italic underline strikethrough superscript subscript | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | codesample'
   });
+}
+
+//From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
