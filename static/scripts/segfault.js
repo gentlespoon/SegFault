@@ -64,7 +64,6 @@ $(document).ready(function() {
   });
 
   $("#advSearchForm").submit(function(event) {
-    event.preventDefault();
     var query = {
       "all":[],
       "keywords":[],
