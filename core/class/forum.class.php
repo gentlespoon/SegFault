@@ -209,7 +209,7 @@ class forum {
       return ["success" => 0, "message" => $GLOBALS['lang']['permission-denied']];
     }
     if (DB::query("INSERT INTO forum_posts (tid, content, sendtime, uid) VALUES (%i, %s, %i, %i)", $tid, $content, $GLOBALS['now'], $_SESSION['uid'])) {
-      DB::query("UPDATE member SET threads=threads+1 WHERE uid=%i", $GLOBALS['curUser']['uid']);
+      DB::query("UPDATE member SET posts=posts+1 WHERE uid=%i", $GLOBALS['curUser']['uid']);
       return ["success" => 1, "message" => $GLOBALS['lang']["new-post-success"]];
     } else {
       return ["success" => 0, "message" => "newPost failed"];
