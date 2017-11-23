@@ -262,7 +262,14 @@ class forum {
       DB::query("UPDATE member SET threads=threads+1 WHERE uid=%i", $GLOBALS['curUser']['uid']);
       $tags = explode(',', $tags);
       foreach ($tags as $key => $value) {
-        DB::query("INSERT INTO forum_update (tagid, uid, tid) VALUES (%i, %i, %i)", $value, $_SESSION['uid'], $tid);
+        // notification for the author
+        // DB::query("INSERT INTO forum_update (tagid, uid, tid) VALUES (%i, %i, %i)", $value, $_SESSION['uid'], $tid);
+        // notification for other users who subscribed to the tag
+        $users = DB::query("SELECT uid FROM forum_favtags WHERE tagid= %i", $value);
+        //printv($users);
+        foreach ($users as $k => $v) {
+          DB::query("INSERT INTO forum_update (tagid, uid, tid) VALUES (%i, %i, %i)", $value, $v['uid'], $tid);
+        }
       }
 
       return ["success" => 1, "message" => $tid];
