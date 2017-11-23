@@ -206,8 +206,21 @@ class search {
         $this->tagIDs = $conditions['tags'];
     }
 
-    protected function fetchConditions() {
-        if (array_key_exists("search", $_POST)) {
+    protected function parseSearchCondJSON($JSON) {
+        $decoded = json_decode($JSON);
+
+        $this->all = $decoded[0];
+        $this->keywords = $decoded[1];
+        $this->usernames = $decoded[2];
+        $this->uids = $decoded[3];
+        $this->tagIDs = $decoded[4];
+    }
+
+    protected function fetchConditions($JSON) {
+        if ($JSON !== null) {
+            $this->parseSearchCondJSON($JSON);
+        }
+        elseif (array_key_exists("search", $_POST)) {
             $this->fetchFromPost();
         }
         else {
@@ -215,11 +228,15 @@ class search {
         }
     }
 
-    public function addSearchConditions() {
-        $this->fetchConditions();
+    public function addSearchConditions($JSON = null) {
+        $this->fetchConditions($JSON);
         $this->startSubClause(in_array("all", $this->all) ? 'and' : 'or');
         $this->parseConditions();
         $this->endSubClause();
+    }
+
+    public function getSearchCondJSON() {
+        return json_encode(array($this->all, $this->keywords, $this->usernames, $this->uids, $this->tagIDs));
     }
 
     public static function genWhereLikeCond($fieldname, $condition, $delim, $allowConcatenate=false) {

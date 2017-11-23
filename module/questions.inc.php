@@ -78,6 +78,7 @@ switch ($action) {
     $action = "search";
 
     $GLOBALS['output']['threadCount'] = DB::query("SELECT count(*) FROM forum_threads LEFT JOIN member ON member.uid=forum_threads.uid WHERE %l", $search->getWhereCond())[0]["count(*)"];
+    $GLOBALS['output']['searchJSON'] = $search->getSearchCondJSON();
 
     $offset = 0;
 

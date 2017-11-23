@@ -180,6 +180,17 @@ class forum {
     return ["success" => 1, "message" => $posts];
   }
 
+  public static function getThreads($count=10, $offset, $where) {
+    $threads = DB::query("SELECT forum_threads.*, member.avatar, member.username, member.uid FROM forum_threads LEFT JOIN member ON member.uid=forum_threads.uid WHERE %l ORDER BY sendtime DESC LIMIT %i OFFSET %i", $where, $count, $offset);
+    foreach($threads as $k => $thread) {
+      $threads[$k]['tags'] = explode(",", $thread['tags']);
+      $threads[$k]['sendtime'] = toUserTime($thread['sendtime']);
+      $threads[$k]['content'] = $thread['content'];
+    }
+
+    return ["success" => 1, "message" => $threads];
+  }
+
 
   /**
    * @param  post id
