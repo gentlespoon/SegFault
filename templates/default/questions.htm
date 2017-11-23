@@ -127,7 +127,7 @@
             <a href="/questions/viewthread/<?= $v['tid'] ?>"><h5><?= $v['title'] ?></h5></a>
             <div>Tags:
 <?php foreach ($v['tags'] as $tag) : ?>
-              <a href="/questions/search?tag=<?=$tag?>"><span class="badge badge-dark"><?=$GLOBALS['output']['tags'][$tag]['tagname']?></span></a>
+              <a href="/questions/search?tag=<?=$tag?>"><span class="badge badge-dark"><?=$GLOBALS['output']['tags'][$tag]['tagname']?></span></a>&nbsp;
 <?php endforeach ?>
             </div>
             <p>
