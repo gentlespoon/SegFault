@@ -509,11 +509,12 @@ $(document).ready(function() {
     .done(function (data) {
       var count = $.parseJSON(data);
       if(count.success === 1){ 
-        var thread ="";
+        var thread ="<ul>";
         $.each(count.message, function(index, value){
           // modalalert(typeof value);
-          thread = "<div>"+ thread + "<a href = '/questions/viewthread/"+ value[0] + "'>"+ value[1]+ "</a></div>";
+          thread = thread + "<li><a target= '_blank' href = '/questions/viewthread/"+ value[0] + "'>"+ value[1]+ "</a></li>";
         });
+        thread = thread + "</ul>";
         modalalert("New updates", thread);
       }
     });
