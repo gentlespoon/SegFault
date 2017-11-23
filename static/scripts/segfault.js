@@ -374,7 +374,7 @@ $(document).ready(function() {
                     <a href="/member/profile?uid=`+item.uid+`">`+item.username+`</a><br>`+item.sendtime+`
                   </div>
                 </div>`;
-          if (item.lastreply.length) {
+          if (!$.isEmptyObject(item.lastreply)) {
             obj = obj+`
             <div class="authorBar">
               <div class="title">A</div>
