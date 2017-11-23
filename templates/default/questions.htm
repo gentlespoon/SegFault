@@ -78,7 +78,7 @@
   <!-- Begin Sidebar -->
   <div class="col-sm-12 col-md-3 col-lg-2" id="sidebar">
     <!-- <div class="sidebarItem"> -->
-<?php if ($action != "advice" && $action != "asking") : ?>
+<?php // if ($action != "advice" && $action != "asking") : ?>
 <?php if ($_SESSION['uid']) : ?>
     <a href="/questions/advice" class="btn btn-primary btn-block">Ask Question</a>
 <?php else : ?>
@@ -86,7 +86,7 @@
 <?php endif ?>
     <!-- </div> -->
     <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#advSearchModal">Advanced Search</button>
-<?php endif ?>
+<?php // endif ?>
 <?php if ($_SESSION['uid']) : ?>
     <div class="sidebarItem">
       <b>Subscribed Tags</b>
@@ -99,7 +99,7 @@
     </div>
 <?php else : ?>
     <div class="sidebarItem">
-      <a href="javascript:void();" class="loginBtn">Sign In</a> to see your favorite tags.
+      <a href="javascript:void();" class="loginBtn">Sign In</a> to subscribe to a tag.
     </div>
 <?php endif ?>
   </div>
