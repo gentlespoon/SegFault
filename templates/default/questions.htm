@@ -164,14 +164,14 @@
   var totalQuestions = <?=$GLOBALS['output']['threadCount']?>;
   var searchJSON = `<?=$GLOBALS['output']['searchJSON']?>`;
   //searchJSON = JSON.stringify(searchJSON);
-  var currentQuestions = 20;
+  var currentQuestions = 10;
   var questionsEachLoad = 10; 
   var threadTags = JSON.parse(`<?=json_encode($GLOBALS['output']['tags'])?>`);
 </script>
 
-<?php if ($GLOBALS['output']['threadCount'] > 20) : ?>
+<?php if ($GLOBALS['output']['threadCount'] > 10) : ?>
   <div>
-    <button id="loadMoreQuestions" type="button" class="col-md-12 btn btn-light">Load more questions (<span id="currentQuestions">20</span> of <?=$GLOBALS['output']['threadCount']?>)</button>
+    <button id="loadMoreQuestions" type="button" class="col-md-12 btn btn-light">Load more questions (<span id="currentQuestions">10</span> of <?=$GLOBALS['output']['threadCount']?>)</button>
   </div>
 <?php endif ?>
 
