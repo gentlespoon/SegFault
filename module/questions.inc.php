@@ -82,7 +82,7 @@ switch ($action) {
 
     $offset = 0;
 
-    $sql = "SELECT forum_threads.*, member.avatar, member.username, member.uid FROM forum_threads LEFT JOIN member ON member.uid=forum_threads.uid WHERE %l ORDER BY sendtime DESC LIMIT 20 OFFSET %i";
+    $sql = "SELECT forum_threads.*, member.avatar, member.username, member.uid FROM forum_threads LEFT JOIN member ON member.uid=forum_threads.uid WHERE %l ORDER BY sendtime DESC LIMIT 10 OFFSET %i";
     // echo $sql."<br />";
 
     $threads = DB::query($sql, $search->getWhereCond(), $offset);
