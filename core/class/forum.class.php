@@ -254,6 +254,7 @@ class forum {
       $tags = explode(',', $tags);
       foreach ($tags as $key => $value) {
         DB::query("INSERT INTO forum_update (tagid, uid, tid) VALUES (%i, %i, %i)", $value, $_SESSION['uid'], $tid);
+        DB::query("INSERT INTO forum_favtags (uid, tid) VALUES (%i, %i)", $_GET['tagid'], $GLOBALS['curUser']['uid']);
       }
 
       return ["success" => 1, "message" => $tid];
