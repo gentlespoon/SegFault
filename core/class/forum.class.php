@@ -210,6 +210,13 @@ class forum {
     }
     if (DB::query("INSERT INTO forum_posts (tid, content, sendtime, uid) VALUES (%i, %s, %i, %i)", $tid, $content, $GLOBALS['now'], $_SESSION['uid'])) {
       DB::query("UPDATE member SET posts=posts+1 WHERE uid=%i", $GLOBALS['curUser']['uid']);
+
+      $tags = DB::query("SELECT tagid FROM forum_favtags WHERE uid=%i", $GLOBALS['curUser']['uid'])[1]['tagid'];
+
+      $tags = explode(',', $tags);
+      foreach ($tags as $key => $value) {
+        DB::query("INSERT INTO forum_update (tagid, uid, tid) VALUES (%i, %i, %i)", $value, $_SESSION['uid'], $tid);
+      }
       return ["success" => 1, "message" => $GLOBALS['lang']["new-post-success"]];
     } else {
       return ["success" => 0, "message" => "newPost failed"];
