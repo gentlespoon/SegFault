@@ -186,15 +186,6 @@ class forum {
       $threads[$k]['tags'] = explode(",", $thread['tags']);
       $threads[$k]['sendtime'] = toUserTime($thread['sendtime']);
       $threads[$k]['content'] = $thread['content'];
-      $summaryCharLimit = 500;
-      if (strlen($threads[$k]['content'])>$summaryCharLimit) {
-        $threads[$k]['content'] = substr($threads[$k]['content'], 0, strpos($threads[$k]['content'], " ", $summaryCharLimit-10))." ...";
-      }
-      $threads[$k]['lastreply'] = DB::query("SELECT member.avatar, member.username, forum_posts.sendtime, forum_posts.uid FROM forum_posts LEFT JOIN member ON member.uid=forum_posts.uid WHERE tid=%i ORDER BY sendtime DESC LIMIT 1", $threads[$k]['tid']);
-      if (!empty($threads[$k]['lastreply'])) {
-        $threads[$k]['lastreply'] = $threads[$k]['lastreply'][0];
-        $threads[$k]['lastreply']['sendtime'] = toUserTime($threads[$k]['lastreply']['sendtime']);
-      }
     }
 
     return ["success" => 1, "message" => $threads];
