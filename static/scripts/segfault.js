@@ -388,7 +388,6 @@ $(document).ready(function() {
               </div>
             </div>
           </div>`;
-          console.log(obj);
           $(".questions").append(obj);
         });
 
