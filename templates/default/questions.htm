@@ -71,6 +71,11 @@
 
   <!-- End adv. search modal -->
 <?php endif ?>
+
+
+
+
+  <!-- Begin Sidebar -->
   <div class="col-sm-12 col-md-3 col-lg-2" id="sidebar">
     <!-- <div class="sidebarItem"> -->
 <?php if ($action != "advice" && $action != "asking") : ?>
@@ -80,16 +85,16 @@
     <button class="btn btn-primary loginBtn btn-block">Ask Question</button>
 <?php endif ?>
     <!-- </div> -->
-    <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#advSearchModal">Adv. Search</button>
+    <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#advSearchModal">Advanced Search</button>
 <?php endif ?>
 <?php if ($_SESSION['uid']) : ?>
     <div class="sidebarItem">
-      <b>Your FavTags</b>
+      <b>Subscribed Tags</b>
       <div class="" id="favTags">
 <?php foreach ($GLOBALS['output']['favTags'] as $tagid => $taginfo) : ?><a href="/questions/search?tag=<?=$tagid?>"><span class="badge badge-dark favTag"><?=$taginfo['tagname']?></span></a><?php endforeach ?>
       </div>
       <div class="" id="favTagsMan">
-        <a href="/tags/manage">Manage FavTags</a>
+        <a href="/tags/manage">Manage your tags</a>
       </div>
     </div>
 <?php else : ?>
@@ -98,15 +103,15 @@
     </div>
 <?php endif ?>
   </div>
+  <!-- End Sidebar -->
 
 
+
+
+
+
+  <!-- Begin Questions Canvas -->
   <div class="col-sm-12 col-md-9 col-lg-10" id="maincanvas">
-
-
-
-
-
-
 
 <?php switch($action) : ?>
 <?php case "search" : ?>
@@ -269,6 +274,11 @@
     </div>
 <?php break ?>
 
+
+
+
+
+
 <?php case "advice": ?>
 
     <div>
@@ -317,6 +327,9 @@
 <?php break ?>
 
 
+
+
+
 <?php case "asking" : ?>
 
   <form id="newThreadForm" method="post" action="/questions/asked">
@@ -354,8 +367,9 @@
 <?php break ?>
 
 
-
-  </div> <!-- end maincanvas -->
-
 <?php endswitch ?>
+
+  </div>
+  <!-- End Questions Canvas -->
+
 </div>
