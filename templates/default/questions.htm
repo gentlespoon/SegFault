@@ -1,6 +1,6 @@
 <div class="row">
 
-<?php if ($action != "advice" && $action != "asking") : ?>
+<?php // if ($action != "advice" && $action != "asking") : ?>
   <!-- Begin adv. search modal -->
 
   <div class="modal fade" id="advSearchModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -70,7 +70,7 @@
   </div>
 
   <!-- End adv. search modal -->
-<?php endif ?>
+<?php // endif ?>
 
 
 
@@ -287,40 +287,35 @@
 
 
     <div class="content-page">
-      <p>Welcome to SegFault!</p>
-      <p>All questions will be answered in due time. BUT! To <b>improve your chances</b>, here are some tips:</p>
-      <h5>How is your GoogleFu?</h5>
-      <p>Have you <b><a href="/search">thoroughly searched for an answer</a></b> <i>before</i> asking your question? Provide some context to your question, share your research. Tell us what you found (on this site or elsewhere) and why it didn’t meet your needs. Show that you’ve taken the time, and tried. It saves us from reiterating obvious answers, and above all, it helps <i>you</i> get a more specific and relevant answer!</p>
-      <div class="ask-advice-search-container">
+      <h5>Welcome to SegFault!</h5>
+      <p>We’d love to help you, but the reality is that most questions will not get answered, because we simply won't look at this site again after finishing this course. To <b>improve your chances</b>, here are some tips:</p>
+      <h5>Search, and research</h5>
+      <p>How is your GoogleFu? Have you <b><a href="javascript: void();" data-toggle="modal" data-target="#advSearchModal">thoroughly searched for an answer</a></b> <i>before</i> asking your question? Provide some context to your question, share your research. Tell us what you found (on this site or elsewhere) and why it didn’t meet your needs. This demonstrates that you’ve taken the time to try to help yourself, it saves us from reiterating obvious answers, and above all, it helps <i>you</i> get a more specific and relevant answer!</p>
+      <form class="form-inline" action="/questions/search" method="get">
+        <input id="adviceSearchBox" class="form-control col-md-6" name="keyword" type="text" value="" placeholder="Search" aria-label="Search" autocomplete="off">
+        &nbsp;&nbsp;
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+        <p>Try our more <a href="javascript: void();" data-toggle="modal" data-target="#advSearchModal">advanced search</a>!</p>
+
+      <!-- <div class="ask-advice-search-container">
         <input type="text" value="" class="search-title" autocomplete="off">
-        <input type="button" value="Search" class="search-button js-gps-track" data-gps-track="howtoask.searchclick">
+        <input type="button" value="Search">
         <div id="question-suggestions"></div>
-        <p>Try our more <a href="/search" class="search-link js-gps-track" data-gps-track="howtoask.searchclick">advanced search</a>!</p>
-      </div>
+      </div> -->
       <h5>Be on-topic</h5>
-      <p>Our community is defined by a <a href="/tags">specific set of topics in the tag page</a>; please stick to those topics. If your question is about the site itself, post a question with the tag "SegFault". If you’re looking for a different topic, it might be covered by other questions <a href="/tags"></a>.</p>
+      <p>Our community is defined by a <a href="/tags">specific set of topics in the tag page</a>; please stick to those topics and avoid asking for opinions or open-ended discussion. If your question is about the site itself, post a question with the tag "SegFault". If you’re looking for a different topic, it might be covered by other questions.</p>
       <h5>Be specific</h5>
-      <p>Vague question gets you vague answers. But if you give us details and context, we can provide a useful, relevant answer.</p>
+      <p>If you ask a vague question, you’ll get a vague answer. But if you give us details and context, we can provide a useful, relevant answer.</p>
       <h5>Make it relevant to others</h5>
       <p>We like to help as many people at a time as we can. Make it clear how your question is relevant to more people than just you, and more of us will be interested in your question and willing to look into it.</p>
       <h5>Keep an open mind</h5>
       <p>The answer to your question may not always be the one you wanted, but that doesn’t mean it is wrong. A conclusive answer isn’t always possible. When in doubt, ask people to cite their sources, or to explain how/where they learned something. Even if we don’t agree with you, or tell you exactly what you wanted to hear, remember: we’re just trying to help.</p>
-      <form id="theForm" method="post" action="/questions/ask">
-      <input type="checkbox" name="advised" id="advised" value="advised" class="js-gps-track" data-gps-track="howtoask.thanksclick">
-      <label for="advised">&nbsp; thanks, I will keep these tips in mind when asking</label>
+      <form id="theForm" method="post" action="/questions/asking">
+      <input type="checkbox" name="advised" required>
+      <label for="advised">&nbsp; Thanks, I will keep these tips in mind when asking</label>
       <div style="text-align: right; width: 100%;" id="proceed">
-         <script>
-             $(function() {
-                 $("#proceed").append("<a onclick=\"$('#theForm').submit();\" style=\"color:#888\" class=\"js-gps-track\" data-gps-track=\"howtoask.proceedclick\">" + 'proceed' + " &raquo;</a>");
-             });
-             StackExchange.using("gps", function() {
-                 StackExchange.gps.track("howtoask.visit");
-             });
-         </script>
-         <noscript>
-             &lt;input type="submit" value="Proceed &amp;raquo;" class="js-gps-track" data-gps-track="howtoask.proceedclick"&gt;
-         </noscript>
-        <a class="btn btn-primary" href="/questions/asking">Continue</a>
+        <input type="submit" class="btn btn-primary" value="Continue" />
       </div>
       </form>
     </div>
