@@ -108,8 +108,8 @@
 
 
 
-
-<?php if ($action == "search") : ?>
+<?php switch($action) : ?>
+<?php case "search" : ?>
 
     <div class="question-summary">
       <h3>Questions</h3>
@@ -166,6 +166,7 @@
 <?php endif ?>
     </div>
 
+<?php break ?>
 
 
 
@@ -173,7 +174,8 @@
 
 
 
-<?php elseif ($action == "viewthread") : ?>
+
+<?php case  "viewthread": ?>
 
     <!-- THREAD -->
     <div class="question-summary">
@@ -265,8 +267,9 @@
         <button class="btn btn-primary ml-sm-2 loginBtn">Sign In</button> to answer this question.
 <?php endif ?>
     </div>
+<?php break ?>
 
-<?php elseif ($action == "advice") : ?>
+<?php case "advice": ?>
 
     <div>
       <h3>How to Ask</h3>
@@ -311,6 +314,7 @@
       </div>
       </form>
     </div>
+<?php break ?>
 
 
 
@@ -318,8 +322,7 @@
 
 
 
-
-<?php elseif ($action == "asking") : ?>
+<?php case "asking" : ?>
 
   <form id="newThreadForm" method="post" action="/questions/asked">
     <div class="form-row">
@@ -353,18 +356,11 @@
       <button class="btn btn-primary" type="submit"><?=$GLOBALS['lang']['new-thread-send']?></button>
     </div>
   </form>
-
-
-
-<?php endif ?>
-
-
-
-
-
+<?php break ?>
 
 
 
   </div> <!-- end maincanvas -->
 
+<?php endswitch ?>
 </div>
