@@ -159,21 +159,19 @@
         </div>
       </div>
 <?php endforeach ?>
-    </div>
 <script>
   var totalQuestions = <?=$GLOBALS['output']['threadCount']?>;
-  var searchJSON = "<?=$GLOBALS['output']['searchJSON']?>";
-  //searchJSON = JSON.stringify(searchJSON);
+  var searchJSON = <?=$GLOBALS['output']['searchJSON']?>;
+  searchJSON = JSON.stringify(searchJSON);
   var currentQuestions = 20;
-  var questionsEachLoad = 10; 
-  var threadTags = JSON.parse(`<?=json_encode($GLOBALS['output']['tags'])?>`);
+  var searchConditions = "";
 </script>
-
 <?php if ($GLOBALS['output']['threadCount'] > 20) : ?>
-  <div>
-    <button id="loadMoreQuestions" type="button" class="col-md-12 btn btn-light">Load more questions (<span id="currentQuestions">20</span> of <?=$GLOBALS['output']['threadCount']?>)</button>
-  </div>
+      <div>
+        <button id="loadMoreQuestions" type="button" class="col-md-12 btn btn-light">Load more questions (<span id="currentQuestions">20</span> of <?=$GLOBALS['output']['threadCount']?>)</button>
+      </div>
 <?php endif ?>
+    </div>
 
 <?php break ?>
 
