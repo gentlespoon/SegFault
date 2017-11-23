@@ -447,9 +447,9 @@ $(document).ready(function() {
         var thread ="";
         $.each(count.message, function(index, value){
           // modalalert(typeof value);
-          thread = thread + "<a href = '/questions/viewthread/"+ value[0] + "'>"+ value[1]+ "</a><br/>";
+          thread = "<div>"+ thread + "<a href = '/questions/viewthread/"+ value[0] + "'>"+ value[1]+ "</a></div>";
         });
-        modalalert("New threads", thread);
+        modalalert("New updates", thread);
       }
     });
   });
