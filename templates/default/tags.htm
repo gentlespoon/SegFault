@@ -16,10 +16,12 @@ foreach ($GLOBALS['output']['tags'] as $tagid => $taginfo) :
             <?=$taginfo['description']?>
           </div>
           <!-- if user is subscribed to tag, show unsubscribe button. else, show subscribe button.-->
-          <?php if($taginfo['isFav']){ ?>
-			  <button type="button" class = "btn btn-danger" onclick="remfavtag(<?=$tagid?>)">Unsubscribe</button>
-		  <?php } else { ?>
-			  <button type="button" class = "btn btn-success" onclick="addfavtag(<?=$tagid?>)">Subscribe</button>
+          <?php if($GLOBALS['curUser']['uid'] != 0){ ?>
+			  <?php if($taginfo['isFav']){ ?>
+				  <button type="button" class = "btn btn-danger" onclick="remfavtag(<?=$tagid?>)">Unsubscribe</button>
+			  <?php } else { ?>
+				  <button type="button" class = "btn btn-success" onclick="addfavtag(<?=$tagid?>)">Subscribe</button>
+			  <?php } ?>
 		  <?php } ?>
       </div>
       </div>
