@@ -1,6 +1,7 @@
 # SegFault
 SegFault Project for UCR CS180 Software Engineering.
-Most developments of this project has been finished on Nov 22, 2017. Some finishing touches and bug fixes will be made after Nov 22.
+Major development of this project has been finished on Nov 22, 2017.
+Some finishing touches and bug fixes will be made after Nov 22.
 
 Currently hosted at [http://sfault.net](http://sfault.net).
 
@@ -8,7 +9,7 @@ Currently hosted at [http://sfault.net](http://sfault.net).
 ## Implemented
 ### Common
 <pre>
-10/07/2017 Angda S.)        Site global entry router
+10/07/2017 Angda S.         Site global entry router
 </pre>
 ### Members
 <pre>
@@ -30,6 +31,7 @@ Currently hosted at [http://sfault.net](http://sfault.net).
 10/10/2017 Angda S.         New thread
 10/07/2017 Angda S.         View thread
 10/10/2017 Angda S.         New post (reply to thread)
+11/18/2017 Atticus V.       Verify thread/post content before submission
 11/22/2017 John Y.          AJAX load more threads
 11/04/2017 Angda S.         AJAX load more posts
 10/10/2017 John Y.          Advanced Text editor
