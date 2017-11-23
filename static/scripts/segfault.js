@@ -359,7 +359,7 @@ $(document).ready(function() {
                 <a href="/questions/viewthread/`+item.tid+`"><h5>`+item.title+`</h5></a>
                 <div>Tags:`;
           item.tags.forEach(function(item, index) {
-            obj = obj+`<a href="/questions/search?tag=`+item+`"><span class="badge badge-dark">`+threadTags[item].tagname+`</span></a>`;
+            obj = obj+`<a href="/questions/search?tag=`+item+`"><span class="badge badge-dark">`+threadTags[item].tagname+`</span></a>&nbsp;`;
           });
 
           obj = obj+
