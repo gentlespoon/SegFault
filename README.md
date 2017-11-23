@@ -1,45 +1,53 @@
 # SegFault
 SegFault Project for UCR CS180 Software Engineering.
-
+Most developments of this project has been finished on Nov 22, 2017. Some finishing touches and bug fixes will be made after Nov 22.
 
 Currently hosted at [http://sfault.net](http://sfault.net).
 
 
 ## Implemented
-
-* (10/07/2017 A.S.) Router
-
+### Common
+<pre>
+10/07/2017 Angda S.)        Site global entry router
+</pre>
 ### Members
-* (10/05/2017 A.S.) Sign up
-* (10/05/2017 A.S.) Sign in / Sign out
-* (10/05/2017 A.S.) Sign in history
-* (10/05/2017 A.S.) Member list
-* (10/06/2017 A.S.) Auto ban user with too many failed login attempts
-* (10/06/2017 A.S.) Auto ban brute force IP
-* (10/06/2017 A.S.) Edit Profile
-* (10/18/2017 A.S.) AJAX verify fields before registration
-* (10/18/2017 A.S.) User profile picture
-* (11/02/2017 A.S.) Member API
-* (11/03/2017 A.S.) View member profile
-
-### Threads + Posts
-* (10/07/2017 A.S.) Question list
-* (10/07/2017 A.S.) View question thread
-* (10/07/2017 A.S.) Tags
-* (10/07/2017 A.S.) Search for questions by tags
-* (10/07/2017 A.S.) Search for questions by uid
-* (10/07/2017 A.S.) Vote for a thread/post
-* (10/09/2017 A.S.) Sort Tags by popularity
-* (10/09/2017 A.S.) Search for questions by keywords
-* (10/10/2017 A.S.) Post new questions
-* (10/10/2017 A.S.) Reply to existed questions
-* (10/13/2017 A.S.) Search for questions by username
-* (11/03/2017 A.S.) Favorite tags
-* (11/04/2017 A.S.) AJAX load answers
-* (11/06/2017 J.Y.) Threads API
-* (11/08/2017 A.S.) Tags API
-* (11/08/2017 X.Z.) reCAPTCHA
-* (11/08/2017 J.Y.) Edit existed threads/posts
-
-## TODO's
+<pre>
+10/05/2017 Angda S.         User registration
+10/06/2017 Angda S.         View/edit Profile
+10/18/2017 Angda S.         User profile picture
+10/05/2017 Angda S.         Sign in / Sign out
+10/05/2017 Angda S.         Sign in history
+10/06/2017 Angda S.         AutoBan bruteforce IP and username
+10/05/2017 Angda S.         Member list
+11/03/2017 Angda S.         View other member's profile
+10/18/2017 Angda S.         AJAX verify fields before registration
+11/02/2017 Angda S.         Member API for mobile app connection
+11/08/2017 Xiao Z.          reCAPTCHA on user registration
+</pre>
+### Threads + Posts (Thread = Question, Post = Answer)
+<pre>
+10/07/2017 Angda S          Thread list 
+10/10/2017 Angda S.         New thread
+10/07/2017 Angda S.         View thread
+10/10/2017 Angda S.         New post (reply to thread)
+11/22/2017 John Y.          AJAX load more threads
+11/04/2017 Angda S.         AJAX load more posts
+10/10/2017 John Y.          Advanced Text editor
+10/07/2017 Angda S.         Vote for a thread(post)
+11/15/2017 John Y.          Limit one vote per user
+11/08/2017 John Y.          Lock/edit/remove a thread(post) API
+11/11/2017 Atticus V.       Lock/edit/remove a thread(post) UI
+11/15/2017 Xiao Z.          Notification
+10/07/2017 Angda S.         Basic Search
+11/21/2017 John Y.          Advanced Search
+</pre>
+### Tags
+<pre>
+10/07/2017 Angda S.         Tags
+10/09/2017 Angda S.         Sort Tags by popularity
+11/09/2017 Angda S.         Tags API
+11/21/2017 Atticus V.       Tags Subscription UI
+11/12/2017 Xiao Z.          Tags alignments UI
+</pre>
+## TODO's (Not in use anymore)
 See [Kanban list](https://docs.google.com/spreadsheets/d/1s9AF456-IWnul3hFNJalU_LcRKZNalsjCT0g0Gy029k)
