@@ -72,7 +72,7 @@ a
 
 .question-summary
 {
-    padding: 12px 0;
+    padding: 2em 0 4em 0;
 
     word-wrap: break-word;
     word-break: break-all;
@@ -247,6 +247,8 @@ a
 
     border: 1px solid #000000;
     border-radius: .25rem;
+
+    opacity: 0.4;
 }
 
 #notification
