@@ -11,7 +11,7 @@ switch ($action) {
 
 
     if ($_SESSION['uid'] != 0) {
-      redirect(0, "/member/profile");
+      redirect(0, "/member/profile?uid=".$_SESSION['uid']);
     }
     $GLOBALS['output']['title'] = $GLOBALS['lang']['register'];
     if (array_key_exists("username", $_POST)) {
