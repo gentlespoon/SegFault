@@ -670,3 +670,19 @@ function initInlineTinyMCE(divID) {
 function escapeRegExp(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
 }
+
+
+function showFeatures() {
+  modalalert("8 Features of sFault.net", `
+  <ol>
+    <li>User Account Creation & Profile Management</li>
+    <li>User Group / User Permissions</li>
+    <li>Posting Questions</li>
+    <li>Tag Subscription</li>
+    <li>Answer questions</li>
+    <li>Advanced Search</li>
+    <li>Text Editor</li>
+    <li>Rate Posts</li>
+  </ol>
+  `);
+}
