@@ -72,7 +72,7 @@
             </div>
           </div>
           <div class="form-group">
-            <div class="btn-group" data-toggle="buttons">
+            <div class="btn-group-vertical adv-search-btn-group" data-toggle="buttons">
               <label class="btn btn-outline-success adv-search-btn" for="advSearchAll">
                 <input id="advSearchAll" type="checkbox" autocomplete="off" /> Require All Search Fields
               </label>
@@ -236,8 +236,10 @@
             <button class="btn btn-secondary" onclick="RemoveThread(<?=$GLOBALS['output']['thread']['tid']?>)">Remove</button>
             <button class="btn btn-secondary" onclick="edit('thread')">Edit</button>
 <?php } ?>
-<?php if($GLOBALS['curUser']['gid'] >= 2) { ?>
+<?php if($GLOBALS['curUser']['gid'] >= 2 && $GLOBALS['output']['thread']['open'] === "0") { ?>
             <button class="btn btn-secondary" onclick="LockThread(<?=$GLOBALS['output']['thread']['tid']?>)">Lock</button>
+<?php } elseif ($GLOBALS['curUser']['gid'] >= 2 && $GLOBALS['output']['thread']['open'] === "2") { ?>
+            <button class="btn btn-secondary" onclick="UnlockThread(<?=$GLOBALS['output']['thread']['tid']?>)">Unlock</button>
 <?php } ?>
           </div>
           <div class="authorBar">

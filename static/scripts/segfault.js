@@ -604,6 +604,13 @@ function LockThread(tid){
     })
 };
 
+function UnlockThread(tid){
+  $.ajax({ url: "/api/forum/unlockthread", data: { tid: tid }, method: "get"})
+    .done(function(data) {
+  window.location.reload();
+    })
+};
+
 function EditPost(pid){
     var content = tinyMCE.get('textedit'+pid).getContent();
     $.ajax({ url: "/api/forum/editpost", data: { pid: pid, content: content}, method: "get"})
