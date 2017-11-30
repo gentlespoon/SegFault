@@ -60,25 +60,28 @@
 <?php 
   
   $features = [
-    // ["SUB-TITLE", "LINK", "CONTENT"],
+    // ["SUB-TITLE", "LINK, Leave empty if no link is needed", "BRIEF DESCRIPTION"],
+    
     ["4-Tier Usergroups", "/member", "
-      <p>The site is separated into four tiers of user groups: Guest, Member, Moderator, Admin.</p>
+      The site is separated into four tiers of user groups:<br>
+      <b>Guest, Member, Moderator, Admin</b><br>
+      Each tier inherits the previous tier's privilege.
       <ul>
-        <li>Guests are only allowed to view the website.</li>
+        <li>Guests are only allowed to view the site.</li>
         <li>Members are allowed to post and answer questions.</li>
-        <li>Moderators are allowed to remove or lock question thread as well as removing answers.</li>
+        <li>Moderators are allowed to edit, remove or lock questions.</li>
         <li>Admins are allowed to assign Moderators</li>
       </ul>
       "],
 
     // ===== TODO: EDIT THESE =====
-    ["Profile Management", "javascript: alert(2);", "Description 2"],
-    ["Posting Questions", "javascript: alert(3);", "Description 3"],
-    ["Answer questions", "javascript: alert(4);", "Description 4"],
-    ["Tag Subscription", "javascript: alert(5);", "Description 5"],
-    ["Advanced Editor", "javascript: alert(6);", "Description 6"],
-    ["Advanced Search", "javascript: alert(7);", "Description 7"],
-    ["Rate Answers", "javascript: alert(8);", "Description 8"],
+    ["Profile Management", "", "Description 2"],
+    ["Posting Questions", "", "Description 3"],
+    ["Answer questions", "", "Description 4"],
+    ["Tag Subscription", "", "Description 5"],
+    ["Advanced Editor", "", "Description 6"],
+    ["Advanced Search", "", "Description 7"],
+    ["Rate Answers", "", "Description 8"],
     // ========= END TODO =========
 
   ];
@@ -90,7 +93,7 @@
           <a data-toggle='collapse' href='#collapse".$i."' aria-expanded='";
           if (!$i) {echo "true";} else {echo "false";} 
           echo "' aria-controls='collapse".$i."'>
-            ".($i+1).". ".$features[$i][0]."
+            ".($i+1)."&nbsp;&nbsp;&nbsp;".$features[$i][0]."
           </a>
         </h5>
       </div>
@@ -100,7 +103,9 @@
           echo "' role='tabpanel' aria-labelledby='heading".$i."' data-parent='#accordion'>
         <div class='card-body'>
           <p>".$features[$i][2]."</p>
-          <p><a target='_blank' href='".$features[$i][1]."'>Check it out!</a></p>
+          ";
+          if ($features[$i][1]!="") echo "<p><a target='_blank' href='".$features[$i][1]."'>Check it out!</a></p>";
+          echo "
         </div>
       </div>
     </div>
