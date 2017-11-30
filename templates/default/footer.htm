@@ -63,27 +63,67 @@
     // ["SUB-TITLE", "LINK, Leave empty if no link is needed", "BRIEF DESCRIPTION"],
     
     ["4-Tier Usergroups", "/member", "
-      The site is separated into four tiers of user groups:<br>
-      <b>Guest, Member, Moderator, Admin</b><br>
-      Each tier inherits the previous tier's privilege.
       <ul>
-        <li>Guests are only allowed to view the site.</li>
-        <li>Members are allowed to post and answer questions.</li>
-        <li>Moderators are allowed to edit, remove or lock questions.</li>
-        <li>Admins are allowed to assign Moderators</li>
+        <li>
+          The site is separated into <b>four tiers of user groups</b>:<br>
+          Each tier inherits the previous tier's privilege.
+          <ul>
+            <li><b>Guests</b> are only allowed to view the site.</li>
+            <li><b>Members</b> are allowed to post and answer questions.</li>
+            <li><b>Moderators</b> are allowed to edit, remove or lock questions.</li>
+            <li><b>Admins</b> are allowed to assign Moderators</li>
+          </ul>
+        </li>
       </ul>
-      "],
+    "],
 
-    // ===== TODO: EDIT THESE =====
-    ["Profile Management", "", "Description 2"],
-    ["Posting Questions", "", "Description 3"],
-    ["Answer questions", "", "Description 4"],
-    ["Tag Subscription", "", "Description 5"],
-    ["Advanced Editor", "", "Description 6"],
-    ["Advanced Search", "", "Description 7"],
-    ["Rate Answers", "", "Description 8"],
-    // ========= END TODO =========
+    ["User Acount Management", "/member/profile?uid=".$_SESSION['uid'], "
+      <ul>
+        <li>User <b>passwords are encrypted and salted</b> before being saved into database.</li>
+        <li>Exponentially growing <b>lockout penalty</b> for users with consecutive failed login attempts.</li>
+        <li><b>Auto ban brute-force IP</b>.
+        <li><b>Customizable syntax highlighting color scheme</b> on a per user basis.</li>
+      </ul>
+    "],
 
+    ["Ask Questions", "/questions/advice", "
+      <ul>
+        <li>Suggest the user to use the <b>search</b> feature before asking a new question.</li>
+        <li>Questions are <b>categorized by Tags</b>.</li>
+        <li>A user will <b>receive notification</b> for the question he asked</li> 
+        <li><b>Edit the questions</b>.</li>
+      </ul>
+    "],
+    
+    ["Answer Questions", "/questions/viewthread/82", "
+      <ul>
+        <li>Provide an <b>answer with code snippets</b>.</li>
+        <li><b>Edit the answer</b>.</li>
+      </ul>
+    "],
+
+    ["Tag Subscription", "/tags", "
+      <ul>
+        <li><b>Get notifications</b> when subscribed tags has new questions.</li>
+        <li><b>Search shortcut</b> for questions with the tag.</li>
+      </ul>
+    "],
+
+    ["Advanced Editor", "/questions/viewthread/82", "
+      <ul>
+        <li>Try the <b>advanced editor powered by TinyMCE</b></li>
+      </ul>
+    "],
+
+    ["Advanced Search", "javascript: alert(\"Try the Advanced Search button on the sidebar!\");", "Description 7"],
+
+    ["Rate Answers", "/questions/viewthread/82", "
+      <ul>
+        <li><b>Rate an answer</b> if you find it useful.</li>
+        <li>You can <b>rate a question</b> too!</li>
+      </ul>
+    "],
+    
   ];
   for ($i = 0; $i < sizeof($features); $i++) {
     echo "
