@@ -236,7 +236,7 @@
             <button class="btn btn-secondary" onclick="RemoveThread(<?=$GLOBALS['output']['thread']['tid']?>)">Remove</button>
             <button class="btn btn-secondary" onclick="edit('thread')">Edit</button>
 <?php } ?>
-<?php if($GLOBALS['curUser']['gid'] >= 2 && $GLOBALS['output']['thread']['open'] === "0") { ?>
+<?php if($GLOBALS['curUser']['gid'] >= 2 && $GLOBALS['output']['thread']['open'] === "1") { ?>
             <button class="btn btn-secondary" onclick="LockThread(<?=$GLOBALS['output']['thread']['tid']?>)">Lock</button>
 <?php } elseif ($GLOBALS['curUser']['gid'] >= 2 && $GLOBALS['output']['thread']['open'] === "2") { ?>
             <button class="btn btn-secondary" onclick="UnlockThread(<?=$GLOBALS['output']['thread']['tid']?>)">Unlock</button>
