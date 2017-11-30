@@ -10,6 +10,7 @@ class search {
     protected $usernames = array();
     protected $uids = array();
     protected $tagIDs = array();
+    protected $answered = false;
 
     function __construct(string $boolOp = "and") {
         $this->clause = new WhereClause($boolOp);
@@ -21,7 +22,7 @@ class search {
      * @return WhereClause if all subclauses have been ended
      * @return null if a subclause has not been ended
      */
-    function getWhereCond() {
+    public function getWhereCond() {
         if (empty($this->storedClauses)) {
             return $this->clause;
         }
@@ -101,8 +102,8 @@ class search {
 
     protected function keywordAddCondition($keyword) {
         $this->startSubClause('or');
-        $this->addWhereLikeCond("title", $keyword, " ", true);
-        $this->addWhereLikeCond("content", $keyword, " ", true);
+        $this->addWhereLikeCond("forum_threads.title", $keyword, " ", true);
+        $this->addWhereLikeCond("forum_threads.content", $keyword, " ", true);
         $this->endSubClause();
     }
 
@@ -115,7 +116,7 @@ class search {
     }
 
     protected function tagAddCondition($tagID) {
-        $this->addWhereLikeCond("tags", $tagID, ",");
+        $this->addWhereLikeCond("forum_threads.tags", $tagID, ",");
     }
 
     protected function tagHandler() {
@@ -204,6 +205,7 @@ class search {
         $this->keywords = $conditions['keywords'];
         $this->usernames = $conditions['usernames'];
         $this->tagIDs = $conditions['tags'];
+        $this->answered = $conditions['answered'];
     }
 
     protected function parseSearchCondJSON($JSON) {
@@ -214,6 +216,7 @@ class search {
         $this->usernames = $decoded[2];
         $this->uids = $decoded[3];
         $this->tagIDs = $decoded[4];
+        $this->answered = $decoded[5];
     }
 
     protected function fetchConditions($JSON) {
@@ -233,10 +236,25 @@ class search {
         $this->startSubClause(in_array("all", $this->all) ? 'and' : 'or');
         $this->parseConditions();
         $this->endSubClause();
+        if ($this->answered) {
+            $this->addCond("forum_threads.tid IN ( SELECT forum_posts.tid FROM forum_posts )");
+        }
     }
 
     public function getSearchCondJSON() {
-        return json_encode(array($this->all, $this->keywords, $this->usernames, $this->uids, $this->tagIDs));
+        return json_encode(array($this->all, $this->keywords, $this->usernames, $this->uids, $this->tagIDs, $this->answered));
+    }
+
+    public function getResultCount() {
+        $sql = "SELECT count(*) FROM forum_threads LEFT JOIN member ON member.uid=forum_threads.uid WHERE %l";
+
+        return DB::query($sql, $this->getWhereCond())[0]["count(*)"];
+    }
+
+    public function getResults($count = 10, $offset = 0) {
+        $sql = "SELECT forum_threads.*, member.avatar, member.username, member.uid FROM forum_threads LEFT JOIN member ON member.uid=forum_threads.uid WHERE %l ORDER BY sendtime DESC LIMIT %i OFFSET %i";
+
+        return DB::query($sql, $this->getWhereCond(), $count, $offset);
     }
 
     public static function genWhereLikeCond($fieldname, $condition, $delim, $allowConcatenate=false) {

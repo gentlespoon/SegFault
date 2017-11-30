@@ -16,7 +16,15 @@ $(document).ready(function() {
         $("#advTagsList").append($newTag);
         $(this).val("");
         $(this).removeClass("is-invalid");
+        $(this).parent(".input-group").removeClass('is-invalid');
         return true;
+      }
+      else {
+        if (!$(this).hasClass("is-invalid")) {
+          $(this).addClass("is-invalid");
+          $(this).parent(".input-group").addClass('is-invalid');
+        }
+        $(this).parent(".input-group").siblings(".invalid-feedback").html("Tag already added.");
       }
       $(this).val("");
       return false;
@@ -24,7 +32,9 @@ $(document).ready(function() {
     else {
       if (!$(this).hasClass("is-invalid")) {
         $(this).addClass("is-invalid");
+        $(this).parent(".input-group").addClass('is-invalid');
       }
+      $(this).parent(".input-group").siblings(".invalid-feedback").html("That tag does not exist.");
       return false;
     }
   });
@@ -97,9 +107,11 @@ $(document).ready(function() {
     });
     if (newSearchKeywords && !$(this).hasClass('is-invalid')) {
       $(this).addClass('is-invalid');
+      $(this).parent(".input-group").addClass('is-invalid');
     }
     else if (!newSearchKeywords && $(this).hasClass('is-invalid')) {
       $(this).removeClass('is-invalid');
+      $(this).parent(".input-group").removeClass('is-invalid');
     }
     $("#advSearchKeywords").val(newSearchKeywords);
   });
@@ -109,8 +121,10 @@ $(document).ready(function() {
       "all":[],
       "keywords":[],
       "usernames":[],
-      "tags":[]
+      "tags":[],
+      "answered":false
     };
+    query["answered"] = $('#advSearchAnswered').is(':checked');
     if ($('#advSearchAll').is(':checked')) {
       query["all"].push("all");
     }

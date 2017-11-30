@@ -265,3 +265,21 @@ a
 .card-text {
     height: 4em;
 }
+
+.btn-outline-success.adv-search-btn {
+    box-shadow: none;
+}
+
+.btn-outline-success.adv-search-btn:hover {
+    color: #28a745;
+    background: #fff;
+}
+
+.btn-outline-success.adv-search-btn.active:hover {
+    color: #fff;
+    background: #28a745;
+}
+
+.adv-search-input-group.is-invalid ~ .invalid-feedback {
+    display: block;
+}

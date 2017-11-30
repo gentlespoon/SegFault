@@ -8,7 +8,7 @@ $GLOBALS['output']['tags'] = tags::getTags();
 $GLOBALS['output']['favTags'] = tags::getFavTags($_SESSION['uid']);
 
 $search = new search();
-$search->addCond("visible<=%i", $GLOBALS['curUser']['gid']);
+$search->addCond("forum_threads.visible<=%i", $GLOBALS['curUser']['gid']);
 
 switch ($action) {
 
@@ -77,7 +77,7 @@ switch ($action) {
   // no action = list newest questions
     $action = "search";
 
-    $GLOBALS['output']['threadCount'] = DB::query("SELECT count(*) FROM forum_threads LEFT JOIN member ON member.uid=forum_threads.uid WHERE %l", $search->getWhereCond())[0]["count(*)"];
+    $GLOBALS['output']['threadCount'] = $search->getResultCount();
     $GLOBALS['output']['searchJSON'] = $search->getSearchCondJSON();
 
     $offset = 0;
@@ -85,7 +85,7 @@ switch ($action) {
     $sql = "SELECT forum_threads.*, member.avatar, member.username, member.uid FROM forum_threads LEFT JOIN member ON member.uid=forum_threads.uid WHERE %l ORDER BY sendtime DESC LIMIT 10 OFFSET %i";
     // echo $sql."<br />";
 
-    $threads = DB::query($sql, $search->getWhereCond(), $offset);
+    $threads = $search->getResults();
     if (empty($threads)) {
       $GLOBALS['output']['threads'] = [];
       alert("No Records", BLUE);
